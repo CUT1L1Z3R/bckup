@@ -112,6 +112,7 @@ section h2 {
   overflow-x: auto;
   padding: 8px 0;
   gap: 9px;
+  -webkit-overflow-scrolling: touch;
 }
 .list img {
   width: 90px;
