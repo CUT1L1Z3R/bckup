@@ -1,195 +1,220 @@
-const API_KEY = 'a1e72fd93ed59f56e6332813b9f8dcae';
-const BASE_URL = 'https://api.themoviedb.org/3';
-const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+// Get references to HTML elements
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const goToWatchlistBtn = document.getElementById('goToWatchlist');
 
-// Show loader while fetching data
-function showLoader() {
-  document.getElementById('loader').style.display = 'block';
-}
-function hideLoader() {
-  document.getElementById('loader').style.display = 'none';
-}
-
-// Fetch trending movies or TV shows
-async function fetchTrending(type, genre = null) {
-  try {
-    let url = `${BASE_URL}/trending/${type}/week?api_key=${API_KEY}`;
-    if (genre) url += `&with_genres=${genre}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('Network/Server error');
-    const data = await res.json();
-    return data.results;
-  } catch (err) {
-    console.error('Error:', err);
-    return [];
-  }
-}
-
-// Fetch trending anime: must be Animation (genre 16) AND Japanese
-async function fetchTrendingAnime() {
-  let allResults = [];
-  for (let page = 1; page <= 3; page++) {
-    try {
-      const res = await fetch(`${BASE_URL}/trending/tv/week?api_key=${API_KEY}&page=${page}`);
-      const data = await res.json();
-      const filtered = (data.results || []).filter(item =>
-        item.original_language === 'ja' &&
-        Array.isArray(item.genre_ids) &&
-        item.genre_ids.includes(16)
-      );
-      allResults = allResults.concat(filtered);
-    } catch {
-      // skip error if any
-    }
-  }
-  return allResults;
-}
-
-function truncate(str, n) {
-  return str?.length > n ? str.substr(0, n - 1) + "..." : str;
-}
-
-function showErrorMessage(containerId, message) {
-  document.getElementById(containerId).innerHTML = `<div style="color:#e62429; padding:10px;">${message}</div>`;
-}
-
-function displayList(items, containerId) {
-  const container = document.getElementById(containerId);
-  if (!items || items.length === 0) {
-    showErrorMessage(containerId, 'No results found. Try again later.');
-    return;
-  }
-  container.innerHTML = '';
-  items.forEach(item => {
-    if (item.poster_path) {
-      const img = document.createElement('img');
-      img.src = `${IMG_URL}${item.poster_path}`;
-      img.alt = item.title || item.name;
-      img.title = item.title || item.name;
-      img.addEventListener('click', () => showDetails(item));
-      container.appendChild(img);
-    }
-  });
-}
-
-// Banner feature
-function displayBanner(movies) {
-  if (!movies || movies.length === 0) return;
-  const pick = movies[Math.floor(Math.random() * movies.length)];
-  const banner = document.querySelector('.banner');
-  if (pick && pick.backdrop_path) {
-    banner.style.backgroundImage = `linear-gradient(120deg, #2c3e50bb 60%, #e62429cc 100%), url('${IMG_URL}${pick.backdrop_path}')`;
-    banner.querySelector('h1').textContent = pick.title || pick.name || 'Welcome to FreeFlixx';
-    banner.querySelector('p').textContent = truncate(pick.overview, 150) || 'Stream trending movies, TV shows, and anime';
-  }
-}
-
-let currentItem = null;
-function showDetails(item) {
-  currentItem = item;
-  document.getElementById('modal-title').textContent = item.title || item.name;
-  document.getElementById('modal-description').textContent = item.overview || 'No description available.';
-  document.getElementById('modal-image').src = item.poster_path ? `${IMG_URL}${item.poster_path}` : '';
-  document.getElementById('modal-rating').innerHTML = '★'.repeat(Math.round(((item.vote_average || 0) / 2))) || '';
-  changeServer();
-  document.getElementById('modal').style.display = 'flex';
-}
-
-function closeModal() {
-  document.getElementById('modal').style.display = 'none';
-  document.getElementById('modal-video').src = '';
-}
-
- function openSearchModal() {
-      document.getElementById('search-modal').style.display = 'flex';
-      document.getElementById('search-input').focus();
-    }
-
-    function closeSearchModal() {
-      document.getElementById('search-modal').style.display = 'none';
-      document.getElementById('search-results').innerHTML = '';
-    }
-
-    async function searchTMDB() {
-      const query = document.getElementById('search-input').value;
-      if (!query.trim()) {
-        document.getElementById('search-results').innerHTML = '';
-        return;
-      }
-
-      const res = await fetch(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${query}`);
-      const data = await res.json();
-
-      const container = document.getElementById('search-results');
-      container.innerHTML = '';
-      data.results.forEach(item => {
-        if (!item.poster_path) return;
-        const img = document.createElement('img');
-        img.src = `${IMG_URL}${item.poster_path}`;
-        img.alt = item.title || item.name;
-        img.onclick = () => {
-          closeSearchModal();
-          showDetails(item);
-        };
-        container.appendChild(img);
-      });
-    }
-
-document.getElementById('modal-close').onclick = closeModal;
-window.onclick = function(event) {
-  if (event.target === document.getElementById('modal')) closeModal();
-}
-
-// Server toggle for video source
-function changeServer() {
-  if (!currentItem) return;
-  const server = document.getElementById('server').value;
-  const type = currentItem.media_type === 'tv' ? 'tv' : 'movie';
-  let embedURL = '';
-  if (server === 'vidsrc.cc') {
-    embedURL = `https://vidsrc.cc/v2/embed/${type}/${currentItem.id}`;
-  } else if (server === 'vidsrc.me') {
-    embedURL = `https://vidsrc.net/embed/${type}/?tmdb=${currentItem.id}`;
-  } else if (server === 'player.videasy.net') {
-    embedURL = `https://player.videasy.net/${type}/${currentItem.id}`;
-  }
-  document.getElementById('modal-video').src = embedURL;
-}
-document.getElementById('server').onchange = changeServer;
-
-// Back to Top
-const backToTopBtn = document.getElementById('backToTop');
-window.onscroll = function() {
-  backToTopBtn.classList.toggle('show', window.scrollY > 300);
-};
-backToTopBtn.onclick = function() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-
-// Mobile Navbar toggle
-const navbarToggle = document.getElementById('navbar-toggle');
-const navbarLinks = document.getElementById('navbar-links');
-navbarToggle.onclick = function() {
-  navbarLinks.classList.toggle('open');
-};
-Array.from(document.querySelectorAll('.navbar-links a')).forEach(link => {
-  link.onclick = () => navbarLinks.classList.remove('open');
+// Event listener to navigate to WatchList page
+goToWatchlistBtn.addEventListener('click', () => {
+    window.location.href = 'watchList/watchlist.html';
 });
 
-// Initialize app
-async function init() {
-  showLoader();
-  const [movies, tvShows] = await Promise.all([
-    fetchTrending('movie'),
-    fetchTrending('tv')
-  ]);
-  hideLoader();
-  displayBanner(movies);
-  displayList(movies, 'movies-list');
-  displayList(tvShows, 'tvshows-list');
+const scrollDistance = 900;
 
-  // Proper anime section!
-  const anime = await fetchTrendingAnime();
-  displayList(anime, 'anime-list');
+// Define a function to handle scrolling
+function setupScroll(containerClass, previousButtonClass, nextButtonClass) {
+    const previousButtons = document.querySelectorAll(`.${previousButtonClass}`);
+    const nextButtons = document.querySelectorAll(`.${nextButtonClass}`);
+    const containers = document.querySelectorAll(`.${containerClass}`);
+
+    containers.forEach((container, index) => {
+        const previousButton = previousButtons[index];
+        const nextButton = nextButtons[index];
+        nextButton.addEventListener('click', () => {
+            container.scrollBy({
+                left: scrollDistance,
+                behavior: 'smooth',
+            });
+        });
+        previousButton.addEventListener('click', () => {
+            container.scrollBy({
+                left: -scrollDistance,
+                behavior: 'smooth',
+            });
+        });
+    });
 }
-init();
+
+// SetupScroll function called for each section
+setupScroll('trending-container', 'trending-previous', 'trending-next');
+setupScroll('netflix-container', 'netflix-previous', 'netflix-next');
+setupScroll('netflixShows-container', 'netflixShows-previous', 'netflixShows-next');
+setupScroll('top-container', 'top-previous', 'top-next');
+setupScroll('horror-container', 'horror-previous', 'horror-next');
+setupScroll('comedy-container', 'comedy-previous', 'comedy-next');
+setupScroll('action-container', 'action-previous', 'action-next');
+setupScroll('romantic-container', 'romantic-previous', 'romantic-next');
+
+// TMDB API key
+const api_Key = 'e79515e88dfd7d9f6eeca36e49101ac2';
+
+
+// Function to fetch and display movies or TV shows
+function fetchMedia(containerClass, endpoint, mediaType) {
+    const containers = document.querySelectorAll(`.${containerClass}`);
+    containers.forEach((container) => {
+        fetch(`https://api.themoviedb.org/3/${endpoint}&api_key=${api_Key}`)
+            .then(response => response.json())
+            .then(data => {
+                const fetchResults = data.results;
+                fetchResults.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
+                    itemElement.innerHTML = ` <img src="https://image.tmdb.org/t/p/w500${imageUrl}" alt="${item.title || item.name}"> `;
+                    container.appendChild(itemElement);
+
+                    itemElement.addEventListener('click', () => {
+                        const media_Type = item.media_type || mediaType
+                        window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${item.id}`;
+                    });
+                });
+
+                if (containerClass === 'netflix-container') {
+                    const randomIndex = Math.floor(Math.random() * fetchResults.length);
+                    const randomMovie = fetchResults[randomIndex];
+
+                    const banner = document.getElementById('banner');
+                    const play = document.getElementById('play-button');
+                    const info = document.getElementById('more-info');
+                    const title = document.getElementById('banner-title');
+
+                    banner.src = `https://image.tmdb.org/t/p/original/${randomMovie.backdrop_path}`;
+                    title.textContent = randomMovie.title || randomMovie.name;
+
+                    function redirectToMovieDetails() {
+                        const media_Type = randomMovie.media_type || mediaType;
+                        window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${randomMovie.id}`;
+                    }
+
+                    play.addEventListener('click', redirectToMovieDetails);
+                    info.addEventListener('click', redirectToMovieDetails);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+
+            });
+    })
+}
+
+// Initial fetch of trending, Netflix, top rated, horror, comedy, action, and romantic on page load
+fetchMedia('trending-container', 'trending/all/week?');
+fetchMedia('netflix-container', 'discover/tv?with_networks=213', 'tv');
+fetchMedia('netflixShows-container', 'discover/tv?', 'tv');
+fetchMedia('top-container', 'movie/top_rated?', 'movie');
+fetchMedia('horror-container', 'discover/movie?with_genres=27', 'movie');
+fetchMedia('comedy-container', 'discover/movie?with_genres=35', 'movie');
+fetchMedia('action-container', 'discover/movie?with_genres=28', 'movie');
+fetchMedia('romantic-container', 'discover/movie?with_genres=10749', 'movie');
+
+// Retrieve watchlist from local storage or create an empty array if it doesn't exist
+const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+
+
+// Function to handle search input changes
+async function handleSearchInput() {
+    const query = searchInput.value;
+    if (query.length > 2) {
+        const results = await fetchSearchResults(query);
+        if (results.length !== 0) {
+            searchResults.style.visibility = "visible";
+        }
+        displaySearchResults(results);
+    } else {
+        searchResults.innerHTML = '';
+        searchResults.style.visibility = "hidden";
+    }
+}
+
+// Event listener for search input changes
+searchInput.addEventListener('input', handleSearchInput);
+
+// Event listener for Enter key press in search input
+searchInput.addEventListener('keyup', async event => {
+    if (event.key === 'Enter') {
+        handleSearchInput();
+    }
+});
+
+// Function to fetch search results from TMDB API
+async function fetchSearchResults(query) {
+    const response = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${api_Key}&query=${query}`);
+    const data = await response.json();
+    return data.results || [];
+}
+
+// Function to display search results
+function displaySearchResults(results) {
+    searchResults.innerHTML = '';
+    results.map(movie => {
+        const shortenedTitle = movie.title || movie.name;
+        const date = movie.release_date || movie.first_air_date;
+
+        let buttonText = "Add to WatchList"; // Set default button text
+
+        // Check if the movie is already in WatchList
+        if (watchlist.find(watchlistItem => watchlistItem.id === movie.id)) {
+            buttonText = "Go to WatchList"; // Change button text
+        }
+
+        const movieItem = document.createElement('div');
+        // Create HTML structure for each movie
+        movieItem.innerHTML = `<div class = "search-item-thumbnail">
+                                    <img src ="https://image.tmdb.org/t/p/w500${movie.poster_path}">
+                                </div>
+                                <div class ="search-item-info">
+                                    <h3>${shortenedTitle}</h3>
+                                    <p>${movie.media_type} <span> &nbsp; ${date}</span></p>
+                                </div>
+                                <button class="watchListBtn" id="${movie.id}">${buttonText}</button>`;
+
+        const watchListBtn = movieItem.querySelector('.watchListBtn');
+
+        // Add event listener to WatchList button
+        watchListBtn.addEventListener('click', () => {
+            if (buttonText === "Add to WatchList") {
+                addToWatchList(movie);
+            } else {
+                window.location.href = 'watchList/watchlist.html'; // Navigate to the WatchList page
+            }
+        });
+
+        const thumbnail = movieItem.querySelector('.search-item-thumbnail');
+        const info = movieItem.querySelector('.search-item-info');
+
+        // Add event listener to navigate to movie details page
+        (thumbnail && info).addEventListener('click', () => {
+            window.location.href = `movie_details/movie_details.html?media=${movie.media_type}&id=${movie.id}`;
+        });
+
+        movieItem.setAttribute('class', 'movie-list');
+
+        // Append movie item to search results
+        searchResults.appendChild(movieItem);
+    });
+}
+
+// Function to add a movie to WatchList
+function addToWatchList(movie) {
+    // Check if the movie is not already in the WatchList list
+    if (!watchlist.find(watchlistItem => watchlistItem.id === movie.id)) {
+        watchlist.push(movie);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist)); // Store in Local Storage
+        const watchListBtn = document.querySelector(`[id="${movie.id}"]`);
+        if (watchListBtn) {
+            watchListBtn.textContent = "Go to WatchList";
+            watchListBtn.addEventListener('click', () => {
+                window.location.href = 'watchList/watchlist.html'; // Navigate to the WatchList page
+            });
+        }
+    }
+}
+
+// Event listener to close search results when clicking outside
+document.addEventListener('click', event => {
+    if (!searchResults.contains(event.target)) {
+        searchResults.innerHTML = '';
+        searchResults.style.visibility = "hidden";
+    }
+});
+
+
