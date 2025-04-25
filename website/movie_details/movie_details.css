@@ -100,6 +100,51 @@ p {
     font-weight: bold;
 }
 
+/* Movie poster and video container */
+.movie-poster {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+/* Iframe to display video */
+iframe {
+  width: 100%;
+  height: 400px; /* Adjust this height to suit your layout */
+  display: block; /* Ensure it's displayed as block element */
+}
+
+/* Styling for the change server dropdown */
+.server-selector {
+  margin-top: 20px; /* Space between the video and the dropdown */
+  text-align: center; /* Center the dropdown */
+  padding: 10px;
+  background-color: #222; /* Optional: Set background to differentiate the dropdown */
+  border-radius: 5px;
+}
+
+.server-selector label {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.server-selector select {
+  padding: 8px;
+  font-size: 14px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.server-selector select:focus {
+  outline: none;
+  background-color: #555;
+}
+
+
 /* watchList button styling */
 .watchListBtn {
     color: white;
