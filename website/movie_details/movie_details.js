@@ -65,9 +65,9 @@ async function displayMovieDetails() {
 
     try {
         const videoDetails = await fetchVideoDetails(id);
-        const trailer = videoDetails.find(video => video.type === 'Trailer');
+        const trailer = videoDetails.find(video => video.type === 'Movie');
         if (trailer) {
-            iframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
+            iframe.src = `https://vidsrc.cc/v2/embed/${type}/${currentItem.id}`;
             moviePoster.style.display = "none";
         } else {
             iframe.style.display = "none";
