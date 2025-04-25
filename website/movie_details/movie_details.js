@@ -102,7 +102,10 @@ window.addEventListener('load', () => {
     //const data = await response.json();
     //return data.results;
 //}
-
+ function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+      document.getElementById('modal-video').src = '';
+    }
 function changeServer() {
       const server = document.getElementById('server').value;
       const type = currentItem.media_type === "movie" ? "movie" : "tv";
