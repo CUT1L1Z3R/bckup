@@ -60,18 +60,18 @@ async function displayMovieDetails() {
     movieTitle.textContent = "Details are not available right now! Please try after some time."
   }
 
-  try {
-    const videoDetails = await fetchVideoDetails(id);
-    const trailer = videoDetails.find(video => video.type === 'Trailer');
-    if (trailer) {
-      iframe.src = `https://vidsrc.cc/v2/embed/${type}/${currentItem.id}`;
-      moviePoster.style.display = "none";
-    } else {
-      iframe.style.display = "none";
+ try {
+        const videoDetails = await fetchVideoDetails(id);
+        const trailer = videoDetails.find(video => video.type === 'Trailer');
+        if (trailer) {
+            iframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
+            moviePoster.style.display = "none";
+        } else {
+            iframe.style.display = "none";
+        }
+    } catch (error) {
+        iframe.style.display = "none";
     }
-  } catch (error) {
-    iframe.style.display = "none";
-  }
 }
 
 // Function to toggle adding/removing from favorites
