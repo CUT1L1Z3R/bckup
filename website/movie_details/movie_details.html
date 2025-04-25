@@ -1,75 +1,66 @@
-async function displayMovieDetails() {
-    try {
-        const movieDetails = await fetchMovieDetails(id);
+<!DOCTYPE html>
+<html lang="en">
 
-        var spokenlanguage = movieDetails.spoken_languages.map(language => language.english_name)
-        language.textContent = spokenlanguage.join(', ');
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/movie_details/movie_details.css">
+    <link rel="icon" href="/assests/netflix.ico">
+    <title>Movie Details</title>
+</head>
 
-        var genreNames = movieDetails.genres.map(genre => genre.name);
-        genre.innerText = genreNames.join(', ');
+<body>
+    <!-- Header section -->
+    <header class="header">
+        <img src="/assests/netflix.png" alt="logo" class="logo">
+    </header>
 
-        movieDetails.overview.length > 290
-            ? plot.textContent = `${movieDetails.overview.substring(0, 290)}...`
-            : plot.textContent = movieDetails.overview;
+    <!-- Movie details section -->
+    <div class="movie-details">
 
-        movieTitle.textContent = movieDetails.name || movieDetails.title;
-        moviePoster.src = `https://image.tmdb.org/t/p/w500${movieDetails.backdrop_path}`;
-        movieYear.textContent = `${movieDetails.release_date || movieDetails.first_air_date}`;
-        rating.textContent = movieDetails.vote_average;
+        <!-- Movie poster section -->
+        <div class="movie-poster">
+            <img id="moviePoster" src="" alt="Movie Poster">
+            <iframe frameborder="0" allowfullscreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                src="" id="iframe"></iframe>
+        </div>
 
-        // Updating the favorite button text and adding a click event listener to toggle favorites
-        if (watchlist.some(favoriteMovie => favoriteMovie.id === movieDetails.id)) {
-            watchListBtn.textContent = "Remove From WatchList";
-        } else {
-            watchListBtn.textContent = "Add To WatchList";
-        }
-        watchListBtn.addEventListener('click', () => toggleFavorite(movieDetails));
+        <!-- Movie information section -->
+        <div class="movie-info">
 
-    } catch (error) {
-        movieTitle.textContent = "Details are not available right now! Please try after some time."
-    }
+            <h1 id="movieTitle"></h1>
+            <p id="plot"></p>
 
-    try {
-        const videoDetails = await fetchVideoDetails(id);
-        const trailer = videoDetails.find(video => video.type === 'Movie');
+            <div class="movie-data">
+                <div class="design">
+                    <span>Released :</span>
+                    <p id="movieYear"></p>
+                </div>
 
-        if (Movie) {
-            // Replace YouTube trailer with custom video server link
-            const selectedServer = document.getElementById('server').value; // Get selected server
+                <div class="design">
+                    <span>Language :</span>
+                    <p id="language"></p>
+                </div>
+            </div>
 
-            let videoUrl = "";
-            switch (selectedServer) {
-                case "vidsrc.cc":
-                    videoUrl = `https://vidsrc.cc/v2/embed/movie/${id}`;
-                    break;
-                case "vidsrc.me":
-                    videoUrl = `https://vidsrc.net/embed/movie/?tmdb=${id}`;
-                    break;
-                case "player.videasy.net":
-                    videoUrl = `https://player.videasy.net/movie/${id}`;
-                    break;
-                case "2embed":
-                    videoUrl = `https://www.2embed.cc/embed/${id}`;
-                    break;
-                default:
-                    videoUrl = `https://defaultserver.com/embed/${id}`; // Fallback
-            }
-<div class="server-selector">
-  <label for="server">Change Server:</label>
-  <select id="server" onchange="changeServer()">
-    <option value="vidsrc.cc">Vidsrc.cc</option>
-    <option value="vidsrc.me">Vidsrc.me</option>
-    <option value="player.videasy.net">Player.Videasy.net</option>
-    <option value="2embed">2Embed</option>
-  </select>
-</div>
+            <div class="movie-data rating-data">
+                <div class="design">
+                    <span>Rating :</span>
+                    <p id="rating"></p>
+                </div>
+                <div class="design">
+                    <span>Genre :</span>
+                    <p id="genre"></p>
+                </div>
+            </div>
 
-            iframe.src = videoUrl;
-            moviePoster.style.display = "none";
-        } else {
-            iframe.style.display = "none";
-        }
-    } catch (error) {
-        iframe.style.display = "none";
-    }
-}
+            <!-- watchList button section -->
+            <button class="watchListBtn"></button>
+        </div>
+    </div>
+
+    <script src="/movie_details/movie_details.js"></script>
+</body>
+
+</html>
