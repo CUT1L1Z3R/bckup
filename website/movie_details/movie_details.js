@@ -24,7 +24,11 @@ const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
 const media = params.get("media");
 
-
+// Function to fetch detailed information using its TMDb ID
+async function fetchMovieDetails(id) {
+    const response = await fetch(`https://api.themoviedb.org/3/${media}/${id}?api_key=${api_Key}`);
+    const data = await response.json();
+    return data;
 }
 
 // Display the movie details on the page
