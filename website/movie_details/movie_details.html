@@ -31,9 +31,9 @@ async function displayMovieDetails() {
 
     try {
         const videoDetails = await fetchVideoDetails(id);
-        const trailer = videoDetails.find(video => video.type === 'Trailer');
+        const trailer = videoDetails.find(video => video.type === 'Movie');
 
-        if (trailer) {
+        if (Movie) {
             // Replace YouTube trailer with custom video server link
             const selectedServer = document.getElementById('server').value; // Get selected server
 
