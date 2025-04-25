@@ -1,4 +1,4 @@
-const API_KEY = 'e79515e88dfd7d9f6eeca36e49101ac2'; // Replace with your valid TMDB API key
+const API_KEY = 'a1e72fd93ed59f56e6332813b9f8dcae';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -10,7 +10,7 @@ function hideLoader() {
   document.getElementById('loader').style.display = 'none';
 }
 
-// Fetch trending movies, tv shows or anime
+// Fetch trending movies or TV shows
 async function fetchTrending(type, genre = null) {
   try {
     let url = `${BASE_URL}/trending/${type}/week?api_key=${API_KEY}`;
@@ -25,15 +25,31 @@ async function fetchTrending(type, genre = null) {
   }
 }
 
+// Fetch trending anime: must be Animation (genre 16) AND Japanese
+async function fetchTrendingAnime() {
+  let allResults = [];
+  
+  // Fetch from multiple pages to get more anime (max 3 pages for demo)
+  for (let page = 1; page <= 3; page++) {
+    const res = await fetch(`${BASE_URL}/trending/tv/week?api_key=${API_KEY}&page=${page}`);
+    const data = await res.json();
+    const filtered = data.results.filter(item =>
+      item.original_language === 'ja' && item.genre_ids.includes(16)
+    );
+    allResults = allResults.concat(filtered);
+  }
+
+  return allResults;
+}
+
 function truncate(str, n) {
-  return str?.length > n ? str.substr(0, n-1) + "..." : str;
+  return str?.length > n ? str.substr(0, n - 1) + "..." : str;
 }
 
 function showErrorMessage(containerId, message) {
   document.getElementById(containerId).innerHTML = `<div style="color:#e62429; padding:10px;">${message}</div>`;
 }
 
-// Show list of movies/anime/tvshows
 function displayList(items, containerId) {
   const container = document.getElementById(containerId);
   if (!items || items.length === 0) {
@@ -65,7 +81,6 @@ function displayBanner(movies) {
   }
 }
 
-// Modal functions
 let currentItem = null;
 function showDetails(item) {
   currentItem = item;
@@ -89,6 +104,7 @@ window.onclick = function(event) {
 
 // Server toggle for video source
 function changeServer() {
+  if (!currentItem) return;
   const server = document.getElementById('server').value;
   const type = currentItem.media_type === 'tv' ? 'tv' : 'movie';
   let embedURL = '';
@@ -124,8 +140,8 @@ async function init() {
   displayList(movies, 'movies-list');
   displayList(tvShows, 'tvshows-list');
 
-  // For anime, TMDB doesn't have a direct anime category, but you can try animation genre: genre ID 16.
-  const anime = await fetchTrending('tv', 16);
+  // Corrected Anime section!
+  const anime = await fetchTrendingAnime();
   displayList(anime, 'anime-list');
 }
 init();
