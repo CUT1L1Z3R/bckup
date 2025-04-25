@@ -19,6 +19,11 @@ h1 {
     justify-content: center;
 }
 
+.server-selector {
+      margin: 15px 0;
+      text-align: left;
+    }
+
 /* Logo styling */
 .logo {
     width: 120px;
