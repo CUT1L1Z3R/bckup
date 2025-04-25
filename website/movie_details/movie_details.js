@@ -97,8 +97,24 @@ window.addEventListener('load', () => {
 
 
 // Function to fetch video details (trailers) for a movie or TV show
-async function fetchVideoDetails(id) {
-    const response = await fetch(`https://api.themoviedb.org/3/${media}/${id}/videos?api_key=${api_Key}`);
-    const data = await response.json();
-    return data.results;
-}
+//async function fetchVideoDetails(id) {
+  //  const response = await fetch(`https://api.themoviedb.org/3/${media}/${id}/videos?api_key=${api_Key}`);
+    //const data = await response.json();
+    //return data.results;
+//}
+
+function changeServer() {
+      const server = document.getElementById('server').value;
+      const type = currentItem.media_type === "movie" ? "movie" : "tv";
+      let embedURL = "";
+
+      if (server === "vidsrc.cc") {
+        embedURL = `https://vidsrc.cc/v2/embed/${type}/${currentItem.id}`;
+      } else if (server === "vidsrc.me") {
+        embedURL = `https://vidsrc.net/embed/${type}/?tmdb=${currentItem.id}`;
+      } else if (server === "player.videasy.net") {
+        embedURL = `https://player.videasy.net/${type}/${currentItem.id}`;
+      }
+
+      document.getElementById('modal-video').src = embedURL;
+    }
