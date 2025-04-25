@@ -27,7 +27,10 @@
 </div>
 
 <!-- Change Server dropdown at the bottom -->
-<div class="server-selector">
+
+<!-- Add a button to change server below the video -->
+<button class="change-server-btn" onclick="changeServer()">Change Server</button>
+        <div class="server-selector">
   <label for="server">Change Server:</label>
   <select id="server" onchange="changeServer()">
     <option value="vidsrc.cc">Vidsrc.cc</option>
@@ -36,9 +39,6 @@
     <option value="2embed">2Embed</option>
   </select>
 </div>
-
-<!-- Add a button to change server below the video -->
-<button class="change-server-btn" onclick="changeServer()">Change Server</button>
         
         <!-- Movie information section -->
         <div class="movie-info">
