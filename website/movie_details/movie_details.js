@@ -10,7 +10,7 @@ const moviePoster = document.getElementById('moviePoster');
 const movieYear = document.getElementById('movieYear');
 const rating = document.getElementById('rating');
 const genre = document.getElementById('genre');
-const plot = document.getElementById('plot');
+const plot = document.getElementById("plot");
 const language = document.getElementById("language");
 const iframe = document.getElementById("iframe");
 const watchListBtn = document.querySelector('.watchListBtn');
@@ -31,46 +31,53 @@ async function fetchMovieDetails(id) {
     return data;
 }
 
-async function changeServer() {
-  const server = document.getElementById('server').value; // Get the selected server
-  const type = currentItem.media_type === "movie" ? "movie" : "tv"; // Movie or TV type
-  let embedURL = "";  // URL to embed video from the selected server
-
-  // Set the video URL depending on the selected server
-  switch (server) {
-    case "vidsrc.cc":
-      embedURL = `https://vidsrc.cc/v2/embed/${type}/${currentItem.id}`;
-      break;
-    case "vidsrc.me":
-      embedURL = `https://vidsrc.net/embed/${type}/?tmdb=${currentItem.id}`;
-      break;
-    case "player.videasy.net":
-      embedURL = `https://player.videasy.net/${type}/${currentItem.id}`;
-      break;
-    case "2embed":
-      embedURL = `https://www.2embed.cc/embed/${currentItem.id}`;
-      break;
-    default:
-      console.error("Selected server is not supported.");
-      break;
-  }
-
-  // If no URL was created, fallback to a default one
-  if (!embedURL) {
-    embedURL = "https://defaultserver.com/defaultEmbedUrl";  // Example fallback
-  }
-
-  // Update the iframe source with the correct video URL
-  document.getElementById('iframe').src = embedURL;
+// Function to fetch video details (trailers) for a movie or TV show
+async function fetchVideoDetails(id) {
+    const response = await fetch(`https://api.themoviedb.org/3/${media}/${id}/videos?api_key=${api_Key}`);
+    const data = await response.json();
+    return data.results;
 }
 
+// Function to handle video source change based on selected server
+async function changeServer() {
+    const server = document.getElementById('server').value; // Get the selected server
+    const type = media === "movie" ? "movie" : "tv"; // Movie or TV type
+    let embedURL = "";  // URL to embed video from the selected server
 
-// Display the movie details on the page
+    // Set the video URL depending on the selected server
+    switch (server) {
+        case "vidsrc.cc":
+            embedURL = `https://vidsrc.cc/v2/embed/${type}/${id}`;
+            break;
+        case "vidsrc.me":
+            embedURL = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
+            break;
+        case "player.videasy.net":
+            embedURL = `https://player.videasy.net/${type}/${id}`;
+            break;
+        case "2embed":
+            embedURL = `https://www.2embed.cc/embed/${id}`;
+            break;
+        default:
+            console.error("Selected server is not supported.");
+            break;
+    }
+
+    // If no URL was created, fallback to a default one
+    if (!embedURL) {
+        embedURL = "https://defaultserver.com/defaultEmbedUrl";  // Example fallback
+    }
+
+    // Update the iframe source with the correct video URL
+    iframe.src = embedURL;
+}
+
+// Function to display movie details on the page
 async function displayMovieDetails() {
     try {
         const movieDetails = await fetchMovieDetails(id);
 
-        var spokenlanguage = movieDetails.spoken_languages.map(language => language.english_name)
+        var spokenlanguage = movieDetails.spoken_languages.map(language => language.english_name);
         language.textContent = spokenlanguage.join(', ');
 
         var genreNames = movieDetails.genres.map(genre => genre.name);
@@ -85,29 +92,20 @@ async function displayMovieDetails() {
         movieYear.textContent = `${movieDetails.release_date || movieDetails.first_air_date}`;
         rating.textContent = movieDetails.vote_average;
 
+        // Call the changeServer function to update the video source
+        changeServer();
+
         // Updating the favorite button text and adding a click event listener to toggle favorites
         if (watchlist.some(favoriteMovie => favoriteMovie.id === movieDetails.id)) {
             watchListBtn.textContent = "Remove From WatchList";
         } else {
             watchListBtn.textContent = "Add To WatchList";
         }
+
         watchListBtn.addEventListener('click', () => toggleFavorite(movieDetails));
 
     } catch (error) {
-        movieTitle.textContent = "Details are not available right now! Please try after some time."
-    }
-
-    try {
-        const videoDetails = await fetchVideoDetails(id);
-        const trailer = videoDetails.find(video => video.type === 'Movie');
-        if (trailer) {
-            iframe.src = `https://vidsrc.cc/v2/embed/${type}/${currentItem.id}`;
-            moviePoster.style.display = "none";
-        } else {
-            iframe.style.display = "none";
-        }
-    } catch (error) {
-        iframe.style.display = "none";
+        movieTitle.textContent = "Details are not available right now! Please try after some time.";
     }
 }
 
@@ -129,10 +127,7 @@ window.addEventListener('load', () => {
     displayMovieDetails();
 });
 
-
-// Function to fetch video details (trailers) for a movie or TV show
-async function fetchVideoDetails(id) {
-    const response = await fetch(`https://api.themoviedb.org/3/${media}/${id}/videos?api_key=${api_Key}`);
-    const data = await response.json();
-    return data.results;
-}
+// Function to handle changes when server selection is made
+document.getElementById('server').addEventListener('change', () => {
+    changeServer();
+});
