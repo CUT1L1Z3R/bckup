@@ -107,11 +107,19 @@ p {
   height: auto;
 }
 
-/* Change server button styling */
+/* Change server dropdown and button styling */
+.server-selector {
+  margin-top: 20px;
+  text-align: center;
+  padding: 10px;
+  background-color: #222;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .change-server-btn {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
   background-color: #4CAF50;
   color: white;
   padding: 10px 20px;
