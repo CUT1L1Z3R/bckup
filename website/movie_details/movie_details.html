@@ -26,18 +26,16 @@
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
 </div>
 
-<!-- Change Server dropdown at the bottom -->
-
-<!-- Add a button to change server below the video -->
-<button class="change-server-btn" onclick="changeServer()">Change Server</button>
-        <div class="server-selector">
+<!-- Change Server dropdown and button -->
+<div class="server-selector">
   <label for="server">Change Server:</label>
   <select id="server" onchange="changeServer()">
     <option value="vidsrc.cc">Vidsrc.cc</option>
     <option value="vidsrc.me">Vidsrc.me</option>
-    <option value="player.videasy.net">Player.Videasy.net</option>
+   option value="player.videasy.net">Player.Videasy.net</option>
     <option value="2embed">2Embed</option>
   </select>
+  <button class="change-server-btn" onclick="changeServer()">Change Server</button>
 </div>
         
         <!-- Movie information section -->
