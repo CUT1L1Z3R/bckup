@@ -100,6 +100,41 @@ function closeModal() {
   document.getElementById('modal-video').src = '';
 }
 
+ function openSearchModal() {
+      document.getElementById('search-modal').style.display = 'flex';
+      document.getElementById('search-input').focus();
+    }
+
+    function closeSearchModal() {
+      document.getElementById('search-modal').style.display = 'none';
+      document.getElementById('search-results').innerHTML = '';
+    }
+
+    async function searchTMDB() {
+      const query = document.getElementById('search-input').value;
+      if (!query.trim()) {
+        document.getElementById('search-results').innerHTML = '';
+        return;
+      }
+
+      const res = await fetch(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${query}`);
+      const data = await res.json();
+
+      const container = document.getElementById('search-results');
+      container.innerHTML = '';
+      data.results.forEach(item => {
+        if (!item.poster_path) return;
+        const img = document.createElement('img');
+        img.src = `${IMG_URL}${item.poster_path}`;
+        img.alt = item.title || item.name;
+        img.onclick = () => {
+          closeSearchModal();
+          showDetails(item);
+        };
+        container.appendChild(img);
+      });
+    }
+
 document.getElementById('modal-close').onclick = closeModal;
 window.onclick = function(event) {
   if (event.target === document.getElementById('modal')) closeModal();
