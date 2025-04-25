@@ -40,36 +40,42 @@ async function fetchVideoDetails(id) {
 
 // Function to handle video source change based on selected server
 async function changeServer() {
-    const server = document.getElementById('server').value; // Get the selected server
-    const type = media === "movie" ? "movie" : "tv"; // Movie or TV type
-    let embedURL = "";  // URL to embed video from the selected server
+  const server = document.getElementById('server').value; // Get the selected server
+  const type = media === "movie" ? "movie" : "tv"; // Movie or TV type
+  let embedURL = "";  // URL to embed video from the selected server
 
-    // Set the video URL depending on the selected server
-    switch (server) {
-        case "vidsrc.cc":
-            embedURL = `https://vidsrc.cc/v2/embed/${type}/${id}`;
-            break;
-        case "vidsrc.me":
-            embedURL = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
-            break;
-        case "player.videasy.net":
-            embedURL = `https://player.videasy.net/${type}/${id}`;
-            break;
-        case "2embed":
-            embedURL = `https://www.2embed.cc/embed/${id}`;
-            break;
-        default:
-            console.error("Selected server is not supported.");
-            break;
-    }
+  // Set the video URL depending on the selected server
+  switch (server) {
+    case "vidsrc.cc":
+      embedURL = `https://vidsrc.cc/v2/embed/${type}/${id}`;
+      break;
+    case "vidsrc.me":
+      embedURL = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
+      break;
+    case "player.videasy.net":
+      embedURL = `https://player.videasy.net/${type}/${id}`;
+      break;
+    case "2embed":
+      embedURL = `https://www.2embed.cc/embed/${id}`;
+      break;
+    default:
+      console.error("Selected server is not supported.");
+      break;
+  }
 
-    // If no URL was created, fallback to a default one
-    if (!embedURL) {
-        embedURL = "https://defaultserver.com/defaultEmbedUrl";  // Example fallback
-    }
+  // If no URL was created, fallback to a default one
+  if (!embedURL) {
+    embedURL = "https://defaultserver.com/defaultEmbedUrl";  // Example fallback
+  }
 
-    // Update the iframe source with the correct video URL
-    iframe.src = embedURL;
+  // Update the iframe source with the correct video URL
+  const iframeElement = document.getElementById('iframe');
+  iframeElement.src = embedURL;
+
+  // Ensure iframe is visible and correctly sized
+  iframeElement.style.display = "block";
+  iframeElement.style.width = "100%"; // or adjust to a fixed size
+  iframeElement.style.height = "400px"; // or adjust height as needed
 }
 
 // Function to display movie details on the page
