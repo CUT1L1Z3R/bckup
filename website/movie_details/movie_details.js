@@ -31,6 +31,40 @@ async function fetchMovieDetails(id) {
     return data;
 }
 
+async function changeServer() {
+  const server = document.getElementById('server').value; // Get the selected server
+  const type = currentItem.media_type === "movie" ? "movie" : "tv"; // Movie or TV type
+  let embedURL = "";  // URL to embed video from the selected server
+
+  // Set the video URL depending on the selected server
+  switch (server) {
+    case "vidsrc.cc":
+      embedURL = `https://vidsrc.cc/v2/embed/${type}/${currentItem.id}`;
+      break;
+    case "vidsrc.me":
+      embedURL = `https://vidsrc.net/embed/${type}/?tmdb=${currentItem.id}`;
+      break;
+    case "player.videasy.net":
+      embedURL = `https://player.videasy.net/${type}/${currentItem.id}`;
+      break;
+    case "2embed":
+      embedURL = `https://www.2embed.cc/embed/${currentItem.id}`;
+      break;
+    default:
+      console.error("Selected server is not supported.");
+      break;
+  }
+
+  // If no URL was created, fallback to a default one
+  if (!embedURL) {
+    embedURL = "https://defaultserver.com/defaultEmbedUrl";  // Example fallback
+  }
+
+  // Update the iframe source with the correct video URL
+  document.getElementById('iframe').src = embedURL;
+}
+
+
 // Display the movie details on the page
 async function displayMovieDetails() {
     try {
