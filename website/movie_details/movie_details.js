@@ -38,30 +38,14 @@ async function fetchVideoDetails(id) {
     return data.results;
 }
 
+document.getElementById('change-server-btn').addEventListener('click', () => {
+  document.getElementById('server-selector').style.display = 'block';
+});
+
 document.getElementById('server-selector').addEventListener('click', (e) => {
-    if (e.target !== document.getElementById('server')) {
-      document.getElementById('server-selector').style.display = 'none';
-    }
-  });
-  
-  document.getElementById('change-server-btn').addEventListener('click', () => {
-    document.getElementById('server-selector').style.display = 'block';
-  });
-  
-  document.getElementById('server-selector').addEventListener('click', () => {
+  if (e.target !== document.getElementById('server')) {
     document.getElementById('server-selector').style.display = 'none';
-  });
-
-let isDoubleClick = false;
-
-document.getElementById('server-selector').addEventListener('click', (e) => {
-  isDoubleClick = true;
-  setTimeout(() => {
-    if (isDoubleClick) {
-      document.getElementById('server-selector').style.display = 'none';
-      isDoubleClick = false;
-    }
-  }, 300);
+  }
 });
 
 document.getElementById('server').addEventListener('change', () => {
