@@ -99,7 +99,7 @@ function fetchMedia(containerClass, endpoint, mediaType) {
 // Function to fetch and display anime movies
 function fetchAnime() {
   const animeContainer = document.querySelector('.anime-container');
-  fetch('https://api.themoviedb.org/3/discover/movie?api_key=YOUR_API_KEY&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=16')
+  fetch('https://api.themoviedb.org/3/discover/tv?api_key=THE_KEY&language=en-US&page=1&with_genres=16&with_keywords=210024|287501&with_text_query=death')
     .then(response => response.json())
     .then(data => {
       const animeMovies = data.results;
