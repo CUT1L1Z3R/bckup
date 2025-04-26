@@ -43,8 +43,8 @@ body {
 /* watchList button hover styling */
 .watchListBtn:hover {
     background: black;
-    color: rgb(153, 5, 202);
-    border: 1px solid rgb(153, 5, 202)
+    color: rgb(201, 22, 22);
+    border: 1px solid rgb(201, 22, 22)
 }
 
 
