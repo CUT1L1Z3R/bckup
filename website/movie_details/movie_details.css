@@ -208,6 +208,12 @@ p {
   background-color: #a209da;
 }
 
+.change-server-btn:active {
+  background-color: transparent;
+  border-color: #7a288a; /* Change border color to purple */
+  outline: 2px solid #7a288a; /* Add purple outline */
+}
+
 .server-selector label {
   color: white;
   font-size: 14px;
