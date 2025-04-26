@@ -125,7 +125,7 @@ fetchMedia('top-container', 'movie/top_rated?', 'movie');
 fetchMedia('horror-container', 'discover/movie?with_genres=27', 'movie');
 fetchMedia('comedy-container', 'discover/movie?with_genres=35', 'movie');
 fetchMedia('action-container', 'discover/movie?with_genres=28', 'movie');
-fetchMedia('anime-container', 'discover/movie?with_genres=16', 'movie');
+fetchMedia('anime-container', 'discover/movie?with_genres=10749', 'movie');
 
 // Retrieve watchlist from local storage or create an empty array if it doesn't exist
 const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
