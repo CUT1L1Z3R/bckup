@@ -109,14 +109,15 @@ p {
 
 /* Server selector dropdown styles */
 #server-selector {
-  background-color: rgba(0, 0, 0, 0.5); /* Add semi-transparent background */
-  padding: 10px;
-  border: 1px solid red; /* Add red outline */
-  border-radius: 5px;
   position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .server-selector-header {
@@ -195,37 +196,39 @@ p {
 /* Compact change server button styling */
 /* Change server button styles */
 .change-server-btn {
- background-color: rgba(0, 0, 0, 0.5); /* Change background color to black */
-  color: red; /* Change text color to red */
+  background-color: #333;
+  color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  outline: 2px solid red; /* Add red outline */
 }
 
 .change-server-btn:hover {
-  background-color: #444; /* Change background color on hover */
-  outline: 2px solid #ff0000; /* Change outline color on hover */
+  background-color: #444;
 }
 
-#server-selector label {
-  color: red; /* Change text color to red */
-  font: 14px;
+.server-selector label {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 10px; /* Add a margin to the label */
 }
 
 .server-selector select {
-  padding: 10px;
-  font-size: 14px;
-  background-color: transparent; /* Remove background color */
+  padding: 5px;
+  font-size: 12px;
+  background-color: #444;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  color: red; /* Change text color to red */
+  width: 80px; /* Set the width to 80px */
 }
 
-#server-selector select:focus {
+.server-selector select:focus {
   outline: none;
+  background-color: #555;
 }
 
 .server-selector button {
