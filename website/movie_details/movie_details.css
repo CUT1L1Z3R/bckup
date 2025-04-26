@@ -205,7 +205,9 @@ p {
 }
 
 .change-server-btn:hover {
-  background-color: #a209da;
+  background-color: transparent;
+  border-color: #7a288a; /* Change border color to purple */
+  outline: 2px solid #7a288a; /* Add purple outline */
 }
 
 .change-server-btn:active {
