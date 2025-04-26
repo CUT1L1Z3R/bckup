@@ -307,7 +307,7 @@ p {
     font-weight: 600;
     padding: 8px 20px;
     text-align: center;
-    background: rgb(201, 22, 22);
+    background: rgb(141, 22, 201);
     border-radius: 3px;
     border: 1px solid transparent;
     cursor: pointer;
@@ -316,8 +316,8 @@ p {
 /* watchList button hover styling */
 .watchListBtn:hover {
     background: black;
-    color: rgb(201, 22, 22);
-    border: 1px solid rgb(201, 22, 22)
+    color: rgb(141, 22, 201);
+    border: 1px solid rgb(141, 22, 201)
 }
 
 
