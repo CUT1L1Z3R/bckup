@@ -52,6 +52,7 @@ document.getElementById('server-selector').addEventListener('click', (e) => {
     document.getElementById('server-selector').style.display = 'none';
   });
 
+let isDoubleClick = false;
 let doubleClickTimer = null;
 
 document.getElementById('server-selector').addEventListener('click', (e) => {
@@ -59,9 +60,16 @@ document.getElementById('server-selector').addEventListener('click', (e) => {
     clearTimeout(doubleClickTimer);
   }
   doubleClickTimer = setTimeout(() => {
-    document.getElementById('server-selector').style.display = 'none';
-    doubleClickTimer = null;
+    isDoubleClick = true;
+    document.getElementById('server-selector').style.display = 'block';
   }, 300);
+});
+
+document.getElementById('server-selector').addEventListener('dblclick', () => {
+  if (isDoubleClick) {
+    document.getElementById('server-selector').style.display = 'none';
+    isDoubleClick = false;
+  }
 });
 
 document.getElementById('server').addEventListener('change', () => {
