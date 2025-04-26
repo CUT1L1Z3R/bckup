@@ -113,7 +113,7 @@ p {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #41013f;
+  background-color: #5f025c;
   color: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -121,7 +121,7 @@ p {
 }
 
 .server-selector-header {
-  background-color: #41013f;
+  background-color: #540151;
   padding: 10px;
   border-bottom: 1px solid #41013f;
 }
