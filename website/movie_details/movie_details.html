@@ -61,15 +61,20 @@
 
             <!-- Server selector dropdown -->
 <div id="server-selector" style="display: none;">
-  <label for="server">Change Server:</label>
-  <select id="server" onchange="changeServer()">
-    <option value="vidsrc.cc">Vidsrc.cc</option>
-    <option value="vidsrc.me">Vidsrc.me</option>
-    <option value="player.videasy.net">Player.Videasy.net</option>
-    <option value="2embed">2Embed</option>
-  </select>
-        </div>
-    </div>
+  <div class="server-selector-header">
+    <h2>Change Server:</h2>
+    <button class="close-button" onclick="hideServerSelector()">×</button>
+  </div>
+  <div class="server-selector-content">
+    <label for="server">Select Server:</label>
+    <select id="server" onchange="changeServer()">
+      <option value="vidsrc.cc">Vidsrc.cc</option>
+      <option value="vidsrc.me">Vidsrc.me</option>
+      <option value="player.videasy.net">Player.Videasy.net</option>
+      <option value="2embed">2Embed</option>
+    </select>
+  </div>
+</div>
 
     <script src="/movie_details/movie_details.js"></script>
 </body>
