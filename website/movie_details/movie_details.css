@@ -113,12 +113,36 @@ p {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #5f025c;
+  background-color: #810c7d;
   color: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
+/* Close button styles */
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Show select server dropdown on click */
+.change-server-btn:hover + .server-selector-dropdown {
+  display: block;
+}
+
+/* Hide select server dropdown when clicking outside */
+document.addEventListener('click', (e) => {
+  if (!document.getElementById('server-selector').contains(e.target)) {
+    document.getElementById('server-selector').style.display = 'none';
+  }
 
 .server-selector-header {
   background-color: #540151;
