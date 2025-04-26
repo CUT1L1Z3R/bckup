@@ -40,17 +40,19 @@ async function fetchVideoDetails(id) {
 
 let isButtonHeldDown = false;
 
+let doubleClickTimer = null;
+
 document.getElementById('server-selector').addEventListener('click', (e) => {
-  if (e.target !== document.getElementById('server')) {
-    document.getElementById('server-selector').style.display = 'none';
+  if (doubleClickTimer) {
+    clearTimeout(doubleClickTimer);
   }
+  doubleClickTimer = setTimeout(() => {
+    document.getElementById('server-selector').style.display = 'none';
+    doubleClickTimer = null;
+  }, 300);
 });
 
-document.getElementById('change-server-btn').addEventListener('click', () => {
-  document.getElementById('server-selector').style.display = 'block';
-});
-
-document.getElementById('server-selector').addEventListener('click', () => {
+document.getElementById('server').addEventListener('change', () => {
   document.getElementById('server-selector').style.display = 'none';
 });
 
