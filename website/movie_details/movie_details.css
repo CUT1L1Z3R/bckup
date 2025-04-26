@@ -196,8 +196,8 @@ p {
 /* Compact change server button styling */
 /* Change server button styles */
 .change-server-btn {
-  background-color: #333;
-  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5); /* Add semi-transparency */
+  color: red; /* Change text color to red */
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -205,7 +205,7 @@ p {
 }
 
 .change-server-btn:hover {
-  background-color: #444;
+  background-color: rgba(0, 0, 0, 0.7); /* Increase semi-transparency on hover */
 }
 
 .server-selector label {
