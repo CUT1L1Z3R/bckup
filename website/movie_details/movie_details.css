@@ -196,7 +196,7 @@ p {
 /* Compact change server button styling */
 /* Change server button styles */
 .change-server-btn {
-  background-color: #333; /* Change background color to black */
+ background-color: rgba(0, 0, 0, 0.5); /* Change background color to black */
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
