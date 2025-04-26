@@ -132,6 +132,18 @@ p {
   background-color: #3e8e41;
 }
 
+/* Position the server-selector below the video */
+.movie-poster {
+  position: relative;
+}
+
+.server-selector {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
 /* Iframe to display video */
 iframe {
   width: 100%;
