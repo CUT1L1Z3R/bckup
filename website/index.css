@@ -99,10 +99,10 @@ input::-webkit-input-placeholder {
   width: 100%;
   height: 20%;
   box-sizing: border-box;
-  padding 10px;
-  border-bottom: 1px solid #ccc;
-  background: #fff;
-  display flex;
+  padding: 5px;
+  border-bottom: 1px solid lightgray;
+  background: #000;
+  display: flex;
   gap: 20px;
   align-items: center;
   position: relative;
@@ -111,29 +111,6 @@ input::-webkit-input-placeholder {
 .movie-list:hover {
   background-color: #181818;
   cursor: pointer;
-}
-
-/* Movie thumbnail styles */
-.movie-thumbnail {
-  width: 100px;
-  height: 150px;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Movie title styles */
-.movie-title {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-}
-
-/* Movie title styles for Netflix */
-.netflix-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
 }
 
 /* Thumbnail styles */
