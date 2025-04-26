@@ -120,6 +120,22 @@ p {
   width: 150px; /* Set the width to 150px */
 }
 
+/* Compact change server button styling */
+.change-server-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.change-server-btn:hover {
+    background-color: #3e8e41;
+}
+
 .server-selector label {
   color: white;
   font-size: 14px;
