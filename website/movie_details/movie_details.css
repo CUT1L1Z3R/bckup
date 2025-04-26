@@ -54,10 +54,9 @@ iframe {
 
 /* Movie information section */
 .movie-info {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+  padding: 20px; /* Add a padding to the movie-info div */
+  background-color: #333; /* Add a background color to the movie-info div */
+  color: white; /* Set the text color to white */
 }
 
 /* Movie title styling */
@@ -103,7 +102,7 @@ p {
 /* Movie poster and video container */
 .movie-poster {
   position: relative;
-  width: 100%;
+  width: 80%; /* Reduce the width to 80% */
   height: auto;
 }
 
@@ -170,10 +169,11 @@ p {
 }
 
 /* Iframe to display video */
-iframe {
+#iframe {
   width: 100%;
-  height: 400px; /* Adjust this height to suit your layout */
-  display: block; /* Ensure it's displayed as block element */
+  height: 300px; /* Reduce the height to 300px */
+  display: block;
+  margin-bottom: 20px; /* Add a margin to the iframe */
 }
 
 /* Styling for the change server dropdown */
