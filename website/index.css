@@ -27,26 +27,6 @@ body {
   height: 40px;
 }
 
-/* "WatchList" button styles */
-.watchList-Btn {
-  width: 137px;
-  height: 40px;
-  margin: 15px 3.5% 15px 0px;
-  padding: 5px 15px;
-  font-size: 24px;
-  color: rgb(0, 0, 0, 0.8);
-  border: 1px solid transparent;
-  border-radius: 6px;
-  background-color: rgb(201, 22, 22);
-}
-
-.watchList-Btn:hover {
-  color: rgb(201, 22, 22);
-  background-color: black;
-  border: 1px solid rgb(201, 22, 22);
-  cursor: pointer;
-}
-
 .input-container {
   width: 48vw;
   margin-top: 15px;
