@@ -197,6 +197,7 @@ p {
 /* Change server button styles */
 .change-server-btn {
  background-color: rgba(0, 0, 0, 0.5); /* Change background color to black */
+  color: red; /* Change text color to red */
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
