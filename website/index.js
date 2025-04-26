@@ -96,39 +96,6 @@ function fetchMedia(containerClass, endpoint, mediaType) {
     })
 }
 
-// Function to fetch and display movies or TV shows
-function fetchMedia(containerClass, endpoint, mediaType) {
-  const containers = document.querySelectorAll(`.${containerClass}`);
-  containers.forEach((container) => {
-    fetch(`https://api.themoviedb.org/3/${endpoint}&api_key=${api_Key}`)
-      .then(response => response.json())
-      .then(data => {
-        const fetchResults = data.results;
-        fetchResults.forEach(item => {
-          const itemElement = document.createElement('div');
-          const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
-          itemElement.innerHTML = `
-            <div class="movie-thumbnail">
-              <img src="https://image.tmdb.org/t/p/w500${imageUrl}" alt="${item.title || item.name}">
-              <div class="movie-title">
-                <h2 title="${item.title || item.name}">${item.title || item.name}</h2>
-              </div>
-            </div>
-          `;
-          container.appendChild(itemElement);
-
-          itemElement.addEventListener('click', () => {
-            const media_Type = item.media_type || mediaType;
-            window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${item.id}`;
-          });
-        });
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  });
-}
-
 // Initial fetch of trending, Netflix, top rated, horror, comedy, action, and romantic on page load
 fetchMedia('trending-container', 'trending/all/week?');
 fetchMedia('netflix-container', 'discover/tv?with_networks=213', 'tv');
