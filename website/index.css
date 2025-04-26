@@ -126,27 +126,6 @@ input::-webkit-input-placeholder {
   padding: 0;
 }
 
-/* WatchList button styles */
-.watchListBtn {
-  position: absolute;
-  top: 30%;
-  right: 10px;
-  background-color: rgb(201, 22, 22);
-  color: white;
-  border: 1px solid black;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.watchListBtn:hover {
-  background-color: black;
-  border: 1px solid rgb(201, 22, 22);
-  color: rgb(201, 22, 22);
-}
-
 /* ----Banner---- */
 
 #banner-container {
@@ -339,12 +318,6 @@ input::-webkit-input-placeholder {
     top: 0;
   }
 
-  .watchList-Btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
   .input-container {
     width: 94.3%;
     margin-left: 2.3%;
@@ -373,11 +346,6 @@ input::-webkit-input-placeholder {
 
   .search-item-info p {
     font-size: 0.7rem;
-  }
-
-  .watchListBtn {
-    right: 5px;
-    font-size: 12px;
   }
 
   #banner-container {
@@ -446,14 +414,7 @@ input::-webkit-input-placeholder {
   .search-item-thumbnail {
     width: 25%;
   }
-
-  .watchListBtn {
-    position: relative;
-    top: 0;
-    right: 5px;
-    font-size: 14px;
-  }
-
+  
   .search-item-info h3 {
     font-size: 0.9rem;
   }
@@ -534,13 +495,6 @@ input::-webkit-input-placeholder {
 
   .search-item-info p {
     font-size: 0.8rem;
-  }
-
-  .watchListBtn {
-    position: relative;
-    top: 0;
-    right: 5px;
-    font-size: 14px;
   }
 
   #banner-container {
