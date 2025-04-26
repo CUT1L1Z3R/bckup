@@ -40,8 +40,10 @@ async function fetchVideoDetails(id) {
 
 let isButtonHeldDown = false;
 
-document.getElementById('server-selector').addEventListener('click', () => {
-  document.getElementById('server-selector').style.display = 'none';
+document.getElementById('server-selector').addEventListener('click', (e) => {
+  if (e.target !== document.getElementById('server')) {
+    document.getElementById('server-selector').style.display = 'none';
+  }
 });
 
 document.getElementById('server-selector').addEventListener('keydown', (e) => {
