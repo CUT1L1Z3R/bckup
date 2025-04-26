@@ -123,7 +123,7 @@ p {
 .server-selector-header {
   background-color: #41013f;
   padding: 10px;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid #41013f;
 }
 
 .server-selector-header h2 {
