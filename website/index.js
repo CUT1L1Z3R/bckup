@@ -96,6 +96,27 @@ function fetchMedia(containerClass, endpoint, mediaType) {
     })
 }
 
+// Function to fetch and display anime movies
+function fetchAnime() {
+  const animeContainer = document.querySelector('.anime-container');
+  fetch('https://api.themoviedb.org/3/discover/movie?api_key=YOUR_API_KEY&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=16')
+    .then(response => response.json())
+    .then(data => {
+      const animeMovies = data.results;
+      animeMovies.forEach(movie => {
+        const animeMovieElement = document.createElement('div');
+        animeMovieElement.innerHTML = `
+          <h2>${movie.title}</h2>
+          <img src="${movie.poster_path}" alt="${movie.title}">
+        `;
+        animeContainer.appendChild(animeMovieElement);
+      });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+
 // Initial fetch of trending, Netflix, top rated, horror, comedy, action, and romantic on page load
 fetchMedia('trending-container', 'trending/all/week?');
 fetchMedia('netflix-container', 'discover/tv?with_networks=213', 'tv');
@@ -104,7 +125,7 @@ fetchMedia('top-container', 'movie/top_rated?', 'movie');
 fetchMedia('horror-container', 'discover/movie?with_genres=27', 'movie');
 fetchMedia('comedy-container', 'discover/movie?with_genres=35', 'movie');
 fetchMedia('action-container', 'discover/movie?with_genres=28', 'movie');
-fetchMedia('romantic-container', 'discover/movie?with_genres=10749', 'movie');
+fetchMedia('anime-container', 'discover/movie?with_genres=16', 'movie');
 
 // Retrieve watchlist from local storage or create an empty array if it doesn't exist
 const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
