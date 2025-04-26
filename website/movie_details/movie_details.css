@@ -107,19 +107,64 @@ p {
   height: auto;
 }
 
-/* Change server dropdown and button styling */
-.server-selector {
-  margin-top: 20px;
-  text-align: center;
-  padding: 5px;
-  background-color: #222;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 150px; /* Set the width to 150px */
+/* Server selector dropdown styles */
+#server-selector {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+.server-selector-header {
+  background-color: #444;
+  padding: 10px;
+  border-bottom: 1px solid #666;
+}
+
+.server-selector-header h2 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #444;
+}
+
+.server-selector-content {
+  padding: 20px;
+}
+
+.server-selector-content label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.server-selector-content select {
+  padding: 10px;
+  font-size: 14px;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 /* Compact change server button styling */
 .change-server-btn {
     background-color: #4CAF50;
