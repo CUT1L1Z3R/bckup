@@ -46,31 +46,6 @@ document.getElementById('server-selector').addEventListener('click', (e) => {
   }
 });
 
-document.getElementById('server-selector').addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    document.getElementById('server-selector').style.display = 'none';
-  }
-});
-
-document.getElementById('change-server-btn').addEventListener('mousedown', () => {
-  isButtonHeldDown = true;
-  document.getElementById('server-selector').style.display = 'block';
-});
-
-document.getElementById('server-selector').addEventListener('click', () => {
-  document.getElementById('server-selector').style.display = 'none';
-  isButtonHeldDown = false;
-});
-
-document.getElementById('server-selector').addEventListener('mouseup', () => {
-  document.getElementById('server-selector').style.display = 'none';
-  isButtonHeldDown = false;
-});
-
-document.getElementById('server-selector').addEventListener('mouseleave', () => {
-  document.getElementById('server-selector').style.display = 'none';
-  isButtonHeldDown = false;
-});
 // Function to handle video source change based on selected server
 async function changeServer() {
     const server = document.getElementById('server').value; // Get the selected server
