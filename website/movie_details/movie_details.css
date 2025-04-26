@@ -196,16 +196,17 @@ p {
 /* Compact change server button styling */
 /* Change server button styles */
 .change-server-btn {
-  background-color: rgba(0, 0, 0, 0.5); /* Add semi-transparency */
-  color: red; /* Change text color to red */
+  background-color: #333; /* Change background color to black */
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  outline: 2px solid red; /* Add red outline */
 }
 
 .change-server-btn:hover {
-  background-color: rgba(0, 0, 0, 0.7); /* Increase semi-transparency on hover */
+  background-color: #444; /* Change background color on hover */
+  outline: 2px solid #ff0000; /* Change outline color on hover */
 }
 
 .server-selector label {
