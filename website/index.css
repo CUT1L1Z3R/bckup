@@ -28,23 +28,18 @@ body {
 }
 
 /* "WatchList" button styles */
-.watchList-Btn {
-  width: 137px;
-  height: 40px;
-  margin: 15px 3.5% 15px 0px;
-  padding: 5px 15px;
-  font-size: 24px;
-  color: rgb(0, 0, 0, 0.8);
-  border: 1px solid transparent;
-  border-radius: 6px;
-  background-color: rgb(201, 22, 22);
+.watchListBtn {
+  background-color: #7a288a; /* Change background color to purple */
+  color: #fff; /* Change text color to white */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.watchList-Btn:hover {
-  color: rgb(201, 22, 22);
-  background-color: black;
-  border: 1px solid rgb(201, 22, 22);
-  cursor: pointer;
+.watchListBtn:hover {
+  background-color: #6a1d49; /* Change background color on hover */
+  color: #fff; /* Change text color on hover */
 }
 
 .input-container {
