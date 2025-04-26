@@ -57,23 +57,18 @@
 
             <!-- watchList button section -->
             <button class="watchListBtn"></button>
-             <button id="change-server-btn" class="change-server-btn" onclick="showServerSelector()">Change Server</button>
+            <!-- Change server button -->
+<button id="change-server-btn" class="change-server-btn">Change Server</button>
 
-           <!-- Server selector dropdown -->
-<div id="server-selector" style="display: none;">
-  <div class="server-selector-header">
-    <h2>Change Server:</h2>
-    <button class="close-button" onclick="hideServerSelector()">×</button>
-  </div>
-  <div class="server-selector-content">
-    <label for="server">Select Server:</label>
-    <select id="server" onchange="changeServer()">
-      <option value="player.videasy.net">Player.Videasy.net</option>
-      <option value="vidsrc.cc">Vidsrc.cc</option>
-      <option value="vidsrc.me">Vidsrc.me</option>
-      <option value="2embed">2Embed</option>
-    </select>
-  </div>
+<!-- Server selector dropdown -->
+<div id="server-selector" class="server-selector-dropdown">
+  <label for="server">Select Server:</label>
+  <select id="server" class="server-selector-select">
+    <option value="vidsrc.cc">Vidsrc.cc</option>
+    <option value="vidsrc.me">Vidsrc.me</option>
+    <option value="player.videasy.net">Player.Videasy.net</option>
+    <option value="2embed">2Embed</option>
+  </select>
 </div>
 
     <script src="/movie_details/movie_details.js"></script>
