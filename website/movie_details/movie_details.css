@@ -214,7 +214,7 @@ p {
   font: 14px;
 }
 
-#server-selector select {
+.server-selector select {
   padding: 10px;
   font-size: 14px;
   background-color: transparent; /* Remove background color */
