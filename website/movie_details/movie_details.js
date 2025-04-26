@@ -53,23 +53,15 @@ document.getElementById('server-selector').addEventListener('click', (e) => {
   });
 
 let isDoubleClick = false;
-let doubleClickTimer = null;
 
 document.getElementById('server-selector').addEventListener('click', (e) => {
-  if (doubleClickTimer) {
-    clearTimeout(doubleClickTimer);
-  }
-  doubleClickTimer = setTimeout(() => {
-    isDoubleClick = true;
-    document.getElementById('server-selector').style.display = 'block';
+  isDoubleClick = true;
+  setTimeout(() => {
+    if (isDoubleClick) {
+      document.getElementById('server-selector').style.display = 'none';
+      isDoubleClick = false;
+    }
   }, 300);
-});
-
-document.getElementById('server-selector').addEventListener('dblclick', () => {
-  if (isDoubleClick) {
-    document.getElementById('server-selector').style.display = 'none';
-    isDoubleClick = false;
-  }
 });
 
 document.getElementById('server').addEventListener('change', () => {
