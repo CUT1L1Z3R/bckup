@@ -14,7 +14,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background: rgb(0, 0, 0, 0.2);
+  background: rgb(0, 0, 0, 0.6);
   position: fixed;
   top: 0;
   z-index: 2;
@@ -37,13 +37,13 @@ body {
   color: rgb(0, 0, 0, 0.8);
   border: 1px solid transparent;
   border-radius: 6px;
-  background-color: rgb(201, 22, 22);
+  background-color: rgb(141, 22, 201);
 }
 
 .watchList-Btn:hover {
-  color: rgb(201, 22, 22);
+  color: rgb(141, 22, 2012);
   background-color: black;
-  border: 1px solid rgb(201, 22, 22);
+  border: 1px solid rgb(141, 22, 201);
   cursor: pointer;
 }
 
