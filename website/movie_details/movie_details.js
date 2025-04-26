@@ -38,7 +38,19 @@ async function fetchVideoDetails(id) {
     return data.results;
 }
 
-let isButtonHeldDown = false;
+document.getElementById('server-selector').addEventListener('click', (e) => {
+    if (e.target !== document.getElementById('server')) {
+      document.getElementById('server-selector').style.display = 'none';
+    }
+  });
+  
+  document.getElementById('change-server-btn').addEventListener('click', () => {
+    document.getElementById('server-selector').style.display = 'block';
+  });
+  
+  document.getElementById('server-selector').addEventListener('click', () => {
+    document.getElementById('server-selector').style.display = 'none';
+  });
 
 let doubleClickTimer = null;
 
