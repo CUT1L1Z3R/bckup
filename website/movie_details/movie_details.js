@@ -38,6 +38,14 @@ async function fetchVideoDetails(id) {
     return data.results;
 }
 
+document.getElementById('change-server-btn').addEventListener('click', () => {
+  document.getElementById('server-selector').style.display = 'block';
+});
+
+document.getElementById('server-selector').addEventListener('click', () => {
+  document.getElementById('server-selector').style.display = 'none';
+});
+
 // Function to handle video source change based on selected server
 async function changeServer() {
     const server = document.getElementById('server').value; // Get the selected server
