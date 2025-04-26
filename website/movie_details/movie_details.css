@@ -144,7 +144,7 @@ p {
 }
 
 .close-button:hover {
-  background-color: #444;
+  background-color: #41013f;
 }
 
 .server-selector-dropdown {
@@ -154,7 +154,7 @@ p {
   background-color: #41013f;
   color: #fff;
   padding: 10px;
-  border: 1px solid #444;
+  border: 1px solid #41013f;
   border-radius: 5px;
   display: none;
 }
@@ -168,7 +168,7 @@ p {
   width: 100%;
   padding: 10px;
   font-size: 14px;
-  background-color: #444;
+  background-color: #41013f;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -187,7 +187,7 @@ p {
 .server-selector-content select {
   padding: 10px;
   font-size: 14px;
-  background-color: #444;
+  background-color: #30012f;
   color: #fff;
   border: none;
   border-radius: 5px;
