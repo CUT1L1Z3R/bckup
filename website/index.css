@@ -486,6 +486,31 @@ input::-webkit-input-placeholder {
     width: 100vw;
   }
 
+  /* Anime Movies container styles */
+.anime-container {
+  padding: 20px;
+  background-color: #444;
+  border: 1px solid #555;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Anime Movies button styles */
+.anime-button {
+  background-color: #555;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Anime Movies button hover styles */
+.anime-button:hover {
+  background: #666;
+  color: #fff;
+}
+
   #details-container {
     bottom: 12%;
     gap: 15px;
