@@ -62,7 +62,7 @@ iframe {
 
 /* Movie title styling */
 .movie-info h1 {
-    color: #d4aa11;
+    color: #a209da;
     font-size: 46px;
 }
 
@@ -93,7 +93,7 @@ iframe {
 /* Styling for bold text elements */
 span {
     font-weight: bold;
-    color: #d4aa11;
+    color: #a209da;
 }
 
 p {
