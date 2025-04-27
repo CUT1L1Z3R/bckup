@@ -57,7 +57,7 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                 const fetchResults = data.results;
                 fetchResults.forEach(item => {
                     const itemElement = document.createElement('div');
-                    const imageUrl = item.poster_path;  // Using poster_path for portrait layout
+                    const imageUrl = item.poster_path;  // Use poster_path for portrait layout (not backdrop_path)
 
                     // Get the title and rating for the movie
                     const movieTitle = item.title || item.name;  // Get title or name
