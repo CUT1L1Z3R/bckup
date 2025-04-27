@@ -146,6 +146,28 @@ input::-webkit-input-placeholder {
   padding: 0;
 }
 
+/* Styling for the movie poster container */
+.movie-poster-container {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+  width: 200px; /* Set width for better control */
+}
+
+/* Movie poster image styling */
+.movie-poster {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out; /* Optional: Add some animation for hover effect */
+}
+
+/* Exclude title and rating for Netflix Originals */
+.netflix-container .movie-info {
+  display: none; /* This is not needed anymore since we are removing the title and rating */
+}
+
 /* WatchList button styles */
 .watchListBtn {
   position: absolute;
