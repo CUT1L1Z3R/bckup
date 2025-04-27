@@ -44,9 +44,8 @@ setupScroll('comedy-container', 'comedy-previous', 'comedy-next');
 setupScroll('action-container', 'action-previous', 'action-next');
 setupScroll('romantic-container', 'romantic-previous', 'romantic-next');
 
-// TMDB API key
+// API key for TMDB API
 const api_Key = 'e79515e88dfd7d9f6eeca36e49101ac2';
-
 
 // Function to fetch and display movies or TV shows
 function fetchMedia(containerClass, endpoint, mediaType) {
@@ -59,61 +58,62 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                 fetchResults.forEach(item => {
                     const itemElement = document.createElement('div');
                     const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
-                    itemElement.innerHTML = ` <img src="https://image.tmdb.org/t/p/w500${imageUrl}" alt="${item.title || item.name}"> `;
+
+                    // Create a new container for each movie that only includes the image
+                    itemElement.innerHTML = `
+                        <div class="movie-poster-container">
+                            <img src="https://image.tmdb.org/t/p/w500${imageUrl}" alt="${item.title || item.name}" class="movie-poster">
+                        </div>
+                    `;
+
                     container.appendChild(itemElement);
 
+                    // Add click event to redirect to the movie details page
                     itemElement.addEventListener('click', () => {
-                        const media_Type = item.media_type || mediaType
+                        const media_Type = item.media_type || mediaType;
                         window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${item.id}`;
                     });
                 });
 
-                if (containerClass === 'netflix-container') {
-                    const randomIndex = Math.floor(Math.random() * fetchResults.length);
-                    const randomMovie = fetchResults[randomIndex];
-
+                // For the Trending section, create a rotating banner
+                if (containerClass === 'trending-container') {
                     const banner = document.getElementById('banner');
                     const play = document.getElementById('play-button');
                     const info = document.getElementById('more-info');
                     const title = document.getElementById('banner-title');
 
-                    banner.src = `https://image.tmdb.org/t/p/original/${randomMovie.backdrop_path}`;
-                    title.textContent = randomMovie.title || randomMovie.name;
+                    // Get all trending movies
+                    const bannerMovies = fetchResults.slice(0, 10); // Take first 10 trending movies
 
-                    function redirectToMovieDetails() {
-                        const media_Type = randomMovie.media_type || mediaType;
-                        window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${randomMovie.id}`;
+                    let currentBannerIndex = 0;
+
+                    function displayBanner(index) {
+                        const movie = bannerMovies[index];
+                        banner.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
+                        title.textContent = movie.title || movie.name;
+
+                        // Update button click events
+                        function redirectToMovieDetails() {
+                            const media_Type = movie.media_type || 'movie'; // fallback to movie
+                            window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${movie.id}`;
+                        }
+                        play.onclick = redirectToMovieDetails;
+                        info.onclick = redirectToMovieDetails;
                     }
 
-                    play.addEventListener('click', redirectToMovieDetails);
-                    info.addEventListener('click', redirectToMovieDetails);
+                    // Show first banner
+                    displayBanner(currentBannerIndex);
+
+                    // Change banner every 5 seconds
+                    setInterval(() => {
+                        currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.length;
+                        displayBanner(currentBannerIndex);
+                    }, 5000);
                 }
             })
             .catch(error => {
                 console.error(error);
-
             });
-    })
-}
-
-// Function to fetch and display anime movies
-function fetchAnime() {
-  const animeContainer = document.querySelector('.anime-container');
-  fetch('https://api.themoviedb.org/3/discover/tv?api_key=THE_KEY&language=en-US&page=1&with_genres=16&with_keywords=210024|287501&with_text_query=death')
-    .then(response => response.json())
-    .then(data => {
-      const animeMovies = data.results;
-      animeMovies.forEach(movie => {
-        const animeMovieElement = document.createElement('div');
-        animeMovieElement.innerHTML = `
-          <h2>${movie.title}</h2>
-          <img src="${movie.poster_path}" alt="${movie.title}">
-        `;
-        animeContainer.appendChild(animeMovieElement);
-      });
-    })
-    .catch(error => {
-      console.error(error);
     });
 }
 
