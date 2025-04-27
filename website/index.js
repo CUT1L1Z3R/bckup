@@ -57,12 +57,22 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                 const fetchResults = data.results;
                 fetchResults.forEach(item => {
                     const itemElement = document.createElement('div');
-                    const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
+                    const imageUrl = item.poster_path;  // Using poster_path for portrait layout
 
-                    // Create a new container for each movie that only includes the image
+                    // Get the title and rating for the movie
+                    const movieTitle = item.title || item.name;  // Get title or name
+                    const movieRating = item.vote_average || 'N/A';  // Get rating, default to 'N/A' if not available
+
+                    // Create a new container for each movie
                     itemElement.innerHTML = `
                         <div class="movie-poster-container">
-                            <img src="https://image.tmdb.org/t/p/w500${imageUrl}" alt="${item.title || item.name}" class="movie-poster">
+                            <img src="https://image.tmdb.org/t/p/w500${imageUrl}" alt="${movieTitle}" class="movie-poster">
+                            ${containerClass !== 'netflix-container' ? `
+                                <div class="movie-info">
+                                    <h3 class="movie-title">${movieTitle}</h3>
+                                    <p class="movie-rating">Rating: ${movieRating}</p>
+                                </div>
+                            ` : ''}
                         </div>
                     `;
 
