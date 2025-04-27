@@ -127,15 +127,9 @@ function fetchMedia(containerClass, endpoint, mediaType) {
     });
 }
 
-// Initial fetch of trending, Netflix, top rated, horror, comedy, action, and romantic on page load
-fetchMedia('trending-container', 'trending/all/week?');
+// Fetch and display data for various sections
 fetchMedia('netflix-container', 'discover/tv?with_networks=213', 'tv');
-fetchMedia('netflixShows-container', 'discover/tv?', 'tv');
-fetchMedia('top-container', 'movie/top_rated?', 'movie');
-fetchMedia('horror-container', 'discover/movie?with_genres=27', 'movie');
-fetchMedia('comedy-container', 'discover/movie?with_genres=35', 'movie');
-fetchMedia('action-container', 'discover/movie?with_genres=28', 'movie');
-fetchMedia('anime-container', 'discover/movie?with_genres=10749', 'movie');
+fetchMedia('trending-container', 'trending/all/day', 'movie');
 
 // Retrieve watchlist from local storage or create an empty array if it doesn't exist
 const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
