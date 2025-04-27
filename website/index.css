@@ -151,21 +151,49 @@ input::-webkit-input-placeholder {
   position: relative;
   display: inline-block;
   margin: 10px;
-  width: 200px; /* Set width for better control */
+  width: 150px; /* Set fixed width for portrait layout */
+  height: 250px; /* Set fixed height for portrait layout */
+  overflow: hidden; /* Hide any overflowing content */
 }
 
 /* Movie poster image styling */
 .movie-poster {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover; /* Ensure the image fills the container without distortion */
   display: block;
   border-radius: 10px;
-  transition: transform 0.3s ease-in-out; /* Optional: Add some animation for hover effect */
 }
 
-/* Exclude title and rating for Netflix Originals */
+/* For Netflix Originals, hide the title and rating */
 .netflix-container .movie-info {
-  display: none; /* This is not needed anymore since we are removing the title and rating */
+  display: none; /* Hide title and rating for Netflix Originals */
+}
+
+/* Movie poster container for non-Netflix Originals (with title/rating below) */
+.movie-info {
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.6); /* Dark background for readability */
+  color: white;
+  text-align: center;
+  border-radius: 0 0 10px 10px; /* Optional: Rounded corners */
+  font-size: 12px; /* Smaller font size */
+  margin-top: 10px; /* Add space between the poster and info */
+}
+
+/* Movie title styling (for all posters) */
+.movie-title {
+  font-size: 14px;  /* Smaller font size */
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Text shadow for better readability */
+}
+
+/* Movie rating styling (for all posters) */
+.movie-rating {
+  font-size: 12px; /* Smaller font size */
+  margin: 5px 0 0 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Text shadow for better readability */
 }
 
 /* WatchList button styles */
