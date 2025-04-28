@@ -60,6 +60,15 @@ async function fetchSeasonEpisodes(tvId, seasonNumber) {
 document.getElementById('change-server-btn').addEventListener('click', () => {
     const serverSelector = document.getElementById('server-selector');
     serverSelector.style.display = (serverSelector.style.display === 'block') ? 'none' : 'block';
+
+    // Log current state for debugging
+    console.log(`Current media type: ${media}, ID: ${id}`);
+    if (media === "tv") {
+        const activeEpisode = document.querySelector('.episode-item.active');
+        if (activeEpisode) {
+            console.log(`Active episode - Season: ${activeEpisode.dataset.seasonNumber}, Episode: ${activeEpisode.dataset.episodeNumber}`);
+        }
+    }
 });
 
 document.getElementById('server-selector').addEventListener('click', (e) => {
@@ -188,6 +197,9 @@ function playEpisode(tvId, seasonNumber, episodeNumber) {
 
     // Update the URL for each server to include season and episode parameters
     switch (server) {
+        case "vidlink.pro":
+            embedURL = `https://vidlink.pro/embed/${tvId}/${seasonNumber}/${episodeNumber}`;
+            break;
         case "vidsrc.cc":
             embedURL = `https://vidsrc.cc/v2/embed/tv/${tvId}/${seasonNumber}/${episodeNumber}`;
             break;
@@ -254,6 +266,14 @@ async function changeServer() {
 
     // Set the video URL depending on the selected server
     switch (server) {
+        case "vidlink.pro":
+            if (type === "tv") {
+                // For TV shows, default to first episode of first season
+                embedURL = `https://vidlink.pro/embed/${id}/1/1`;
+            } else {
+                embedURL = `https://vidlink.pro/embed/${id}`;
+            }
+            break;
         case "vidsrc.cc":
             embedURL = `https://vidsrc.cc/v2/embed/${type}/${id}`;
             break;
