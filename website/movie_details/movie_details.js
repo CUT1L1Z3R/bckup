@@ -247,8 +247,13 @@ async function changeServer() {
             embedURL = `https://moviesapi.club/${type}/${id}`;
             break;
          case "vidlink.pro":
-            embedURL = `https://vidlink.pro/embed/${type}/${id}`;
-            break;
+      const season = document.getElementById('season').value;
+      const episode = document.getElementById('episode').value;
+      const seasonUrl = `/${season}/`;
+      const episodeUrl = `/${episode}/`;
+      const vidlinkProUrl = `https://vidlink.pro/embed/${type}${seasonUrl}${id}${episodeUrl}`;
+      embedURL = vidlinkProUrl;
+      break;
         default:
             console.error("Selected server is not supported.");
             break;
