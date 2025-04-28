@@ -67,6 +67,7 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                     itemElement.innerHTML = `
                         <div class="movie-poster-container">
                             <img src="https://image.tmdb.org/t/p/w500${imageUrl}" alt="${movieTitle}" class="movie-poster">
+                            
                             ${containerClass !== 'netflix-container' ? `
                                 <div class="movie-info">
                                     <h3 class="movie-title">${movieTitle}</h3>
@@ -75,6 +76,28 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                             ` : ''}
                         </div>
                     `;
+                    const getImages = (movie_id) => {
+            const images = ref([]);
+            const main_logo = ref("");
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `https://api.themoviedb.org/3/movie/${movie_id}/images?api_key=${env.apikey}`);
+            xhr.onload = () => {
+                images.value = JSON.parse(xhr.responseText).logos;          // will return an array of logos in many different languages
+                const en_logos = images.value.filter((logo) => {                   // takes only the English logo
+                    return logo.iso_639_1 == "en"
+                })
+                main_logo.value = "https://image.tmdb.org/t/p/original/" + en_logos[0].file_path;
+            }
+            xhr.send();
+            return main_logo;
+        }
+
+// Sample Function Call
+        const main_logo = getImages("945961");
+
+        watchEffect(() => {
+            console.log(main_logo.value);
+        });
 
                     container.appendChild(itemElement);
 
