@@ -197,18 +197,6 @@ function playEpisode(tvId, seasonNumber, episodeNumber) {
         case "movieapi.club":
             embedURL = `https://moviesapi.club/tv/${tvId}/${seasonNumber}/${episodeNumber}`;
             break;
-        case "vidlink.pro":
-      const season = document.getElementById('season').value;
-      const episode = document.getElementById('episode').value;
-      const seasonUrl = `/${season}/`;
-      const episodeUrl = `/${episode}/`;
-      const vidlinkProUrl = `https://vidlink.pro/embed/${type}${seasonUrl}${id}${episodeUrl}`;
-      embedURL = vidlinkProUrl;
-      break;
-    default:
-      console.error("Selected server is not supported.");
-      break;
-  }
   // If no URL was created, fallback to a default one
   if (!embedURL) {
     embedURL = "https://defaultserver.com/defaultEmbedUrl";
@@ -275,6 +263,9 @@ async function changeServer() {
         case "movieapi.club":
             embedURL = `https://moviesapi.club/${type}/${id}`;
             break;
+        case "vidlink.pro":
+      embedURL = `https://vidlink.pro/embed/${type}/${id}`;
+      break;
             
     // If no URL was created, fallback to a default one
     if (!embedURL) {
