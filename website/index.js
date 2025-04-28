@@ -70,27 +70,37 @@ const api_Key = 'e79515e88dfd7d9f6eeca36e01ac2';
 function fetchMedia(containerClass, endpoint, mediaType) {
     const containers = document.querySelectorAll(`.${containerClass}`);
     containers.forEach((container) => {
-        fetch(`https://api.themoviedb.org/3/${endpoint}&api_key=${api_Key}`)
+        fetch(`https://api.themoviedb.org/3/${endpoint}?e79515e88dfd7d9f6eeca36e01ac2`)
             .then(response => response.json())
             .then(data => {
                 const fetchResults = data.results;
                 fetchResults.forEach(item => {
                     const itemElement = document.createElement('div');
-                    const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
-                    const logo = images?.logos?.find((logo: any) => logo.iso_639_1 === "en")?.file_path || null;
+                    const posterUrl = `https://image.tmdb.org/t/p/original/${item.poster_path}`;
+                    const logoUrl = `http://www.omdbapi.com/?apikey=43f8171c&i=${item.id}`;
 
-                    itemElement.innerHTML = `
-                        <div class="movie-poster">
-                            <img src="${imageUrl}" alt="${item.title || item.name}">
-                            <img src="${logo}" alt="Main Logo">
-                        </div>
-                    `;
-                    container.appendChild(itemElement);
+                    fetch(logoUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            const logo = data.Poster;
 
-                    itemElement.addEventListener('click', () => {
-                        const media_Type = item.media_type || mediaType
-                        window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${item.id}`;
-                    });
+                            itemElement.innerHTML = `
+                                <div class="movie-poster">
+                                    <img src="${posterUrl}" alt="${item.title || item.name}">
+                                    <img src="${logo}" alt="Main Logo">
+                                </div>
+                            `;
+                            container.appendChild(itemElement);
+
+                            itemElement.addEventListener('click', () => {
+                                const media_Type = item.media_type || mediaType
+                                window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${item.id}`;
+                            });
+                        })
+                        .catch(error => {
+                            console.error(error);
+
+                        });
                 });
             })
             .catch(error => {
