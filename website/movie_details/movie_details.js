@@ -166,20 +166,6 @@ async function changeServer() {
 async function displayMovieDetails() {
     try {
         const movieDetails = await fetchMovieDetails(id);
-
-         // Check if it's a TV show (you could modify this check based on the 'media' variable)
-        if (media === 'tv') {
-            // Load seasons for the TV show
-            loadSeasons(id);
-        }
-
-        // Existing logic for setting movie details...
-        
-    } catch (error) {
-        movieTitle.textContent = "Details are not available right now! Please try again later.";
-    }
-}
-
         var spokenlanguage = movieDetails.spoken_languages.map(language => language.english_name);
         language.textContent = spokenlanguage.join(', ');
 
