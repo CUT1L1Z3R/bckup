@@ -26,6 +26,30 @@ async function fetchSeasons(tvId) {
     return data.seasons;  // Return the list of seasons
 }
 
+// Function to populate the season dropdown
+async function loadSeasons(tvId) {
+    const seasons = await fetchSeasons(tvId);
+    const seasonSelector = document.getElementById('season');
+
+    // Clear existing options
+    seasonSelector.innerHTML = '';
+
+    // Add a default option
+    const defaultOption = document.createElement('option');
+    defaultOption.textContent = 'Select a Season';
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    seasonSelector.appendChild(defaultOption);
+
+    // Populate the dropdown with seasons
+    seasons.forEach(season => {
+        const option = document.createElement('option');
+        option.value = season.season_number;
+        option.textContent = `Season ${season.season_number}`;
+        seasonSelector.appendChild(option);
+    });
+}
+
 // Retrieve the TMDb ID and Media from the URL parameter
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
