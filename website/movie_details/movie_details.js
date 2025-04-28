@@ -20,14 +20,46 @@ const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 const api_Key = 'e79515e88dfd7d9f6eeca36e49101ac2';
 
 async function fetchSeasons(tvId) {
-    const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}?api_key=${api_Key}`);
-    const data = await response.json();
-    return data.seasons;
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}?api_key=${api_Key}`);
+        const data = await response.json();
+        console.log("Fetched season data:", data);
+        
+        if (data && data.seasons) {
+            return data.seasons;
+        } else {
+            console.error("No season data found");
+            return [];
+        }
+    } catch (error) {
+        console.error("Error fetching season data:", error);
+        return [];
+    }
+}
+
+async function fetchEpisodes(tvId, seasonNumber) {
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}/season/${seasonNumber}?api_key=${api_Key}`);
+        const data = await response.json();
+        console.log("Fetched episode data:", data);
+
+        if (data && data.episodes) {
+            return data.episodes;
+        } else {
+            console.error("No episode data found for season", seasonNumber);
+            return [];
+        }
+    } catch (error) {
+        console.error("Error fetching episode data:", error);
+        return [];
+    }
 }
 
 async function loadSeasons(tvId) {
     const seasons = await fetchSeasons(tvId);
     const seasonSelector = document.getElementById('season');
+
+    // Clear existing options
     seasonSelector.innerHTML = '';
 
     const defaultOption = document.createElement('option');
@@ -42,12 +74,6 @@ async function loadSeasons(tvId) {
         option.textContent = `Season ${season.season_number}`;
         seasonSelector.appendChild(option);
     });
-}
-
-async function fetchEpisodes(tvId, seasonNumber) {
-    const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}/season/${seasonNumber}?api_key=${api_Key}`);
-    const data = await response.json();
-    return data.episodes;
 }
 
 async function displayEpisodes(tvId, seasonNumber) {
@@ -78,12 +104,6 @@ document.getElementById('season').addEventListener('change', (e) => {
         displayEpisodes(id, selectedSeason);
     }
 });
-
-// When the page loads, load seasons and movie details
-window.addEventListener('load', () => {
-    displayMovieDetails();
-});
-
 
 // Retrieve the TMDb ID and Media from the URL parameter
 const params = new URLSearchParams(window.location.search);
