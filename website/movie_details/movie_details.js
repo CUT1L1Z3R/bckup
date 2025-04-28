@@ -197,6 +197,35 @@ function playEpisode(tvId, seasonNumber, episodeNumber) {
         case "movieapi.club":
             embedURL = `https://moviesapi.club/tv/${tvId}/${seasonNumber}/${episodeNumber}`;
             break;
+        case "vidlink.pro":
+      const season = document.getElementById('season').value;
+      const episode = document.getElementById('episode').value;
+      const seasonUrl = `/${season}/`;
+      const episodeUrl = `/${episode}/`;
+      const vidlinkProUrl = `https://vidlink.pro/embed/${type}${seasonUrl}${id}${episodeUrl}`;
+      embedURL = vidlinkProUrl;
+      break;
+    default:
+      console.error("Selected server is not supported.");
+      break;
+  }
+  // If no URL was created, fallback to a default one
+  if (!embedURL) {
+    embedURL = "https://defaultserver.com/defaultEmbedUrl";
+    // Example fallback
+  }
+  // Update the iframe source with the correct video URL
+  iframe.src = embedURL;
+  // Ensure iframe is visible and correctly sized
+  iframe.style.display = "block";
+  iframe.style.width = "95%";
+  // or adjust to a fixed size
+  iframe.style.height = "300px";
+  // or adjust height as needed
+  // Hide the movie poster when the video is playing
+  moviePoster.style.display = "none";
+  // Hide the movie poster image
+}
         default:
             console.error("Selected server is not supported.");
             break;
@@ -255,19 +284,7 @@ async function changeServer() {
         case "movieapi.club":
             embedURL = `https://moviesapi.club/${type}/${id}`;
             break;
-         case "vidlink.pro":
-      const season = document.getElementById('season').value;
-      const episode = document.getElementById('episode').value;
-      const seasonUrl = `/${season}/`;
-      const episodeUrl = `/${episode}/`;
-      const vidlinkProUrl = `https://vidlink.pro/embed/${type}${seasonUrl}${id}${episodeUrl}`;
-      embedURL = vidlinkProUrl;
-      break;
-        default:
-            console.error("Selected server is not supported.");
-            break;
-    }
-
+            
     // If no URL was created, fallback to a default one
     if (!embedURL) {
         embedURL = "https://defaultserver.com/defaultEmbedUrl";  // Example fallback
