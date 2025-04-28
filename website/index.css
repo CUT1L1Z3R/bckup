@@ -1,144 +1,623 @@
-<!DOCTYPE html>
-<html lang="en">
+/* Body styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0 0 0 0;
+  padding: 0;
+  background: #0c0c0c;
+  overflow-x: hidden;
+}
 
-<head>
-    <meta name="monetag" content="9d74356880b3ebb47a990a92b03643e2">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
-    <link rel="icon" href="/assests/netflix.ico">
-    <title>FreeFlixx - Stream Movies & TV Shows For Free</title>
-</head>
+/* Header styles */
+.header {
+  width: 100vw;
+  height: 70px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: rgb(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  z-index: 2;
+  transition: top 0.4s; /* Smooth transition for hiding/showing the header */
+}
+/* Logo styles */
+#netflix-logo {
+  margin: 15px 0 15px 1.5%;
+  width: 120px;
+  height: 40px;
+}
 
-<body>
-    <!-- Header container -->
-    <header class="header">
-        <img src="/assests/netflix.png" alt="logo" id="netflix-logo">
-        <div class="input-container">
-            <input type="text" id="searchInput" placeholder="Search movies...">
-            <div id="searchResults"></div>
-        </div>
-        <button id="goToWatchlist" class="watchList-Btn">WatchList</button>
-    </header>
+/* "WatchList" button styles */
+.watchList-Btn {
+  width: 137px;
+  height: 40px;
+  margin: 15px 3.5% 15px 0px;
+  padding: 5px 15px;
+  font-size: 24px;
+  color: rgb(255, 255, 255);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background-color: rgb(141, 22, 201);
+}
 
-    <!-- Banner container -->
-    <div id="banner-container">
-        <img id="banner" src="" alt="banner" />
-        <div id="details-container">
-            <h1 id="banner-title"></h1>
-            <div id="button-container">
-                <button id="play-button">
-                    <img style="width: 0.8rem; height: 0.8rem;" src="/assests/play.png" />
-                    <span>Play</span>
-                </button>
-                <button id="more-info">
-                    <img id="info-icon" src="/assests/info.png" />
-                    <span>More Information</span>
-                </button>
-            </div>
-        </div>
-        <div id="empty"></div>
-    </div>
+.watchList-Btn:hover {
+  color: rgb(140, 82, 255);
+  background-color: black;
+  border: 1px solid rgb(141, 22, 201);
+  cursor: pointer;
+}
 
-    <!-- Netflix Originals container -->
-    <section class="movie-section">
-        <h1>NETFLIX ORIGINALS</h1>
+.input-container {
+  width: 48vw;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
 
-        <div class=" movie-container">
-            <button class="navigation-button previous netflix-previous">&lt;</button>
+#banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 10%, rgba(0,0,0,0.4) 40%, transparent 80%);
+  z-index: 1;
+}
 
-            <!-- Display netflix movies here -->
-            <div class="movies-box netflix-container"></div>
+/* input styles */
+input {
+  width: 100%;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 5px;
+  font-size: 24px;
+  border-radius: 5px;
+  border: transparent;
+  background: rgba(255, 255, 255, 0.3);
+}
 
-            <button class="navigation-button next netflix-next">&gt;</button>
-        </div>
-    </section>
+input::-webkit-input-placeholder {
+  color: black;
+}
 
-    <!-- Netflix Shows container -->
-    <section class="movie-section ">
-        <h1>NETFLIX SHOWS</h1>
+#searchResults {
+  width: 48vw;
+  height: 460px;
+  overflow-y: auto;
+  position: absolute;
+  top: 57px;
+  visibility: hidden;
+}
 
-        <div class=" movie-container">
-            <button class="navigation-button previous netflixShows-previous">&lt;</button>
+#searchResults::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 5px;
+  background-color: lightgrey;
+}
 
-            <!-- Display netflixShows movies here -->
-            <div class="movies-box netflixShows-container"></div>
+#searchResults::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 5px;
+}
 
-            <button class="navigation-button next netflixShows-next">&gt;</button>
-        </div>
-    </section>
+#searchResults::-webkit-scrollbar-thumb:hover {
+  background-color: #444444;
+}
 
-    <!-- Trending Movies container -->
-    <section class="movie-section">
-        <h1>Trending Now</h1>
+.movie-list {
+  width: 100%;
+  height: 20%;
+  box-sizing: border-box;
+  padding: 5px;
+  border-bottom: 1px solid lightgray;
+  background: #000;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  position: relative;
+}
 
-        <div class="movie-container">
-            <button class="navigation-button previous trending-previous">&lt;</button>
+.movie-list:hover {
+  background-color: #181818;
+  cursor: pointer;
+}
 
-            <!-- Display trending movies here -->
-            <div class="movies-box trending-container"></div>
+/* Thumbnail styles */
+.search-item-thumbnail {
+  width: 10%;
+  height: 100%;
+}
 
-            <button class="navigation-button next trending-next">&gt;</button>
-        </div>
-    </section>
+.search-item-thumbnail img {
+  width: 100%;
+  height: 100%;
+}
 
-    <!-- Top Movies container -->
-    <section class="movie-section ">
-        <h1>Top Rated </h1>
+/* Search item information styles */
+.search-item-info {
+  width: 48%;
+  height: 100%;
+  color: white;
+  text-transform: capitalize;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
 
-        <div class=" movie-container">
-            <button class="navigation-button previous top-previous">&lt;</button>
+.search-item-info h3 {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+}
 
-            <!-- Display top movies here -->
-            <div class="movies-box top-container"></div>
+.search-item-info p {
+  margin: 0;
+  padding: 0;
+}
 
-            <button class="navigation-button next top-next">&gt;</button>
-        </div>
-    </section>
+/* WatchList button styles */
+.watchListBtn {
+  position: absolute;
+  top: 30%;
+  right: 10px;
+  background-color: rgb(154, 14, 224);
+  color: white;
+  border: 1px solid black;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
 
-    <!-- Horror Movies container -->
-    <section class="movie-section ">
-        <h1>Horror Movies </h1>
+.watchListBtn:hover {
+  background-color: black;
+  border: 1px solid rgb(154, 14, 224);
+  color: rgb(154, 14, 224);
+}
 
-        <div class=" movie-container">
-            <button class="navigation-button previous horror-previous">&lt;</button>
+/* ----Banner---- */
 
-            <!-- Display horror movies here -->
-            <div class="movies-box  horror-container"></div>
+#banner-container {
+  width: 98.75vw;
+  height: 72.5vh;
+  margin-bottom: 7px;
+  position: relative;
+}
 
-            <button class="navigation-button next horror-next">&gt;</button>
-        </div>
-    </section>
+#banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
 
-    <!-- comedy Movies container -->
-    <section class="movie-section ">
-        <h1>Comedy Movies </h1>
+#details-container {
+  position: absolute;
+  bottom: 18%;
+  left: 3%;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  z-index: 1;
+}
 
-        <div class=" movie-container ">
-            <button class="navigation-button previous comedy-previous">&lt;</button>
+#banner-title {
+  margin: 0;
+  color: white;
+  font-size: 48px;
+  font-weight: 800;
+}
 
-            <!-- Display comedy movies here -->
-            <div class="movies-box comedy-container"></div>
+#button-container {
+  display: flex;
+  gap: 15px;
+}
 
-            <button class="navigation-button next comedy-next">&gt;</button>
-        </div>
-    </section>
+#more-info,
+#play-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 20px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    <!-- action Movies container -->
-    <section class="movie-section ">
-        <h1>Action Movies </h1>
+#play-button {
+  background-color: #8d16c9;
+  color: #ffffff;
+  padding: 7px 25px;
+}
 
-        <div class=" movie-container ">
-            <button class="navigation-button previous action-previous">&lt;</button>
+#play-button:hover {
+  background-color: rgba(109, 109, 110, .9);
+}
 
-            <!-- Display action movies here -->
-            <div class="movies-box action-container"></div>
+#more-info {
+  background-color: rgba(109, 109, 110, .7);
+  color: #fff;
+}
 
-            <button class="navigation-button next action-next">&gt;</button>
-        </div>
-    </section>
+#more-info:hover {
+  background-color: rgb(109, 109, 110);
+}
 
-    <script src="index.js"></script>
-</body>
+#info-icon {
+  width: 18px;
+  height: 18px;
+}
 
-</html>
+#empty {
+  width: 98.75vw;
+  height: 7.4rem;
+  background-image: linear-gradient(180deg, transparent, rgba(37, 37, 37, .61), #111);
+  position: absolute;
+  bottom: 0;
+}
+
+/* ----Common Design all Sections---- */
+
+.movie-section h1 {
+  color: white;
+  font-size: 1.5rem;
+  margin-left: 15px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.movies-box {
+  padding-left: 15px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  overflow-x: scroll;
+}
+
+/* Apply custom styles to the scrollbar */
+.movies-box::-webkit-scrollbar {
+  height: 1px;
+}
+
+.movies-box div {
+  width: 290px;
+  height: 170px;
+  cursor: pointer;
+  margin: 20px 0;
+  transition: all 0.5s ease-in-out;
+}
+
+.movies-box div img {
+  width: 290px;
+  height: 170px;
+  border-radius: 5px;
+  transition: all 0.5s ease-in-out;
+}
+
+.movies-box div img:hover {
+  transform: scale(1.1);
+  border-radius: 5px;
+}
+
+.movie-container {
+  position: relative;
+}
+
+.navigation-button {
+  width: 60px;
+  height: 170px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  font-size: 2.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  position: absolute;
+  top: 9.3%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.movie-container:hover .navigation-button {
+  opacity: 0.8;
+  z-index: 1;
+}
+
+.previous {
+  left: 15px;
+}
+
+.next {
+  right: 0%;
+}
+
+/* ----Netflix Movies---- */
+
+.netflix-container div {
+  width: 250px;
+  height: 340px;
+}
+
+.netflix-container div img {
+  width: 250px;
+  height: 340px;
+}
+
+.netflix-previous,
+.netflix-next {
+  width: 80px;
+  height: 340px;
+  top: 5.3%;
+}
+
+
+/* ----Media Query---- */
+
+@media only screen and (max-width: 560px) {
+  .header {
+    flex-direction: column;
+    height: 120px;
+    position: fixed;
+    top: 0;
+  }
+
+  .watchList-Btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .input-container {
+    width: 94.3%;
+    margin-left: 2.3%;
+    margin-right: 2.3%;
+    position: absolute;
+    top: 55px;
+  }
+
+  #searchResults {
+    width: 100%;
+    height: 300px;
+    top: 43px;
+  }
+
+  .movie-list {
+    gap: 10px;
+  }
+
+  .search-item-thumbnail {
+    width: 12%;
+  }
+
+  .search-item-info h3 {
+    font-size: 0.8rem;
+  }
+
+  .search-item-info p {
+    font-size: 0.7rem;
+  }
+
+  .watchListBtn {
+    right: 5px;
+    font-size: 12px;
+  }
+
+  #banner-container {
+    width: 100vw;
+  }
+
+  #banner-title {
+    font-size: 40px;
+
+  }
+
+  #details-container {
+    bottom: 12%;
+
+  }
+
+  #empty {
+    width: 100vw;
+  }
+
+  .movie-section h1 {
+    font-size: 1.2rem;
+  }
+
+  .movies-box {
+    gap: 4px;
+  }
+
+  .movies-box div {
+    width: 120px;
+    height: 90px;
+    margin: 8px 0;
+  }
+
+  .movies-box div img {
+    width: 120px;
+    height: 90px;
+  }
+
+  .navigation-button {
+    width: 40px;
+    height: 90px;
+    top: 8%;
+    font-size: 1.6rem;
+  }
+
+  .netflix-container div {
+    width: 120px;
+    height: 150px;
+  }
+
+  .netflix-container div img {
+    width: 120px;
+    height: 150px;
+  }
+
+  .netflix-previous,
+  .netflix-next {
+    width: 40px;
+    height: 150px;
+    top: 5%;
+  }
+}
+
+@media only screen and (min-width: 561px) and (max-width: 780px) {
+  .search-item-thumbnail {
+    width: 25%;
+  }
+
+  .watchListBtn {
+    position: relative;
+    top: 0;
+    right: 5px;
+    font-size: 14px;
+  }
+
+  .search-item-info h3 {
+    font-size: 0.9rem;
+  }
+
+  .search-item-info p {
+    display: none;
+  }
+
+  #banner-container {
+    width: 100vw;
+  }
+
+  #details-container {
+    bottom: 12%;
+    gap: 15px;
+  }
+
+  #banner-title {
+    font-size: 42px
+  }
+
+  #empty {
+    width: 100vw;
+  }
+
+  .movie-section h1 {
+    font-size: 1.4rem;
+  }
+
+  .movies-box {
+    gap: 5px;
+  }
+
+  .movies-box div {
+    width: 200px;
+    height: 130px;
+    margin: 10px 0;
+  }
+
+  .movies-box div img {
+    width: 200px;
+    height: 130px;
+  }
+
+  .navigation-button {
+    width: 45px;
+    height: 130px;
+    top: 7%;
+    font-size: 2rem;
+  }
+
+  .netflix-container div {
+    width: 180px;
+    height: 200px;
+  }
+
+  .netflix-container div img {
+    width: 180px;
+    height: 200px;
+  }
+
+  .netflix-previous,
+  .netflix-next {
+    width: 50px;
+    height: 200px;
+    top: 4.8%;
+  }
+}
+
+@media only screen and (min-width:781px) and (max-width: 1250px) {
+  .search-item-thumbnail {
+    width: 15%;
+  }
+
+  .search-item-info h3 {
+    font-size: 0.9rem;
+  }
+
+  .search-item-info p {
+    font-size: 0.8rem;
+  }
+
+  .watchListBtn {
+    position: relative;
+    top: 0;
+    right: 5px;
+    font-size: 14px;
+  }
+
+  #banner-container {
+    width: 100vw;
+  }
+
+  #details-container {
+    bottom: 14%;
+    gap: 15px;
+  }
+
+  #empty {
+    width: 100vw;
+  }
+
+  .movies-box div {
+    width: 230px;
+    height: 150px;
+    margin: 15px 0;
+  }
+
+  .movies-box div img {
+    width: 230px;
+    height: 150px;
+  }
+
+  .navigation-button {
+    width: 55px;
+    height: 150px;
+    top: 7.9%;
+    font-size: 2.3rem;
+  }
+
+  .netflix-container div {
+    width: 250px;
+    height: 270px;
+  }
+
+  .netflix-container div img {
+    width: 250px;
+    height: 270px;
+  }
+
+  .netflix-previous,
+  .netflix-next {
+    width: 50px;
+    height: 270px;
+    top: 4.8%;
+  }
+}
