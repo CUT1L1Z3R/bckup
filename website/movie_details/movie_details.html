@@ -62,14 +62,17 @@
  
  <!-- Server selector dropdown -->
              <!-- Change server dropdown -->
- <div id="server-selector" class="server-selector-dropdown">
-   <label for="server">Select Server:</label>
-   <select id="server" class="server-selector-select">
-     <option value="player.videasy.net">Player.Videasy.net</option>
-     <option value="vidsrc.cc">Vidsrc.cc</option>
-     <option value="vidsrc.me">Vidsrc.me</option>
-     <option value="2embed">2Embed</option>
-   </select>
+ <!-- Select server popup HTML -->
+<div id="server-selector">
+    <label for="server">Select Server:</label>
+    <select id="server" class="server-selector-select">
+        <option value="player.videasy.net">Player.Videasy.net</option>
+        <option value="vidsrc.cc">Vidsrc.cc</option>
+        <option value="vidsrc.me">Vidsrc.me</option>
+        <option value="2embed">2Embed</option>
+    </select>
+    <!-- Close button for mobile users -->
+    <button class="close-button">Close</button>
 </div>
 
     <script src="/movie_details/movie_details.js"></script>
