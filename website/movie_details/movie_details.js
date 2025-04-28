@@ -39,7 +39,8 @@ async function fetchVideoDetails(id) {
 }
 
 document.getElementById('change-server-btn').addEventListener('click', () => {
-  document.getElementById('server-selector').style.display = 'block';
+    const serverSelector = document.getElementById('server-selector');
+    serverSelector.style.display = (serverSelector.style.display === 'block') ? 'none' : 'block';
 });
 
 document.getElementById('server-selector').addEventListener('click', (e) => {
@@ -49,7 +50,8 @@ document.getElementById('server-selector').addEventListener('click', (e) => {
 });
 
 document.getElementById('server').addEventListener('change', () => {
-  document.getElementById('server-selector').style.display = 'none';
+    changeServer();
+    document.getElementById('server-selector').style.display = 'none'; // Hide dropdown after selection
 });
 
 // Function to handle video source change based on selected server
@@ -76,7 +78,7 @@ async function changeServer() {
             console.error("Selected server is not supported.");
             break;
     }
-
+    
     // If no URL was created, fallback to a default one
     if (!embedURL) {
         embedURL = "https://defaultserver.com/defaultEmbedUrl";  // Example fallback
@@ -87,9 +89,9 @@ async function changeServer() {
 
     // Ensure iframe is visible and correctly sized
     iframe.style.display = "block";  // Show the iframe
-    iframe.style.width = "100%"; // or adjust to a fixed size
-    iframe.style.height = "400px"; // or adjust height as needed
-
+    iframe.style.width = "95%"; // or adjust to a fixed size
+    iframe.style.height = "300px"; // or adjust height as needed
+    
     // Hide the movie poster when the video is playing
     moviePoster.style.display = "none";  // Hide the movie poster image
 }
