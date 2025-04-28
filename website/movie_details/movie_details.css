@@ -1,141 +1,139 @@
 /* Global styles for body and text elements */
-body,
-p,
-h1 {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: black;
-    box-sizing: border-box;
-    overflow-x: hidden;
+body, p, h1 {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #30012;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* Header styling */
 .header {
-    width: 100vw;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: left;
+  width: 100vw;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
 }
 
 /* Logo styling */
 .logo {
-    width: 120px;
-    cursor: pointer;
-    margin: 15px 0px;
+  width: 120px;
+  cursor: pointer;
+  margin: 15px 0px;
 }
 
 .back-button {
-    background-color: purple;
-    color: white;
-    border none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
+  background-color: purple;
+  color: white;
+  border none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
 }
 
 .back-button:hover {
-    background-color: #7a288a;
+  background-color: #7a288a;
 }
 
 /* Movie details container */
 .movie-details {
-    margin: 20px 0px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    box-sizing: border-box;
+  margin: 20px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  box-sizing: border-box;
 }
 
 /* Movie poster styling */
 .movie-poster {
-    width: 750px;
-    height: 460px;
+  width: 750px;
+  height: 460px;
 }
 
 /* iframe */
 iframe {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 #moviePoster {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 /* Add margin space to the iframe */
 iframe {
-    margin-left: 20px; /* Add a 20px margin to the left of the iframe */
-    margin-right: 30px; /* Add a 20px margin to the right of the iframe */
-    margin-bottom: 20px; /* Add a 20px margin to the bottom of the iframe */
+  margin-left: 20px;
+  margin-right: 30px;
+  margin-bottom: 20px;
 }
 
 /* Add margin space to the text elements */
 .movie-info {
-    margin-left: 20px; /* Add a 20px margin to the left of the text elements */
-    margin-right: 30px; /* Add a 20px margin to the right of the text elements */
+  margin-left: 20px;
+  margin-right: 30px;
 }
 
 /* Add margin space to the plot element */
 #plot {
-    margin-bottom: 20px; /* Add a 20px margin to the bottom of the plot element */
+  margin-bottom: 20px;
 }
 
 /* Movie information section */
 .movie-info {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 /* Movie title styling */
 .movie-info h1 {
-    color: #a209da;
-    font-size: 46px;
+  color: #a209da;
+  font-size: 46px;
 }
 
 /* Plot styling */
 #plot {
-    color: white;
-    line-height: 1.4;
-    font-size: 18px;
-    text-align: justify;
+  color: white;
+  line-height: 1.4;
+  font-size: 18px;
+  text-align: justify;
 }
 
 /* Movie data styling */
 .movie-data {
-    display: flex;
-    flex-direction: row;
-    gap: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
 }
 
 /* Design class styling */
 .design {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 5px;
-    color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  color: white;
 }
 
 /* Styling for bold text elements */
 span {
-    font-weight: bold;
-    color: #a209da;
+  font-weight: bold;
+  color: #a209da;
 }
 
 p {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 /* Movie poster and video container */
 .movie-poster {
   position: relative;
-  width: 60%; /* Reduce the width to 80% */
+  width: 60%;
   height: auto;
 }
 
@@ -143,42 +141,38 @@ p {
 
 /* Mobile styles */
 @media only screen and (max-width: 768px) {
-    iframe {
-        width: 90%;
-        height: 150px;
-    }
+  iframe {
+    width: 90%;
+    height: 150px;
+  }
 }
 
 /* Tablet and desktop styles */
 @media only screen and (min-width: 769px) {
-    iframe {
-        width: 80%;
-        height: 200px;
-    }
+  iframe {
+    width: 80%;
+    height: 200px;
+  }
 }
 
 iframe {
-    width: 80vw;
-    height: 150vh;
+  width: 80vw;
+  height: 150vh;
 }
 
-/* Select server popup CSS */
+/* Server selector dropdown styles */
 #server-selector {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #810c7d;
-    color: #fff;
-    padding: 5px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 250px;
-    height: 120px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #810c7d;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: none;
+  /* Initially hidden */
 }
 
 .server-selector-header {
@@ -190,6 +184,22 @@ iframe {
 .server-selector-header h2 {
   font-size: 18px;
   font-weight: bold;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #41013f;
 }
 
 .server-selector-dropdown {
@@ -238,7 +248,9 @@ iframe {
   border-radius: 5px;
   cursor: pointer;
 }
+
 /* Compact change server button styling */
+
 /* Change server button styles */
 .change-server-btn {
   background-color: #a209da;
@@ -251,21 +263,26 @@ iframe {
 
 .change-server-btn:hover {
   background-color: transparent;
-  border-color: #7a288a; /* Change border color to purple */
-  outline: 2px solid #7a288a; /* Add purple outline */
+  border-color: #7a288a;
+  /* Change border color to purple */
+  outline: 2px solid #7a288a;
+  /* Add purple outline */
 }
 
 .change-server-btn:active {
   background-color: transparent;
-  border-color: #7a288a; /* Change border color to purple */
-  outline: 2px solid #7a288a; /* Add purple outline */
+  border-color: #7a288a;
+  /* Change border color to purple */
+  outline: 2px solid #7a288a;
+  /* Add purple outline */
 }
 
 .server-selector label {
   color: white;
   font-size: 14px;
   font-weight: bold;
-  margin-right: 10px; /* Add a margin to the label */
+  margin-right: 10px;
+  /* Add a margin to the label */
 }
 
 .server-selector-select {
@@ -276,7 +293,8 @@ iframe {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 200px;  /* Adjust width as necessary */
+  width: 200px;
+  /* Adjust width as necessary */
 }
 
 .server-selector select:focus {
@@ -287,11 +305,12 @@ iframe {
 .server-selector button {
   background-color: #4CAF50;
   color: white;
-  padding: 5px 10px;
+  padding: 5 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 60px; /* Set the width to 60px */
+  width: 60px;
+  /* Set the width to 60px */
 }
 
 .server-selector button:hover {
@@ -313,17 +332,22 @@ iframe {
 /* Iframe to display video */
 #iframe {
   width: 100%;
-  height: 100px; /* Reduce the height to 300px */
+  height: 100px;
+  /* Reduce the height to 300px */
   display: block;
-  margin-bottom: 10px; /* Add a margin to the iframe */
+  margin-bottom: 10px;
+  /* Add a margin to the iframe */
 }
 
 /* Styling for the change server dropdown */
 .server-selector {
-  margin-top: 20px; /* Space between the video and the dropdown */
-  text-align: bottom; /* Center the dropdown */
+  margin-top: 20px;
+  /* Space between the video and the dropdown */
+  text-align: bottom;
+  /* Center the dropdown */
   padding: 10px;
-  background-color: #222; /* Optional: Set background to differentiate the dropdown */
+  background-color: #222;
+  /* Optional: Set background to differentiate the dropdown */
   border-radius: 5px;
 }
 
@@ -353,143 +377,152 @@ iframe {
   display: block;
 }
 
-/* watchList button styling */
+/* WatchList button styling */
 .watchListBtn {
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 8px 20px;
-    text-align: center;
-    background: rgb(141, 22, 201);
-    border-radius: 3px;
-    border: 1px solid transparent;
-    cursor: pointer;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px 20px;
+  text-align: center;
+  background: rgb(141, 22, 201);
+  border-radius: 3px;
+  border: 1px solid transparent;
+  cursor: pointer;
 }
 
-/* watchList button hover styling */
+/* WatchList button hover styling */
 .watchListBtn:hover {
-    background: black;
-    color: rgb(141, 22, 201);
-    border: 1px solid rgb(141, 22, 201)
+  background: black;
+  color: rgb(141, 22, 201);
+  border: 1px solid rgb(141, 22, 201);
 }
-
 
 /* ----Media Queries---- */
 
 @media only screen and (max-width: 560px) {
-    .movie-details {
-        flex-direction: column;
-        margin-top: 0;
-        gap: 15px;
-    }
+  .movie-details {
+    flex-direction: column;
+    margin-top: 0;
+    gap: 15px;
+  }
 
-    .movie-poster {
-        width: 100%;
-        height: 280px;
-    }
+  .movie-poster {
+    width: 100%;
+    height: 280px;
+  }
 
-    .movie-info {
-        width: 90%;
-        margin: auto;
-        gap: 15px;
-    }
+  .movie-info {
+    width: 90%;
+    margin: auto;
+    gap: 15px;
+  }
 
-    .movie-data {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .movie-data {
+    flex-direction: column;
+    gap: 15px;
+  }
 }
 
 @media screen and (min-width:561px) and (max-width:740px) {
-    .movie-details {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .movie-details {
+    flex-direction: column;
+    gap: 15px;
+  }
 
-    .movie-poster {
-        width: 100%;
-        height: 360px;
-    }
+  .movie-poster {
+    width: 100%;
+    height: 360px;
+  }
 
-    .movie-info {
-        width: 90%;
-        margin: auto;
-        gap: 15px;
-    }
+  .movie-info {
+    width: 90%;
+    margin: auto;
+    gap: 15px;
+  }
 
-    .movie-data {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .movie-data {
+    flex-direction: column;
+    gap: 15px;
+  }
 }
 
 @media screen and (min-width:741px) and (max-width:840px) {
-    .movie-details {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .movie-details {
+    flex-direction: column;
+    gap: 15px;
+  }
 
-    .movie-poster {
-        width: 100%;
-    }
+  .movie-poster {
+    width: 100%;
+  }
 
-    .movie-info {
-        width: 95%;
-        margin: auto;
-        gap: 15px;
-    }
+  .movie-info {
+    width: 95%;
+    margin:;
+    gap: 15px;
+  }
 
-    .movie-data {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .movie-data {
+    flex-direction:;
+    gap: 15px;
+  }
 }
 
 @media screen and (min-width:841px) and (max-width:924px) {
-    .movie-poster {
-        width: 500px;
-        height: 400px;
-    }
+  .movie-poster {
+    width: 500px;
+    height: 400px;
+  }
 
-    .movie-info {
-        width: 36%;
-        gap: 15px;
-    }
+  .movie-info {
+    width: 36%;
+    gap: 15px;
+  }
 
-    .movie-data {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .movie-data {
+    flex-direction: column;
+    gap: 15px;
+  }
 }
 
 @media screen and (min-width:925px) and (max-width:1024px) {
-    .movie-poster {
-        width: 550px;
-    }
+  .movie-poster {
+    width: 550px;
+  }
 
-    .movie-info {
-        width: 38%;
-        gap: 15px;
-    }
+  .movie-info {
+    width: 38%;
+    gap: 15px;
+  }
 
-    .movie-data {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .movie-data {
+    flex-direction: column;
+    gap: 15px;
+  }
 }
 
 @media screen and (min-width:1025px) and (max-width:1300px) {
-    .movie-poster {
-        width: 600px;
-    }
+  .movie-poster {
+    width: 600px;
+  }
 
-    .movie-info {
-        width: 39%;
-        gap: 15px;
-    }
+#season {
+  /* Add CSS styles to the season dropdown menu */
+   #episode {
+  /* Add CSS styles to the episode dropdown menu */
+}
 
-    .rating-data {
-        flex-direction: column;
-        gap: 15px;
-    }
+#lookup-btn {
+  /* Add CSS styles to the lookup button */
+}
+
+  .movie-info {
+    width: 39%;
+    gap: 15px;
+  }
+
+  .rating-data {
+    flex-direction: column;
+    gap: 15px;
+  }
 }
