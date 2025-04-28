@@ -26,7 +26,7 @@ window.addEventListener('scroll', () => {
         header.style.top = "0px"; // Reset the header position to the top
     }
     
-    lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // Prevent negative scroll value
+    lastScrollTop = currentScrollTop <= 0 ? 0 currentScrollTop; // Prevent negative scroll value
 });
 
 // Define a function to handle scrolling
@@ -61,13 +61,13 @@ setupScroll('top-container', 'top-previous', 'top-next');
 setupScroll('horror-container', 'horror-previous', 'horror-next');
 setupScroll('comedy-container', 'comedy-previous', 'comedy-next');
 setupScroll('action-container', 'action-previous', 'action-next');
-setupScroll('romantic-container', 'romantic-previous', 'romantic-next');
+setupScroll('romantic-container', 'romanticprevious', 'romantic-next');
 
 // TMDB API key
 const api_Key = 'e79515e88dfd7d9f6eeca36e01ac2';
 
 // Function to fetch and display movies or TV shows
-fetchMedia(containerClass, endpoint, mediaType) {
+function fetchMedia(containerClass, endpoint, mediaType) {
     const containers = document.querySelectorAll(`.${containerClass}`);
     containers.forEach((container) => {
         fetch(`https://api.themoviedb.org/3/${endpoint}&api_key=${api_Key}`)
