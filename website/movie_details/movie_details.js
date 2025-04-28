@@ -396,26 +396,8 @@ function toggleFavorite(movieDetails) {
     localStorage.setItem('watchlist', JSON.stringify(watchlist));
 }
 
-// Call the function to display movie details when the page loads
-window.addEventListener('load', () => {
-    displayMovieDetails();
-});
-
-// Function to handle changes when server selection is made
-document.getElementById('server').addEventListener('change', () => {
-    changeServer();
-});
-
-// Add window resize listener to ensure responsive video size
-window.addEventListener('resize', () => {
-    // Only update if iframe is visible
-    if (iframe.style.display === "block") {
-        changeServer();
-    }
-});
-
-// Initialize new server dropdown UI when the page loads
-window.addEventListener('load', function() {
+// Enhanced server dropdown UI functionality
+function initServerDropdown() {
     // Setup server dropdown toggle
     const serverDropdownHeader = document.querySelector('.server-dropdown-header');
     const serverDropdownContent = document.querySelector('.server-dropdown-content');
@@ -476,4 +458,26 @@ window.addEventListener('load', function() {
         initialServerOption.classList.add('active');
         selectedServerDisplay.innerHTML = initialServerOption.innerHTML;
     }
+}
+
+// Function to handle changes when server selection is made
+document.getElementById('server').addEventListener('change', () => {
+    changeServer();
+});
+
+// Add window resize listener to ensure responsive video size
+window.addEventListener('resize', () => {
+    // Only update if iframe is visible
+    if (iframe.style.display === "block") {
+        changeServer();
+    }
+});
+
+// Initialize everything when the window loads
+window.addEventListener('load', function() {
+    // Initialize server dropdown
+    initServerDropdown();
+
+    // Display movie details
+    displayMovieDetails();
 });
