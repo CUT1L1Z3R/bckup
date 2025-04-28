@@ -23,8 +23,6 @@ const api_Key = 'e79515e88dfd7d9f6eeca36e49101ac2';
 const seasonSelect = document.getElementById('season-select');
 const seasonEpCount = document.getElementById('season-ep-count');
 const episodeList = document.getElementById('episode-list');
-const playerIframe = document.getElementById('player-iframe');
-const playBtn = document.getElementById('play-btn');
 const seasonDropdown = document.getElementById('season-dropdown');
 const seasonDropdownBtn = document.getElementById('season-dropdown-btn');
 
