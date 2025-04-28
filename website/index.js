@@ -112,6 +112,56 @@ image.onload = function () {
     const info = document.getElementById('more-info');
     const title = document.getElementById('banner-title');
 
+    async function displayMovieDetails() {
+    try {
+        const { data, seasons } = await fetchMovieDetails(id);
+        // ...
+
+        // Display season and episode info
+        const seasonsElement = document.getElementById('seasons');
+        seasonsElement.innerHTML = '';
+
+        Object.entries(seasons).forEach(([seasonNumber, season]) => {
+            const seasonElement = document.createElement('div');
+            seasonElement.classList.add('season');
+            seasonsElement.appendChild(seasonElement);
+
+            const seasonNameElement = document.createElement('h2');
+            seasonNameElement.textContent = `Season ${seasonNumber}: ${season.name}`;
+            seasonElement.appendChild(seasonNameElement);
+
+            const episodesElement = document.createElement('ul');
+            episodesElement.classList.add('episodes');
+            seasonElement.appendChild(episodesElement);
+
+            Object.entries(season.episodes).forEach(([episodeNumber, episode]) => {
+                const episodeElement = document.createElement('li');
+                episodeElement.classList.add('episode');
+                episodesElement.appendChild(episodeElement);
+
+                const episodeInfoElement = document.createElement('div');
+                episodeElement.appendChild(episodeInfoElement);
+
+                const episodeNumberElement = document.createElement('p');
+                episodeNumberElement.textContent = `Episode ${episodeNumber}:`;
+                episodeInfoElement.appendChild(episodeNumberElement);
+
+                const episodeTitleElement = document.createElement('p');
+                episodeTitleElement.textContent = episode.name;
+                episodeInfoElement.appendChild(episodeTitleElement);
+
+                const airDateElement = document.createElement('p');
+                airDateElement.textContent = `Air Date: ${episode.air_date}`;
+                episodeInfoElement.appendChild(airDateElement);
+            });
+        });
+
+        // ...
+    } catch (error) {
+        // ...
+    }
+}
+                    
     // Get all trending movies
     const bannerMovies = fetchResults.slice(0, 10); // Take first 10 trending movies
 
