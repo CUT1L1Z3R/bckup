@@ -68,6 +68,11 @@ document.getElementById('server-selector').addEventListener('click', (e) => {
   }
 });
 
+// Add event listener for the close button
+document.querySelector('.close-button').addEventListener('click', () => {
+  document.getElementById('server-selector').style.display = 'none';
+});
+
 document.getElementById('server').addEventListener('change', () => {
     changeServer();
     document.getElementById('server-selector').style.display = 'none'; // Hide dropdown after selection
@@ -111,6 +116,7 @@ function createEpisodesList(episodes) {
         const episodeItem = document.createElement('div');
         episodeItem.className = 'episode-item';
         episodeItem.dataset.episodeNumber = episode.episode_number;
+        episodeItem.dataset.seasonNumber = episode.season_number;
 
         // Create thumbnail container
         const thumbnailContainer = document.createElement('div');
@@ -207,6 +213,23 @@ function playEpisode(tvId, seasonNumber, episodeNumber) {
         iframe.src = embedURL;
         iframe.style.display = "block";
         moviePoster.style.display = "none";
+
+        // Mark the selected episode as active
+        const episodes = document.querySelectorAll('.episode-item');
+        episodes.forEach(item => item.classList.remove('active'));
+
+        const currentEpisode = document.querySelector(`.episode-item[data-episode-number="${episodeNumber}"]`);
+        if (currentEpisode) {
+            currentEpisode.classList.add('active');
+        }
+
+        // Scroll to top of video for better mobile experience
+        if (window.innerWidth <= 740) {
+            window.scrollTo({
+                top: iframe.offsetTop - 20,
+                behavior: 'smooth'
+            });
+        }
     }
 }
 
@@ -261,8 +284,23 @@ async function changeServer() {
 
     // Ensure iframe is visible and correctly sized
     iframe.style.display = "block";  // Show the iframe
-    iframe.style.width = "95%"; // or adjust to a fixed size
-    iframe.style.height = "300px"; // or adjust height as needed
+
+    // Set responsive height based on device width
+    if (window.innerWidth <= 560) {
+        iframe.style.height = "250px";
+    } else if (window.innerWidth <= 740) {
+        iframe.style.height = "300px";
+    } else if (window.innerWidth <= 840) {
+        iframe.style.height = "350px";
+    } else if (window.innerWidth <= 924) {
+        iframe.style.height = "300px";
+    } else if (window.innerWidth <= 1024) {
+        iframe.style.height = "350px";
+    } else {
+        iframe.style.height = "400px";
+    }
+
+    iframe.style.width = (window.innerWidth <= 740) ? "95%" : "100%";
 
     // Hide the movie poster when the video is playing
     moviePoster.style.display = "none";  // Hide the movie poster image
@@ -345,4 +383,12 @@ window.addEventListener('load', () => {
 // Function to handle changes when server selection is made
 document.getElementById('server').addEventListener('change', () => {
     changeServer();
+});
+
+// Add window resize listener to ensure responsive video size
+window.addEventListener('resize', () => {
+    // Only update if iframe is visible
+    if (iframe.style.display === "block") {
+        changeServer();
+    }
 });
