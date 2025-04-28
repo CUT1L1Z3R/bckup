@@ -1,249 +1,510 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap');
-
-:root {
-  --primary: #b01825;
-  --background: #050505;
-  --surface: #181818;
-  --border: #232323;
-  --text-main: #fff;
-  --text-secondary: #ae9e95;
-  --accent: #585296;
-  --card-bg: #141414;
-  --meta-bg: #222;
-  --dropdown-bg: #0a0a0a;
-  --dropdown-hover: #2e0b0f;
-  --dropdown-selected: #4d131a;
-  --sidebar-bg: #1b1b1b;
-  --shadow: 0 4px 24px rgba(0,0,0,0.85);
+/* Global styles for body and text elements */
+body,
+p,
+h1 {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #30012;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background: var(--background);
-  color: var(--text-main);
-  font-family: 'Inter', Arial, sans-serif;
+/* Header styling */
+.header {
+    width: 100vw;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  position: sticky;
-  top: 0;
-  z-index: 20;
-}
+/* Logo styling */
 .logo {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.7rem;
-  color: var(--primary);
-  font-weight: bold;
-}
-.logo span { color: #fff; font-weight: normal; }
-
-nav a {
-  color: #fff;
-  text-decoration: none;
-  margin: 0 1rem;
-  font-weight: 500;
-  opacity: .85;
-  transition: color .2s;
-}
-nav a:hover { color: var(--primary); }
-
-.header-actions { display: flex; gap: .7em; }
-.icon-btn {
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 1.25rem;
-  cursor: pointer;
-  margin-left: .5rem;
+    width: 120px;
+    cursor: pointer;
+    margin: 15px 0px;
 }
 
-main {
-  display: flex;
-  flex: 1 1 auto;
-  gap: 2rem;
-  padding: 2rem 2vw 2rem 2vw;
+.back-button {
+    background-color: purple;
+    color: white;
+    border none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
 }
 
-.main-content {
-  flex: 3;
-  max-width: 870px;
-}
-.sidebar {
-  flex: 1;
-  min-width: 250px;
-  max-width: 320px;
-  background: var(--sidebar-bg);
-  border-left: 1px solid var(--border);
-  padding: 1rem 0 1rem 1.2rem;
-  box-sizing: border-box;
-  height: 100%;
+.back-button:hover {
+    background-color: #7a288a;
 }
 
-.sidebar h2 {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  margin-bottom: 1rem;
-}
-.recommend-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.recommend-list li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-  background: var(--card-bg);
-  border-radius: 0.65em;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.23);
-}
-.recommend-list img {
-  width: 58px;
-  height: 84px;
-  object-fit: cover;
-  border-radius: 0.35em 0 0 0.35em;
-}
-.rec-info {
-  padding-left: 0.9em;
-}
-.rec-title {
-  font-weight: 500;
-}
-.rec-meta {
-  color: var(--text-secondary);
-  font-size: 0.96em;
+/* Movie details container */
+.movie-details {
+    margin: 20px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    box-sizing: border-box;
 }
 
-.video-section {
-  background: var(--card-bg);
-  border-radius: 1em;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  margin-bottom: 2em;
-}
-.video-backdrop {
-  position: relative;
-  aspect-ratio: 16/7;
-  background: #191919;
-  overflow: hidden;
-}
-.video-backdrop img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(60%) blur(0.5px);
-}
-.video-player {
-  position: absolute;
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 89%; max-width: 800px; aspect-ratio: 16/9;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.60);
-  border-radius: .7em;
-  overflow: hidden;
-  z-index: 3;
-}
-.video-player iframe {
-  width: 100%; height: 100%; border: none;
+/* Movie poster styling */
+.movie-poster {
+    width: 750px;
+    height: 460px;
 }
 
+/* iframe */
+iframe {
+    width: 100%;
+    height: 100%;
+}
+
+#moviePoster {
+    width: 100%;
+    height: 100%;
+}
+
+/* Add margin space to the iframe */
+iframe {
+    margin-left: 20px; /* Add a 20px margin to the left of the iframe */
+    margin-right: 30px; /* Add a 20px margin to the right of the iframe */
+    margin-bottom: 20px; /* Add a 20px margin to the bottom of the iframe */
+}
+
+/* Add margin space to the text elements */
 .movie-info {
-  padding: 2rem 1.5rem 1rem 1.5rem;
+    margin-left: 20px; /* Add a 20px margin to the left of the text elements */
+    margin-right: 30px; /* Add a 20px margin to the right of the text elements */
 }
+
+/* Add margin space to the plot element */
+#plot {
+    margin-bottom: 20px; /* Add a 20px margin to the bottom of the plot element */
+}
+
+/* Movie information section */
+.movie-info {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Movie title styling */
 .movie-info h1 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 2.2rem;
-  margin: 0 0 .6em 0;
-  font-weight: 700;
-}
-.meta {
-  display: flex;
-  gap: 1em;
-  align-items: center;
-  font-size: 1.08em;
-  margin-bottom: .7em;
-}
-.meta .genre {
-  background: #241013;
-  padding: .18em .75em;
-  border-radius: .9em;
-  font-size: .98em;
-  color: var(--primary); font-weight: 600;
-  margin-right: .6em;
-}
-.meta .year, .meta .seasons, .meta .status {
-  color: var(--text-secondary);
+    color: #a209da;
+    font-size: 46px;
 }
 
-.score-row {
-  display: flex;
-  gap: 1em;
-  align-items: baseline;
-  margin-bottom: .8em;
-}
-.tmdb-score {
-  background: #212e22;
-  color: #86efac;
-  padding: .15em 1em .18em 1em;
-  border-radius: 1.2em;
-  font-weight: 600;
-  font-size: 1.09em;
-}
-.source, .qualities {
-  color: var(--text-secondary);
-  background: #212124;
-  border-radius: .85em;
-  padding: .17em .6em
+/* Plot styling */
+#plot {
+    color: white;
+    line-height: 1.4;
+    font-size: 18px;
+    text-align: justify;
 }
 
-.actions {
-  display: flex;
-  gap: 1.25em;
-  margin-bottom: 1em;
+/* Movie data styling */
+.movie-data {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
 }
-.play-btn {
-  background: var(--primary);
-  border: none;
+
+/* Design class styling */
+.design {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    color: white;
+}
+
+/* Styling for bold text elements */
+span {
+    font-weight: bold;
+    color: #a209da;
+}
+
+p {
+    font-weight: bold;
+}
+
+/* Movie poster and video container */
+.movie-poster {
+  position: relative;
+  width: 60%; /* Reduce the width to 80% */
+  height: auto;
+}
+
+/* Add this to your CSS file */
+
+/* Mobile styles */
+@media only screen and (max-width: 768px) {
+    iframe {
+        width: 90%;
+        height: 150px;
+    }
+}
+
+/* Tablet and desktop styles */
+@media only screen and (min-width: 769px) {
+    iframe {
+        width: 80%;
+        height: 200px;
+    }
+}
+
+iframe {
+    width: 80vw;
+    height: 150vh;
+}
+
+/* Server selector dropdown styles */
+#server-selector {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #810c7d;
   color: #fff;
-  font-size: 1.12em;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: none; /* Initially hidden */
+}
+
+.server-selector-header {
+  background-color: #540151;
+  padding: 10px;
+  border-bottom: 1px solid #41013f;
+}
+
+.server-selector-header h2 {
+  font-size: 18px;
   font-weight: bold;
-  border-radius: .75em;
-  padding: .59em 2.1em;
-  cursor: pointer;
-  box-shadow: 0 8px 30px rgba(176,24,37,0.12);
-  transition: background .18s;
 }
-.play-btn:hover {
-  background: #930f1a;
-}
-.watchlist-btn {
-  background: #252525;
-  border: none;
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #333;
   color: #fff;
-  font-size: 1.05em;
-  border-radius: .75em;
-  padding: .59em 2.1em;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-.description {
-  margin-top: .7em; margin-bottom: 1.2em;
-  color: var(--text-secondary);
+.close-button:hover {
+  background-color: #41013f;
 }
+
+.server-selector-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #41013f;
+  color: #fff;
+  padding: 10px;
+  border: 1px solid #41013f;
+  border-radius: 5px;
+  display: none;
+}
+
+.server-selector-dropdown label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.server-selector-dropdown select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #41013f;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.server-selector-content {
+  padding: 20px;
+}
+
+.server-selector-content label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.server-selector-content select {
+  padding: 10px;
+  font-size: 14px;
+  background-color: #30012f;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+/* Compact change server button styling */
+/* Change server button styles */
+.change-server-btn {
+  background-color: #a209da;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.change-server-btn:hover {
+  background-color: transparent;
+  border-color: #7a288a; /* Change border color to purple */
+  outline: 2px solid #7a288a; /* Add purple outline */
+}
+
+.change-server-btn:active {
+  background-color: transparent;
+  border-color: #7a288a; /* Change border color to purple */
+  outline: 2px solid #7a288a; /* Add purple outline */
+}
+
+.server-selector label {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 10px; /* Add a margin to the label */
+}
+
+.server-selector-select {
+  padding: 10px;
+  font-size: 14px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 200px;  /* Adjust width as necessary */
+}
+
+.server-selector select:focus {
+  outline: none;
+  background-color: #555;
+}
+
+.server-selector button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 60px; /* Set the width to 60px */
+}
+
+.server-selector button:hover {
+  background-color: #3e8e41;
+}
+
+/* Position the server-selector below the video */
+.movie-poster {
+  position: relative;
+}
+
+.server-selector {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Iframe to display video */
+#iframe {
+  width: 100%;
+  height: 100px; /* Reduce the height to 300px */
+  display: block;
+  margin-bottom: 10px; /* Add a margin to the iframe */
+}
+
+/* Styling for the change server dropdown */
+.server-selector {
+  margin-top: 20px; /* Space between the video and the dropdown */
+  text-align: bottom; /* Center the dropdown */
+  padding: 10px;
+  background-color: #222; /* Optional: Set background to differentiate the dropdown */
+  border-radius: 5px;
+}
+
+.server-selector label {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.server-selector select {
+  padding: 8px;
+  font-size: 14px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.server-selector select:focus {
+  outline: none;
+  background-color: #555;
+}
+
+/* Show server selector dropdown on click */
+.change-server-btn:hover + .server-selector-dropdown {
+  display: block;
+}
+
+/* watchList button styling */
+.watchListBtn {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 8px 20px;
+    text-align: center;
+    background: rgb(141, 22, 201);
+    border-radius: 3px;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+/* watchList button hover styling */
+.watchListBtn:hover {
+    background: black;
+    color: rgb(141, 22, 201);
+    border: 1px solid rgb(141, 22, 201)
+}
+
+
+/* ----Media Queries---- */
+
+@media only screen and (max-width: 560px) {
+    .movie-details {
+        flex-direction: column;
+        margin-top: 0;
+        gap: 15px;
+    }
+
+    .movie-poster {
+        width: 100%;
+        height: 280px;
+    }
+
+    .movie-info {
+        width: 90%;
+        margin: auto;
+        gap: 15px;
+    }
+
+    .movie-data {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media screen and (min-width:561px) and (max-width:740px) {
+    .movie-details {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .movie-poster {
+        width: 100%;
+        height: 360px;
+    }
+
+    .movie-info {
+        width: 90%;
+        margin: auto;
+        gap: 15px;
+    }
+
+    .movie-data {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media screen and (min-width:741px) and (max-width:840px) {
+    .movie-details {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .movie-poster {
+        width: 100%;
+    }
+
+    .movie-info {
+        width: 95%;
+        margin: auto;
+        gap: 15px;
+    }
+
+    .movie-data {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media screen and (min-width:841px) and (max-width:924px) {
+    .movie-poster {
+        width: 500px;
+        height: 400px;
+    }
+
+    .movie-info {
+        width: 36%;
+        gap: 15px;
+    }
+
+    .movie-data {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media screen and (min-width:925px) and (max-width:1024px) {
+    .movie-poster {
+        width: 550px;
+    }
+
+    .movie-info {
+        width: 38%;
+        gap: 15px;
+    }
+
+    .movie-data {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media screen and (min-width:1025px) and (max-width:1300px) {
+    .movie-poster {
+        width: 600px;
+    }
+
+    .movie-info {
+        width: 39%;
+        gap: 15px;
+    }
+
+    .rating-data {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
 .episode-section {
   margin: 1.8em 0 .5em 0;
   padding: 1.5em 1.7em;
@@ -381,63 +642,4 @@ main {
 .episode-info {
   flex: 1;
   max-width: calc(100% - 160px);
-}
-.episode-title {
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 0.38em;
-  font-size: 1.05em;
-}
-.episode-desc {
-  color: var(--text-secondary);
-  font-size: 0.96em;
-  line-height: 1.4;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-}
-
-footer {
-  background: #181818;
-  color: #7a695f;
-  text-align: center;
-  padding: 1.2em;
-  font-size: 0.98em;
-  margin-top: 2rem;
-}
-
-/* Responsive Styles */
-@media (max-width: 1050px) {
-  main { flex-direction: column; }
-  .main-content, .sidebar { max-width: 100%; flex: unset; }
-  .sidebar {
-    margin-top: 2rem;
-    border-left: none;
-    border-top: 1px solid var(--border);
-    padding-left: 0;
-  }
-}
-@media (max-width: 750px) {
-  header { flex-direction: column; gap: .8em; padding: .9em .5em; }
-  nav a { margin: 0 .6em; font-size: .96em; }
-  .logo { font-size: 1.25em; }
-  main { padding: 1.2rem 1vw; }
-  .episode-section { padding: .6em .7em; }
-  .episode-thumb { width: 120px; height: 68px; }
-  .episode-info { max-width: calc(100% - 130px); }
-}
-@media (max-width: 600px) {
-  .movie-info { padding: 1rem 0.6rem .5rem 0.6rem; }
-  .video-section { box-shadow: none; border-radius: .35em; }
-  .episode-card { padding: 0.9em 1em; }
-  .episode-thumb { width: 100px; height: 56px; }
-  .episode-info { max-width: calc(100% - 110px); }
-  .episode-desc { -webkit-line-clamp: 2; }
-}
-@media (max-width: 480px) {
-  .episode-card { flex-direction: column; }
-  .episode-thumb { width: 100%; height: auto; margin-bottom: 0.8em; }
-  .episode-info { max-width: 100%; }
-  .episode-number { left: 6px; top: 6px; }
 }
