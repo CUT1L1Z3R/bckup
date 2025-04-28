@@ -62,9 +62,9 @@ h1 {
 iframe {
     width: 100%;
     height: 100%;
-    margin-left: 20px; /* Add a 20px margin to the left of the iframe */
-    margin-right: 30px; /* Add a 20px margin to the right of the iframe */
-    margin-bottom: 20px; /* Add a 20px margin to the bottom of the iframe */
+    margin-left: 20px;
+    margin-right: 30px;
+    margin-bottom: 20px;
 }
 
 #moviePoster {
@@ -74,13 +74,13 @@ iframe {
 
 /* Add margin space to the text elements */
 .movie-info {
-    margin-left: 20px; /* Add a 20px margin to the left of the text elements */
-    margin-right: 30px; /* Add a 20px margin to the right of the text elements */
+    margin-left: 20px;
+    margin-right: 30px;
 }
 
 /* Add margin space to the plot element */
 #plot {
-    margin-bottom: 20px; /* Add a 20px margin to the bottom of the plot element */
+    margin-bottom: 20px;
 }
 
 /* Movie information section */
@@ -140,7 +140,7 @@ p {
 
 /* Season and episode selector styles */
 .seasons-container {
-    display: none; /* Initially hidden, will be shown for TV shows */
+    display: none;
     flex-direction: column;
     width: 100%;
     margin-top: 20px;
@@ -293,8 +293,8 @@ p {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  display: none; /* Initially hidden */
-  z-index: 10; /* Ensure it appears above other elements */
+  display: none;
+  z-index: 10;
 }
 
 .close-button {
@@ -350,7 +350,7 @@ p {
   border: 1px solid #41013f;
   border-radius: 5px;
   display: none;
-  z-index: 10; /* Ensure it appears above other elements */
+  z-index: 10;
 }
 
 .server-selector-dropdown label {
@@ -400,21 +400,21 @@ p {
 
 .change-server-btn:hover {
   background-color: transparent;
-  border-color: #7a288a; /* Change border color to purple */
-  outline: 2px solid #7a288a; /* Add purple outline */
+  border-color: #7a288a;
+  outline: 2px solid #7a288a;
 }
 
 .change-server-btn:active {
   background-color: transparent;
-  border-color: #7a288a; /* Change border color to purple */
-  outline: 2px solid #7a288a; /* Add purple outline */
+  border-color: #7a288a;
+  outline: 2px solid #7a288a;
 }
 
 .server-selector label {
   color: white;
   font-size: 14px;
   font-weight: bold;
-  margin-right: 10px; /* Add a margin to the label */
+  margin-right: 10px;
 }
 
 .server-selector-select {
@@ -425,7 +425,7 @@ p {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 200px;  /* Adjust width as necessary */
+  width: 200px;
   font-weight: bold;
 }
 
@@ -441,7 +441,7 @@ p {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 60px; /* Set the width to 60px */
+  width: 60px;
 }
 
 .server-selector button:hover {
@@ -463,17 +463,17 @@ p {
 /* Iframe to display video */
 #iframe {
   width: 100%;
-  height: 100px; /* Reduce the height to 300px */
+  height: 100px;
   display: block;
-  margin-bottom: 10px; /* Add a margin to the iframe */
+  margin-bottom: 10px;
 }
 
 /* Styling for the change server dropdown */
 .server-selector {
-  margin-top: 20px; /* Space between the video and the dropdown */
-  text-align: bottom; /* Center the dropdown */
+  margin-top: 20px;
+  text-align: bottom;
   padding: 10px;
-  background-color: #222; /* Optional: Set background to differentiate the dropdown */
+  background-color: #222;
   border-radius: 5px;
 }
 
@@ -501,6 +501,117 @@ p {
 /* Show server selector dropdown on click */
 .change-server-btn:hover + .server-selector-dropdown {
   display: block;
+}
+
+/* ---- New server selector dropdown styles based on andoks.cc ---- */
+.server-dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 370px;
+  margin-bottom: 15px;
+}
+
+.server-dropdown-header {
+  background: linear-gradient(to right, rgba(100, 18, 21, 0.9), rgba(68, 16, 16, 0.8));
+  border: 1px solid #931c21;
+  border-radius: 25px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  cursor: pointer;
+  position: relative;
+}
+
+.server-dropdown-header::before {
+  content: "Servers";
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  font-size: 12px;
+  color: #ff3842;
+  background-color: black;
+  padding: 0 5px;
+}
+
+.server-dropdown-header.active {
+  border-radius: 15px 15px 0 0;
+}
+
+.server-dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #221212;
+  border: 1px solid #341414;
+  border-top: none;
+  border-radius: 0 0 15px 15px;
+  z-index: 100;
+  display: none;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.server-dropdown-content.show {
+  display: block;
+}
+
+.server-option {
+  padding: 15px 20px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #341414;
+}
+
+.server-option:last-child {
+  border-bottom: none;
+}
+
+.server-option:hover, .server-option.active {
+  background-color: #3a1a1a;
+}
+
+.server-name {
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.server-tag {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 50px;
+  font-size: 12px;
+  margin-right: 5px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.tag-stable {
+  background-color: #cca969;
+  color: #000;
+}
+
+.tag-4k {
+  background-color: #d95058;
+  color: #fff;
+}
+
+.tag-hd {
+  background-color: #5d4fc7;
+  color: #fff;
+}
+
+.dropdown-arrow {
+  transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.up {
+  transform: rotate(180deg);
 }
 
 /* watchList button styling */
