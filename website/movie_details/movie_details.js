@@ -16,234 +16,13 @@ const iframe = document.getElementById("iframe");
 const watchListBtn = document.querySelector('.watchListBtn');
 const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 
+// Season and Episode selectors
+const seasonsContainer = document.getElementById('seasons-container');
+const seasonSelect = document.getElementById('season-select');
+const episodesList = document.getElementById('episodes-list');
+
 // API key for TMDB API
 const api_Key = 'e79515e88dfd7d9f6eeca36e49101ac2';
-
-// DOM Elements
-const seasonSelect = document.getElementById('season-select');
-const seasonEpCount = document.getElementById('season-ep-count');
-const episodeList = document.getElementById('episode-list');
-const seasonDropdown = document.getElementById('season-dropdown');
-const seasonDropdownBtn = document.getElementById('season-dropdown-btn');
-
-// State
-let selectedSeason = 1;
-let selectedEpisode = 1;
-let seasons = [];
-
-// Initialize the application
-async function initApp() {
-  try {
-    // Get TV show details including seasons
-    await fetchShowDetails();
-
-    // Set up event listeners
-    setupEventListeners();
-
-    // Load the first season episodes by default
-    await loadEpisodesForSeason(selectedSeason);
-
-    // Update the player to start with first episode
-    updatePlayer();
-  } catch (error) {
-    console.error('Error initializing the app:', error);
-    episodeList.innerHTML = '<div class="error-message">Error loading data. Please try again later.</div>';
-  }
-}
-
-// Fetch show details including seasons
-async function fetchShowDetails() {
-  const response = await fetch(`https://api.themoviedb.org/3/tv/${TV_SHOW_ID}?api_key=${TMDB_API_KEY}&language=en-US`);
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(`TMDB API error: ${data.status_message}`);
-  }
-
-  seasons = data.seasons.filter(season => season.season_number > 0);
-  renderSeasonDropdown();
-}
-
-// Fetch episodes for a specific season
-async function fetchEpisodesForSeason(seasonNumber) {
-  const response = await fetch(`https://api.themoviedb.org/3/tv/${TV_SHOW_ID}/season/${seasonNumber}?api_key=${TMDB_API_KEY}&language=en-US`);
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(`TMDB API error: ${data.status_message}`);
-  }
-
-  return data.episodes;
-}
-
-// Render season dropdown menu
-function renderSeasonDropdown() {
-  if (!seasonDropdown) return;
-
-  // Create the dropdown button content
-  const selectedSeasonInfo = seasons.find(s => s.season_number === selectedSeason);
-  const episodeCount = selectedSeasonInfo ? selectedSeasonInfo.episode_count : 0;
-  const btnText = `Season ${selectedSeason} (${episodeCount} Episodes)`;
-
-  if (seasonDropdownBtn) {
-    seasonDropdownBtn.textContent = btnText;
-  }
-
-  // Create the dropdown content
-  let dropdownHTML = '';
-  seasons.forEach(season => {
-    const isSelected = season.season_number === selectedSeason;
-    dropdownHTML += `
-      <div class="season-option ${isSelected ? 'selected' : ''}"
-           data-season="${season.season_number}">
-        Season ${season.season_number} (${season.episode_count} Episodes)
-      </div>
-    `;
-  });
-
-  seasonDropdown.innerHTML = dropdownHTML;
-}
-
-// Load episodes for a specific season
-async function loadEpisodesForSeason(seasonNumber) {
-  try {
-    episodeList.innerHTML = '<div class="loading">Loading episodes...</div>';
-
-    const episodes = await fetchEpisodesForSeason(seasonNumber);
-    selectedSeason = seasonNumber;
-    selectedEpisode = 1; // Reset to first episode when changing seasons
-
-    renderSeasonDropdown();
-    renderEpisodes(episodes);
-  } catch (error) {
-    console.error('Error loading episodes:', error);
-    episodeList.innerHTML = '<div class="error-message">Error loading episodes. Please try again later.</div>';
-  }
-}
-
-// Render episodes list
-function renderEpisodes(episodes) {
-  if (!episodeList) return;
-
-  episodeList.innerHTML = '';
-
-  episodes.forEach(ep => {
-    const isSelected = ep.episode_number === selectedEpisode;
-    const imgPath = ep.still_path
-      ? `https://image.tmdb.org/t/p/w300${ep.still_path}`
-      : 'https://via.placeholder.com/300x170?text=No+Image';
-
-    const card = document.createElement('div');
-    card.className = `episode-card ${isSelected ? 'selected' : ''}`;
-    card.dataset.episode = ep.episode_number;
-    card.tabIndex = 0;
-
-    card.innerHTML = `
-      <div class="episode-number">${ep.episode_number}</div>
-      <img class="episode-thumb" src="${imgPath}" alt="Episode ${ep.episode_number}">
-      <div class="episode-info">
-        <div class="episode-title">${ep.name}</div>
-        <div class="episode-desc">${ep.overview || 'No description available.'}</div>
-      </div>
-    `;
-
-    card.addEventListener('click', () => selectEpisode(ep.episode_number));
-    card.addEventListener('keypress', e => {
-      if (e.key === 'Enter') selectEpisode(ep.episode_number);
-    });
-
-    episodeList.appendChild(card);
-  });
-
-  // Update the season episodes count display
-  if (seasonEpCount) {
-    seasonEpCount.textContent = `(${episodes.length} Episodes)`;
-  }
-}
-
-// Select an episode
-function selectEpisode(episodeNumber) {
-  selectedEpisode = episodeNumber;
-  updatePlayer();
-
-  // Update the UI to show the selected episode
-  const cards = episodeList.querySelectorAll('.episode-card');
-  cards.forEach(card => {
-    if (parseInt(card.dataset.episode) === episodeNumber) {
-      card.classList.add('selected');
-    } else {
-      card.classList.remove('selected');
-    }
-  });
-}
-
-// Select a season
-async function selectSeason(seasonNumber) {
-  if (seasonNumber === selectedSeason) return;
-
-  await loadEpisodesForSeason(seasonNumber);
-  updatePlayer();
-
-  // Close the dropdown after selection
-  if (seasonDropdown) {
-    seasonDropdown.classList.remove('open');
-  }
-}
-
-  // Update the iframe source to match the selected season and episode
-  playerIframe.src = `https://vidsrc.cc/v2/embed/tv/${TV_SHOW_ID}/${selectedSeason}-${selectedEpisode}`;
-
-// Toggle the season dropdown visibility
-function toggleSeasonDropdown() {
-  if (!seasonDropdown) return;
-  seasonDropdown.classList.toggle('open');
-}
-
-// Setup event listeners
-function setupEventListeners() {
-  // Season dropdown button click
-  if (seasonDropdownBtn) {
-    seasonDropdownBtn.addEventListener('click', toggleSeasonDropdown);
-  }
-
-  // Season option click
-  if (seasonDropdown) {
-    seasonDropdown.addEventListener('click', event => {
-      const option = event.target.closest('.season-option');
-      if (option) {
-        const seasonNumber = parseInt(option.dataset.season);
-        selectSeason(seasonNumber);
-      }
-    });
-  }
-
-  // Legacy season select (if used)
-  if (seasonSelect) {
-    seasonSelect.addEventListener('change', e => {
-      selectSeason(Number(e.target.value));
-    });
-  }
-
-  // Play button click
-  if (playBtn) {
-    playBtn.addEventListener('click', () => {
-      document.getElementById('video-player-container').scrollIntoView({ behavior: 'smooth' });
-      updatePlayer();
-    });
-  }
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', event => {
-    if (seasonDropdown && seasonDropdown.classList.contains('open') &&
-        !event.target.closest('#season-dropdown') &&
-        !event.target.closest('#season-dropdown-btn')) {
-      seasonDropdown.classList.remove('open');
-    }
-  });
-}
-
-// Initialize the app when the DOM is loaded
-document.addEventListener('DOMContentLoaded', initApp);
 
 // Retrieve the TMDb ID and Media from the URL parameter
 const params = new URLSearchParams(window.location.search);
@@ -264,6 +43,20 @@ async function fetchVideoDetails(id) {
     return data.results;
 }
 
+// Function to fetch TV show seasons
+async function fetchTVSeasons(id) {
+    const response = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${api_Key}`);
+    const data = await response.json();
+    return data.seasons;
+}
+
+// Function to fetch episodes for a specific season
+async function fetchSeasonEpisodes(tvId, seasonNumber) {
+    const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}/season/${seasonNumber}?api_key=${api_Key}`);
+    const data = await response.json();
+    return data.episodes;
+}
+
 document.getElementById('change-server-btn').addEventListener('click', () => {
     const serverSelector = document.getElementById('server-selector');
     serverSelector.style.display = (serverSelector.style.display === 'block') ? 'none' : 'block';
@@ -280,10 +73,160 @@ document.getElementById('server').addEventListener('change', () => {
     document.getElementById('server-selector').style.display = 'none'; // Hide dropdown after selection
 });
 
+// Function to create season dropdown items
+function createSeasonOptions(seasons) {
+    seasonSelect.innerHTML = '';
+
+    seasons.forEach(season => {
+        // Skip season 0 which is typically for specials
+        if (season.season_number > 0) {
+            const option = document.createElement('option');
+            option.value = season.season_number;
+            option.textContent = `Season ${season.season_number} (${season.episode_count} Episodes)`;
+            seasonSelect.appendChild(option);
+        }
+    });
+
+    // Set up event listener for season selection
+    seasonSelect.addEventListener('change', function() {
+        const selectedSeason = this.value;
+        loadEpisodes(id, selectedSeason);
+    });
+
+    // Load the first season episodes by default
+    if (seasons.length > 0) {
+        // Find the first regular season (season_number > 0)
+        const firstSeason = seasons.find(season => season.season_number > 0);
+        if (firstSeason) {
+            loadEpisodes(id, firstSeason.season_number);
+        }
+    }
+}
+
+// Function to create episode list items
+function createEpisodesList(episodes) {
+    episodesList.innerHTML = '';
+
+    episodes.forEach(episode => {
+        const episodeItem = document.createElement('div');
+        episodeItem.className = 'episode-item';
+        episodeItem.dataset.episodeNumber = episode.episode_number;
+
+        // Create thumbnail container
+        const thumbnailContainer = document.createElement('div');
+        thumbnailContainer.className = 'thumbnail-container';
+
+        // Create thumbnail image
+        const thumbnail = document.createElement('img');
+        thumbnail.className = 'episode-thumbnail';
+        thumbnail.src = episode.still_path
+            ? `https://image.tmdb.org/t/p/w300${episode.still_path}`
+            : 'https://via.placeholder.com/300x170?text=No+Image';
+        thumbnail.alt = `${episode.name} Thumbnail`;
+
+        // Create episode number badge
+        const episodeNumber = document.createElement('div');
+        episodeNumber.className = 'episode-number';
+        episodeNumber.textContent = episode.episode_number;
+
+        // Add thumbnail and number to container
+        thumbnailContainer.appendChild(thumbnail);
+        thumbnailContainer.appendChild(episodeNumber);
+
+        // Create episode info container
+        const episodeInfo = document.createElement('div');
+        episodeInfo.className = 'episode-info';
+
+        // Create episode title
+        const episodeTitle = document.createElement('div');
+        episodeTitle.className = 'episode-title';
+        episodeTitle.textContent = episode.name;
+
+        // Create episode description
+        const episodeDescription = document.createElement('div');
+        episodeDescription.className = 'episode-description';
+        episodeDescription.textContent = episode.overview || 'No description available.';
+
+        // Add title and description to info container
+        episodeInfo.appendChild(episodeTitle);
+        episodeInfo.appendChild(episodeDescription);
+
+        // Add all elements to episode item
+        episodeItem.appendChild(thumbnailContainer);
+        episodeItem.appendChild(episodeInfo);
+
+        // Add click event to play the episode
+        episodeItem.addEventListener('click', () => {
+            playEpisode(id, episode.season_number, episode.episode_number);
+        });
+
+        episodesList.appendChild(episodeItem);
+    });
+}
+
+// Function to load episodes for a specific season
+async function loadEpisodes(tvId, seasonNumber) {
+    try {
+        const episodes = await fetchSeasonEpisodes(tvId, seasonNumber);
+        createEpisodesList(episodes);
+    } catch (error) {
+        console.error('Error loading episodes:', error);
+        episodesList.innerHTML = '<p>Error loading episodes. Please try again.</p>';
+    }
+}
+
+// Function to play a specific episode
+function playEpisode(tvId, seasonNumber, episodeNumber) {
+    const server = document.getElementById('server').value;
+    let embedURL = "";
+
+    // Update the URL for each server to include season and episode parameters
+    switch (server) {
+        case "vidsrc.cc":
+            embedURL = `https://vidsrc.cc/v2/embed/tv/${tvId}/${seasonNumber}/${episodeNumber}`;
+            break;
+        case "vidsrc.me":
+            embedURL = `https://vidsrc.net/embed/tv/?tmdb=${tvId}&season=${seasonNumber}&episode=${episodeNumber}`;
+            break;
+        case "player.videasy.net":
+            embedURL = `https://player.videasy.net/tv/${tvId}/${seasonNumber}/${episodeNumber}`;
+            break;
+        case "2embed":
+            embedURL = `https://www.2embed.cc/embedtv/${tvId}&s=${seasonNumber}&e=${episodeNumber}`;
+            break;
+        case "movieapi.club":
+            embedURL = `https://moviesapi.club/tv/${tvId}/${seasonNumber}/${episodeNumber}`;
+            break;
+        default:
+            console.error("Selected server is not supported.");
+            break;
+    }
+
+    if (embedURL) {
+        // Update the iframe source with the episode URL
+        iframe.src = embedURL;
+        iframe.style.display = "block";
+        moviePoster.style.display = "none";
+    }
+}
+
 // Function to handle video source change based on selected server
 async function changeServer() {
     const server = document.getElementById('server').value; // Get the selected server
     const type = media === "movie" ? "movie" : "tv"; // Movie or TV type
+
+    // Check if we're viewing a TV show with episode selected
+    if (type === "tv" && seasonsContainer.style.display === "flex") {
+        // If an episode is already selected (playing), update it with the new server
+        const activeEpisode = document.querySelector('.episode-item.active');
+        if (activeEpisode) {
+            const seasonNumber = activeEpisode.dataset.seasonNumber;
+            const episodeNumber = activeEpisode.dataset.episodeNumber;
+            playEpisode(id, seasonNumber, episodeNumber);
+            return;
+        }
+    }
+
     let embedURL = "";  // URL to embed video from the selected server
 
     // Set the video URL depending on the selected server
@@ -300,11 +243,14 @@ async function changeServer() {
         case "2embed":
             embedURL = `https://www.2embed.cc/embed/${id}`;
             break;
+        case "movieapi.club":
+            embedURL = `https://moviesapi.club/${type}/${id}`;
+            break;
         default:
             console.error("Selected server is not supported.");
             break;
     }
-    
+
     // If no URL was created, fallback to a default one
     if (!embedURL) {
         embedURL = "https://defaultserver.com/defaultEmbedUrl";  // Example fallback
@@ -317,7 +263,7 @@ async function changeServer() {
     iframe.style.display = "block";  // Show the iframe
     iframe.style.width = "95%"; // or adjust to a fixed size
     iframe.style.height = "300px"; // or adjust height as needed
-    
+
     // Hide the movie poster when the video is playing
     moviePoster.style.display = "none";  // Hide the movie poster image
 }
@@ -338,9 +284,27 @@ async function displayMovieDetails() {
             : plot.textContent = movieDetails.overview;
 
         movieTitle.textContent = movieDetails.name || movieDetails.title;
-        moviePoster.src = `https://image.tmdb.org/t/p/w500${movieDetails.backdrop_path}`;
+
+        if (movieDetails.backdrop_path) {
+            moviePoster.src = `https://image.tmdb.org/t/p/w500${movieDetails.backdrop_path}`;
+        } else if (movieDetails.poster_path) {
+            moviePoster.src = `https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`;
+        } else {
+            moviePoster.src = 'https://via.placeholder.com/500x281?text=No+Image+Available';
+        }
+
         movieYear.textContent = `${movieDetails.release_date || movieDetails.first_air_date}`;
         rating.textContent = movieDetails.vote_average;
+
+        // If this is a TV show, setup the seasons and episodes section
+        if (media === "tv") {
+            const seasons = await fetchTVSeasons(id);
+            if (seasons && seasons.length > 0) {
+                createSeasonOptions(seasons);
+                // Display the seasons container
+                seasonsContainer.style.display = "flex";
+            }
+        }
 
         // Call the changeServer function to update the video source
         changeServer();
@@ -355,6 +319,7 @@ async function displayMovieDetails() {
         watchListBtn.addEventListener('click', () => toggleFavorite(movieDetails));
 
     } catch (error) {
+        console.error('Error displaying movie details:', error);
         movieTitle.textContent = "Details are not available right now! Please try after some time.";
     }
 }
