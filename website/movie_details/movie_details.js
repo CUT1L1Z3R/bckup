@@ -20,38 +20,16 @@ const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 const api_Key = 'e79515e88dfd7d9f6eeca36e49101ac2';
 
 async function fetchSeasons(tvId) {
-    try {
-        const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}?api_key=${api_Key}`);
-        const data = await response.json();
-        console.log("Fetched season data:", data);
-        
-        if (data && data.seasons) {
-            return data.seasons;
-        } else {
-            console.error("No season data found");
-            return [];
-        }
-    } catch (error) {
-        console.error("Error fetching season data:", error);
-        return [];
-    }
-}
+    const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}?api_key=${api_Key}`);
+    const data = await response.json();
+    
+    console.log("API Response:", data);  // Log response to see if 'seasons' exists
 
-async function fetchEpisodes(tvId, seasonNumber) {
-    try {
-        const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}/season/${seasonNumber}?api_key=${api_Key}`);
-        const data = await response.json();
-        console.log("Fetched episode data:", data);
-
-        if (data && data.episodes) {
-            return data.episodes;
-        } else {
-            console.error("No episode data found for season", seasonNumber);
-            return [];
-        }
-    } catch (error) {
-        console.error("Error fetching episode data:", error);
-        return [];
+    if (data && data.seasons) {
+        return data.seasons;
+    } else {
+        console.error("No seasons data found.");
+        return [];  // Return empty array if no seasons found
     }
 }
 
@@ -68,42 +46,23 @@ async function loadSeasons(tvId) {
     defaultOption.selected = true;
     seasonSelector.appendChild(defaultOption);
 
-    seasons.forEach(season => {
-        const option = document.createElement('option');
-        option.value = season.season_number;
-        option.textContent = `Season ${season.season_number}`;
-        seasonSelector.appendChild(option);
-    });
-}
-
-async function displayEpisodes(tvId, seasonNumber) {
-    const episodes = await fetchEpisodes(tvId, seasonNumber);
-    const episodeList = document.getElementById('episode-list');
-    episodeList.innerHTML = '';
-
-    episodes.forEach(episode => {
-        const episodeItem = document.createElement('div');
-        episodeItem.classList.add('episode-item');
-
-        const episodeTitle = document.createElement('h4');
-        episodeTitle.textContent = `${episode.episode_number}. ${episode.name}`;
-
-        const episodeDescription = document.createElement('p');
-        episodeDescription.textContent = episode.overview || 'No description available.';
-
-        episodeItem.appendChild(episodeTitle);
-        episodeItem.appendChild(episodeDescription);
-
-        episodeList.appendChild(episodeItem);
-    });
-}
-
-document.getElementById('season').addEventListener('change', (e) => {
-    const selectedSeason = e.target.value;
-    if (selectedSeason !== 'Select a Season') {
-        displayEpisodes(id, selectedSeason);
+    if (seasons.length === 0) {
+        const noSeasonsOption = document.createElement('option');
+        noSeasonsOption.textContent = 'No seasons available';
+        noSeasonsOption.disabled = true;
+        seasonSelector.appendChild(noSeasonsOption);
+    } else {
+        seasons.forEach(season => {
+            const option = document.createElement('option');
+            option.value = season.season_number;
+            option.textContent = `Season ${season.season_number}`;
+            seasonSelector.appendChild(option);
+        });
     }
-});
+}
+
+const tvId = 1396;  // Try a known TV show ID for testing
+loadSeasons(tvId);
 
 // Retrieve the TMDb ID and Media from the URL parameter
 const params = new URLSearchParams(window.location.search);
