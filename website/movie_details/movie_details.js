@@ -198,7 +198,7 @@ function playEpisode(tvId, seasonNumber, episodeNumber) {
     // Update the URL for each server to include season and episode parameters
     switch (server) {
         case "vidlink.pro":
-            embedURL = `https://vidlink.pro/embed/${tvId}/${seasonNumber}/${episodeNumber}`;
+            embedURL = `https://vidlink.pro/tv/${tvId}/${seasonNumber}/${episodeNumber}?primaryColor=63b8bc&iconColor=ffffff&autoplay=false`;
             break;
         case "vidsrc.cc":
             embedURL = `https://vidsrc.cc/v2/embed/tv/${tvId}/${seasonNumber}/${episodeNumber}`;
@@ -221,6 +221,9 @@ function playEpisode(tvId, seasonNumber, episodeNumber) {
     }
 
     if (embedURL) {
+        // Log the URL for debugging
+        console.log(`Loading TV episode from: ${embedURL}`);
+
         // Update the iframe source with the episode URL
         iframe.src = embedURL;
         iframe.style.display = "block";
@@ -269,9 +272,9 @@ async function changeServer() {
         case "vidlink.pro":
             if (type === "tv") {
                 // For TV shows, default to first episode of first season
-                embedURL = `https://vidlink.pro/embed/${id}/1/1`;
+                embedURL = `https://vidlink.pro/tv/${id}/1/1?primaryColor=63b8bc&iconColor=ffffff&autoplay=false`;
             } else {
-                embedURL = `https://vidlink.pro/embed/${id}`;
+                embedURL = `https://vidlink.pro/movie/${id}?primaryColor=63b8bc&iconColor=ffffff&autoplay=false`;
             }
             break;
         case "vidsrc.cc":
@@ -298,6 +301,9 @@ async function changeServer() {
     if (!embedURL) {
         embedURL = "https://defaultserver.com/defaultEmbedUrl";  // Example fallback
     }
+
+    // Log the URL for debugging
+    console.log(`Loading ${type} from: ${embedURL}`);
 
     // Update the iframe source with the correct video URL
     iframe.src = embedURL;
