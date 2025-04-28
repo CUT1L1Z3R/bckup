@@ -1,7 +1,7 @@
 // Selecting the logo element and adding a click event listener to navigate to the homepage
 const logo = document.querySelector('.logo');
 logo.addEventListener('click', () => {
-    window.location.href = '../index.html';
+  window.location.href = '../index.html';
 });
 
 // Selecting various elements on the page for displaying movie details
@@ -10,9 +10,9 @@ const moviePoster = document.getElementById('moviePoster');
 const movieYear = document.getElementById('movieYear');
 const rating = document.getElementById('rating');
 const genre = document.getElementById('genre');
-const plot = document.getElementById("plot");
-const language = document.getElementById("language");
-const iframe = document.getElementById("iframe");
+const plot = document.getElementById('plot');
+const language = document.getElementById('language');
+const iframe = document.getElementById('iframe');
 const watchListBtn = document.querySelector('.watchListBtn');
 const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 
@@ -26,100 +26,21 @@ const media = params.get("media");
 
 // Function to fetch detailed information using its TMDb ID
 async function fetchMovieDetails(id) {
-    const response = await fetch(`https://api.themoviedb.org/3/${media}/${id}?api_key=${api_Key}`);
-    const data = await response.json();
-    return data;
-}
-
-async function displayMovieDetails() {
-    try {
-        const movieDetails = await fetchMovieDetails(id);
-        const seasons = await fetchSeasons(id);
-
-        var spokenlanguage = movieDetails.spoken_languages.map(language => language.english_name);
-        language.textContent = spokenlanguage.join(', ');
-
-        var genreNames = movieDetails.genres.map(genre => genre.name);
-        genre.innerText = genreNames.join(', ');
-
-        movieDetails.overview.length > 290
-            ? plot.textContent = `${movieDetails.overview.substring(0, 290)}...`
-            : plot.textContent = movieDetails.overview;
-
-        movieTitle.textContent = movieDetails.name || movieDetails.title;
-        moviePoster.src = `https://image.tmdb.org/t/p/w500${movieDetails.backdrop_path}`;
- movieYear.textContent = `${movieDetails.release_date || movieDetails.first_air_date}`;
-        rating.textContent = movieDetails.vote_average;
-
-        const seasonsElement = document('seasons');
-        seasonsElement.innerHTML = '';
-
-        seasons.forEach(() => {
-            const seasonElement = document.createElement('div');
-            season.classList.add('season');
-            seasonsElement.appendChild(seasonElement);
-
- const seasonNameElement = document.createElement('h2');
-            seasonNameElement.textContent = `Season ${season.season_number}: ${season.name}`;
-            seasonElement.appendChild(seasonNameElement);
-
-            const episodesElement = document.createElement('div');
-            episodesElement.classList.add('episodes');
-            seasonElement.appendChild(episodesElement);
-
-            season.episodes.forEach((episode) => {
-                const episodeElement = document.createElement('div');
-                episodeElement.classList.add('episode');
-                episodesElement.appendChild(episodeElement);
-
-                const episodeNumberElement = document.createElement('p');
-                episodeNumberElement.textContent = `Episode ${episode.episode_number}:`;
-                episodeElement.appendChild(episodeNumberElement);
-
-                const episodeTitleElement = document.createElement('p');
-                episodeTitleElement.textContent = episode.name;
-                episodeElement.appendChild(episodeTitleElement);
-
-                const airDateElement = document.createElement('p');
-                airDateElement.textContent = `Air Date: ${episode.air_date}`;
-                episodeElement.appendChild(airDateElement);
-            });
-        });
-
-        // Call the changeServer function to update the video source
-        changeServer();
-
-        // Updating the favorite button text and adding a click event listener to toggle favorites
-        if (watchlist.some(favoriteMovie => favoriteMovie.id === movieDetails.id)) {
-            watchListBtn.textContent = "Remove From WatchList";
-        } else {
-            watchListBtn.textContent = "Add To WatchList";
-        }
-
-        watchListBtn.addEventListener('click', () => toggleFavorite(movieDetails));
-
-    } catch (error) {
-        movieTitle.textContent = "Details are not available right now! Please try after some time.";
-    }
-}
-
-// Function to fetch season details
-async function fetchSeasons(id) {
-    const response = await fetch(`https://api.themoviedb.org/3/tv/${id}/seasons?api_key=${api_Key}`);
-    const data = await response.json();
-    return data.results;
+  const response = await fetch(`https://api.themoviedb.org/3/${media}/${id}?api_key=${api_Key}`);
+  const data = await response.json();
+  return data;
 }
 
 // Function to fetch video details (trailers) for a movie or TV show
 async function fetchVideoDetails(id) {
-    const response = await fetch(`https://api.themoviedb.org/3/${media}/${id}/videos?api_key=${api_Key}`);
-    const data = await response.json();
-    return data.results;
+  const response = await fetch(`https://api.themoviedb.org/3/${media}/${id}/videos?api_key=${api_Key}`);
+  const data = await response.json();
+  return data.results;
 }
 
 document.getElementById('change-server-btn').addEventListener('click', () => {
-    const serverSelector = document.getElementById('server-selector');
-    serverSelector.style.display = (serverSelector.style.display === 'block') ? 'none' : 'block';
+  const serverSelector = document.getElementById('server-selector');
+  serverSelector.style.display = (serverSelector.style.display === 'block') ? 'none' : 'block';
 });
 
 document.getElementById('server-selector').addEventListener('click', (e) => {
@@ -129,89 +50,106 @@ document.getElementById('server-selector').addEventListener('click', (e) => {
 });
 
 document.getElementById('server').addEventListener('change', () => {
-    changeServer();
-    document.getElementById('server-selector').style.display = 'none'; // Hide dropdown after selection
+  changeServer();
+  document.getElementById('server-selector').style.display = 'none';
+  // Hide dropdown after selection
 });
 
 // Function to handle video source change based on selected server
 async function changeServer() {
-    const server = document.getElementById('server').value; // Get the selected server
-    const type = media === "movie" ? "movie" : "tv"; // Movie or TV type
-    let embedURL = "";  // URL to embed video from the selected server
-
-    // Set the video URL depending on the selected server
-    switch (server) {
-        case "vidsrc.cc":
-            embedURL = `https://vidsrc.cc/v2/embed/${type}/${id}`;
-            break;
-        case "vidsrc.me":
-            embedURL = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
-            break;
-        case "player.videasy.net":
-            embedURL = `https://player.videasy.net/${type}/${id}`;
-            break;
-        case "2embed":
-            embedURL = `https://www.2embed.cc/embed/${id}`;
-            break;
-        default:
-            console.error("Selected server is not supported.");
-            break;
-    }
-    
-    // If no URL was created, fallback to a default one
-    if (!embedURL) {
-        embedURL = "https://defaultserver.com/defaultEmbedUrl";  // Example fallback
-    }
-
-    // Update the iframe source with the correct video URL
-    iframe.src = embedURL;
-
-    // Ensure iframe is visible and correctly sized
-    iframe.style.display = "block";  // Show the iframe
-    iframe.style.width = "95%"; // or adjust to a fixed size
-    iframe.style.height = "300px"; // or adjust height as needed
-    
-    // Hide the movie poster when the video is playing
-    moviePoster.style.display = "none";  // Hide the movie poster image
+  const server = document.getElementById('server').value;
+  // Get the selected server
+  const type = media === "movie" ? "movie" : "tv";
+  // Movie or TV type
+  let embedURL = "";
+  // URL to embed video from the selected server
+  // Set the video URL depending on the selected server
+  switch (server) {
+    case "vidsrc.cc":
+      embedURL = `https://vidsrc.cc/v2/embed/${type}/${id}`;
+      break;
+    case "vidsrc.me":
+      embedURL = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
+      break;
+    case "player.videasy.net":
+      embedURL = `https://player.videasy.net/${type}/${id}`;
+      break;
+    case "2embed":
+      embedURL = `https://www.2embed.cc/embed/${id}`;
+      break;
+    default:
+      console.error("Selected server is not supported.");
+      break;
+  }
+  // If no URL was created, fallback to a default one
+  if (!embedURL) {
+    embedURL = "https://defaultserver.com/defaultEmbedUrl";
+    // Example fallback
+  }
+  // Update the iframe source with the correct video URL
+  iframe.src = embedURL;
+  // Ensure iframe is visible and correctly sized
+  iframe.style.display = "block";
+  iframe.style.width = "95%";
+  // or adjust to a fixed size
+  iframe.style.height = "300px";
+  // or adjust height as needed
+  // Hide the movie poster when the video is playing
+  moviePoster.style.display = "none";
+  // Hide the movie poster image
 }
 
 // Function to display movie details on the page
 async function displayMovieDetails() {
-    try {
-        const movieDetails = await fetchMovieDetails(id);
-
-        var spokenlanguage = movieDetails.spoken_languages.map(language => language.english_name);
-        language.textContent = spokenlanguage.join(', ');
-
-        var genreNames = movieDetails.genres.map(genre => genre.name);
-        genre.innerText = genreNames.join(', ');
-
-        movieDetails.overview.length > 290
-            ? plot.textContent = `${movieDetails.overview.substring(0, 290)}...`
-            : plot.textContent = movieDetails.overview;
-
-        movieTitle.textContent = movieDetails.name || movieDetails.title;
-        moviePoster.src = `https://image.tmdb.org/t/p/w500${movieDetails.backdrop_path}`;
-        movieYear.textContent = `${movieDetails.release_date || movieDetails.first_air_date}`;
-        rating.textContent = movieDetails.vote_average;
-
-        // Call the changeServer function to update the video source
-        changeServer();
-
-        // Updating the favorite button text and adding a click event listener to toggle favorites
-        if (watchlist.some(favoriteMovie => favoriteMovie.id === movieDetails.id)) {
-            watchListBtn.textContent = "Remove From WatchList";
-        } else {
-            watchListBtn.textContent = "Add To WatchList";
-        }
-
-        watchListBtn.addEventListener('click', () => toggleFavorite(movieDetails));
-
-    } catch (error) {
-        movieTitle.textContent = "Details are not available right now! Please try after some time.";
+  try {
+    const movieDetails = await fetchMovieDetails(id);
+    var spokenlanguage = movieDetails.spoken_languages.map(language => language.english_name);
+    language.textContent = spokenlanguage.join(', ');
+    var genreNames = movieDetails.genres.map(genre => genre.name);
+    genre.innerText = genreNames.join(', ');
+    movieDetails.overview.length > 290 ? plot.textContent = `${movieDetails.overview.substring(0, 290)}...` : plot.textContent = movieDetails.overview;
+    movieTitle.textContent = movieDetails.name || movieDetails.title;
+    moviePoster.src = `https://image.tmdb.org/t/p/w500${movieDetails.backdrop_path}`;
+    movieYear.textContent = `${movieDetails.release_date || movieDetails.first_air_date}`;
+    rating.textContent = movieDetails.vote_average;
+    // Call the changeServer function to update the video source
+    changeServer();
+    // Updating the favorite button text and adding a click event listener to toggle favorites
+    if (watchlist.some(favoriteMovie => favoriteMovie.id === movieDetails.id)) {
+      watchListBtn.textContent = "Remove From WatchList";
+    } else {
+      watchListBtn.textContent = "Add To WatchList";
     }
+    watchListBtn.addEventListener('click', () => toggleFavorite(movieDetails));
+  } catch (error) {
+    movieTitle.textContent = "Details are not available right now! Please try after some time.";
+  }
 }
 
+// Function to toggle adding/removing from favorites
+function toggleFavorite(movieDetails) {
+  const index = watchlist.findIndex(movie => movie.id === movieDetails.id);
+  if (index !== -1) {
+    watchlist.splice(index, 1);
+    watchListBtn.textContent = "Add To WatchList";
+  } else {
+    watchlist.push(movieDetails);
+    watchListBtn.textContent = "Remove From WatchList";
+  }
+  localStorage.setItem('watchlist', JSON.stringify(watchlist));
+}
+
+// Call the function to display movie details when the page loads
+window.addEventListener('load', () => {
+  displayMovieDetails();
+});
+
+// Function to handle changes when server selection is made
+document.getElementById('server').addEventListener('change', () => {
+  changeServer();
+});
+
+// Adding a click event listener to the lookup button
 document.getElementById('lookup-btn').addEventListener('click', () => {
   const season = document.getElementById('season').value;
   const episode = document.getElementById('episode').value;
@@ -219,47 +157,34 @@ document.getElementById('lookup-btn').addEventListener('click', () => {
   displaySeasonAndEpisodeDetails(season, episode);
 });
 
-function displaySeasonAndEpisodeDetails(season, episode) {
-  const seasonData = getSeasonData(season);
-  const episodeData = getEpisodeData(episode);
-  // Display the season and episode details
-  displayDetails(seasonData, episodeData);
+// Function to display the season and episode details
+async function displaySeasonAndEpisodeDetails(season, episode) {
+  try {
+    const seasonData = await fetchSeasonData(id, season);
+    const episodeData = await fetchEpisodeData(id, season, episode);
+    // Display the season and episode details
+    displayDetails(seasonData, episodeData);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-function getSeasonData(season) {
-  // Implement the logic to retrieve the season data from the API or database
-  return seasonData; // Return the season data
+// Function to fetch season data from the TMDB API
+async function fetchSeasonData(id, season) {
+  const response = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${api_Key}`);
+  const data = await response.json();
+  return data;
 }
 
-function getEpisodeData(episode) {
-  // Implement the logic to retrieve the episode data from the API or database
-  return episodeData; // Return the episode data
+// Function to fetch episode data from the TMDB API
+async function fetchEpisodeData(id, season, episode) {
+  const response = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}/episode/${episode}?api_key=${api_Key}`);
+  const data = await response.json();
+  return data;
 }
 
+// Function to display the season and episode details
 function displayDetails(seasonData, episodeData) {
   // Implement the logic to display the season and episode details
   // Use the seasonData and episodeData variables to populate the HTML elements
 }
-
-// Function to toggle adding/removing from favorites
-function toggleFavorite(movieDetails) {
-    const index = watchlist.findIndex(movie => movie.id === movieDetails.id);
-    if (index !== -1) {
-        watchlist.splice(index, 1);
-        watchListBtn.textContent = "Add To WatchList";
-    } else {
-        watchlist.push(movieDetails);
-        watchListBtn.textContent = "Remove From WatchList";
-    }
-    localStorage.setItem('watchlist', JSON.stringify(watchlist));
-}
-
-// Call the function to display movie details when the page loads
-window.addEventListener('load', () => {
-    displayMovieDetails();
-});
-
-// Function to handle changes when server selection is made
-document.getElementById('server').addEventListener('change', () => {
-    changeServer();
-});
