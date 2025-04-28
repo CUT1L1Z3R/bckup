@@ -33,52 +33,81 @@ async function fetchMovieDetails(id) {
 
 async function displayMovieDetails() {
     try {
-        const { data, seasons } = await fetchMovieDetails(id);
-        // ...
+        const movieDetails = await fetchMovieDetails(id);
+        const seasons = await fetchSeasons(id);
 
-        // Display season and episode info
-        const seasonsElement = document.getElementById('seasons');
+        var spokenlanguage = movieDetails.spoken_languages.map(language => language.english_name);
+        language.textContent = spokenlanguage.join(', ');
+
+        var genreNames = movieDetails.genres.map(genre => genre.name);
+        genre.innerText = genreNames.join(', ');
+
+        movieDetails.overview.length > 290
+            ? plot.textContent = `${movieDetails.overview.substring(0, 290)}...`
+            : plot.textContent = movieDetails.overview;
+
+        movieTitle.textContent = movieDetails.name || movieDetails.title;
+        moviePoster.src = `https://image.tmdb.org/t/p/w500${movieDetails.backdrop_path}`;
+ movieYear.textContent = `${movieDetails.release_date || movieDetails.first_air_date}`;
+        rating.textContent = movieDetails.vote_average;
+
+        const seasonsElement = document('seasons');
         seasonsElement.innerHTML = '';
 
-        Object.entries(seasons).forEach(([seasonNumber, season]) => {
+        seasons.forEach(() => {
             const seasonElement = document.createElement('div');
-            seasonElement.classList.add('season');
+            season.classList.add('season');
             seasonsElement.appendChild(seasonElement);
 
-            const seasonNameElement = document.createElement('h2');
-            seasonNameElement.textContent = `Season ${seasonNumber}: ${season.name}`;
+ const seasonNameElement = document.createElement('h2');
+            seasonNameElement.textContent = `Season ${season.season_number}: ${season.name}`;
             seasonElement.appendChild(seasonNameElement);
 
-            const episodesElement = document.createElement('ul');
+            const episodesElement = document.createElement('div');
             episodesElement.classList.add('episodes');
             seasonElement.appendChild(episodesElement);
 
-            Object.entries(season.episodes).forEach(([episodeNumber, episode]) => {
-                const episodeElement = document.createElement('li');
+            season.episodes.forEach((episode) => {
+                const episodeElement = document.createElement('div');
                 episodeElement.classList.add('episode');
                 episodesElement.appendChild(episodeElement);
 
-                const episodeInfoElement = document.createElement('div');
-                episodeElement.appendChild(episodeInfoElement);
-
                 const episodeNumberElement = document.createElement('p');
-                episodeNumberElement.textContent = `Episode ${episodeNumber}:`;
-                episodeInfoElement.appendChild(episodeNumberElement);
+                episodeNumberElement.textContent = `Episode ${episode.episode_number}:`;
+                episodeElement.appendChild(episodeNumberElement);
 
                 const episodeTitleElement = document.createElement('p');
                 episodeTitleElement.textContent = episode.name;
-                episodeInfoElement.appendChild(episodeTitleElement);
+                episodeElement.appendChild(episodeTitleElement);
 
                 const airDateElement = document.createElement('p');
                 airDateElement.textContent = `Air Date: ${episode.air_date}`;
-                episodeInfoElement.appendChild(airDateElement);
+                episodeElement.appendChild(airDateElement);
             });
         });
 
-        // ...
+        // Call the changeServer function to update the video source
+        changeServer();
+
+        // Updating the favorite button text and adding a click event listener to toggle favorites
+        if (watchlist.some(favoriteMovie => favoriteMovie.id === movieDetails.id)) {
+            watchListBtn.textContent = "Remove From WatchList";
+        } else {
+            watchListBtn.textContent = "Add To WatchList";
+        }
+
+        watchListBtn.addEventListener('click', () => toggleFavorite(movieDetails));
+
     } catch (error) {
-        // ...
+        movieTitle.textContent = "Details are not available right now! Please try after some time.";
     }
+}
+
+// Function to fetch season details
+async function fetchSeasons(id) {
+    const response = await fetch(`https://api.themoviedb.org/3/tv/${id}/seasons?api_key=${api_Key}`);
+    const data = await response.json();
+    return data.results;
 }
 
 // Function to fetch video details (trailers) for a movie or TV show
