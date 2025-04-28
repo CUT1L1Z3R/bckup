@@ -19,79 +19,99 @@ const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 // API key for TMDB API
 const api_Key = 'e79515e88dfd7d9f6eeca36e49101ac2';
 
-const tvId = 1396;  // Replace with your dynamic TV Show ID
-loadSeasons(tvId);
-
-async function fetchSeasons(tvId) {
-    const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}?api_key=${api_Key}`);
-    const data = await response.json();
-    
-    console.log("Seasons data:", data.seasons);  // Log seasons data to check the structure
-
-    if (data && data.seasons) {
-        return data.seasons;
-    } else {
-        console.error("No seasons data found.");
-        return [];  // Return empty array if no seasons found
-    }
+async function fetchEpisodes(seasonNumber) {
+  const resp = await fetch(`https://api.themoviedb.org/3/tv/60735/season/${seasonNumber}?api_key=${apiKey}&language=en-US`);
+  const data = await resp.json();
+  return data.episodes; // array of episodes
 }
 
-async function loadSeasons(tvId) {
-    const seasons = await fetchSeasons(tvId);
-    const seasonSelector = document.getElementById('season');  // Assuming a <select> element with id="season"
-
-    // Clear existing options
-    seasonSelector.innerHTML = '';
-
-    const defaultOption = document.createElement('option');
-    defaultOption.textContent = 'Select a Season';
-    defaultOption.disabled = true;
-    defaultOption.selected = true;
-    seasonSelector.appendChild(defaultOption);
-
-    if (seasons.length === 0) {
-        const noSeasonsOption = document.createElement('option');
-        noSeasonsOption.textContent = 'No seasons available';
-        noSeasonsOption.disabled = true;
-        seasonSelector.appendChild(noSeasonsOption);
-    } else {
-        // Loop through the seasons and create an option for each
-        seasons.forEach(season => {
-            const option = document.createElement('option');
-            option.value = season.season_number;  // Use the season number
-            option.textContent = `Season ${season.season_number}`;
-            seasonSelector.appendChild(option);
-        });
-    }
+async function populateEpisodes(season=1) {
+  const episodesData = await fetchEpisodes(season);
+  episodeList.innerHTML = '';
+  episodesData.forEach((ep, idx) => {
+    const c = document.createElement('div');
+    c.className = 'episode-card' + ((idx+1)===selectedEpisode ? ' selected' : '');
+    c.tabIndex = 0;
+    c.innerHTML = `
+      <img class="episode-thumb" src="https://image.tmdb.org/t/p/w300${ep.still_path}" alt="${ep.name}">
+      <div class="episode-info">
+        <div class="episode-title">${ep.episode_number}. ${ep.name}</div>
+        <div class="episode-desc">${ep.overview}</div>
+      </div>`;
+    c.addEventListener('click', () => {
+      selectEpisode(ep.episode_number);
+    });
+    c.addEventListener('keypress', e => {
+      if (e.key==='Enter') selectEpisode(ep.episode_number);
+    });
+    episodeList.appendChild(c);
+  });
+  seasonEpCount.textContent = `(${episodesData.length} Episodes)`;
 }
 
-document.getElementById('season').addEventListener('change', (event) => {
-    const selectedSeason = event.target.value;
-    loadEpisodes(selectedSeason);  // Load episodes when a season is selected
-});
+const episodeList = document.getElementById('episode-list');
+const seasonSelect = document.getElementById('season-select');
+const seasonEpCount = document.getElementById('season-ep-count');
+const playerIframe = document.getElementById('player-iframe');
+const playBtn = document.getElementById('play-btn');
 
-async function loadEpisodes(seasonNumber) {
-    const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}/season/${seasonNumber}?api_key=${api_Key}`);
-    const data = await response.json();
+let selectedSeason = 1;
+let selectedEpisode = 1;
 
-    console.log("Episodes for Season:", data);  // Log episode data for debugging
+function populateEpisodes(season=1) {
+  // For demo, always same sample episodes. For multiple seasons, vary data here.
+  episodeList.innerHTML = '';
+  episodes.forEach((ep, i) => {
+    const c = document.createElement('div');
+    c.className = 'episode-card' + ((i+1)===selectedEpisode ? ' selected' : '');
+    c.tabIndex = 0;
+    c.innerHTML = `<img class="episode-thumb" src="${ep.thumb}" alt="${ep.title}">
+    <div class="episode-info">
+      <div class="episode-title">${(i+1)}. ${ep.title}</div>
+      <div class="episode-desc">${ep.desc}</div>
+    </div>`;
+    c.addEventListener('click', () => {
+      selectEpisode(i+1);
+    });
+    c.addEventListener('keypress', e => {
+      if (e.key==='Enter') selectEpisode(i+1);
+    });
+    episodeList.appendChild(c);
+  });
+  seasonEpCount.textContent = `(${episodes.length} Episodes)`;
+}
 
-    const episodeList = document.getElementById('episode-list');  // Assuming a <ul> or <div> with id="episode-list"
+function selectEpisode(epNum) {
+  selectedEpisode = epNum;
+  updatePlayer();
+  populateEpisodes(selectedSeason);
+}
 
-    // Clear previous episodes
-    episodeList.innerHTML = '';
+function selectSeason(seasonNum) {
+  selectedSeason = seasonNum;
+  selectedEpisode = 1;
+  updatePlayer();
+  populateEpisodes(selectedSeason);
+}
 
-    if (data.episodes && data.episodes.length > 0) {
-        data.episodes.forEach(episode => {
-            const episodeItem = document.createElement('li');
-            episodeItem.textContent = `Episode ${episode.episode_number}: ${episode.name}`;
-            episodeList.appendChild(episodeItem);
-        });
-    } else {
-        const noEpisodesMessage = document.createElement('li');
-        noEpisodesMessage.textContent = 'No episodes available for this season.';
-        episodeList.appendChild(noEpisodesMessage);
-    }
+function updatePlayer() {
+  // Use vidsrc.cc embed logic
+  playerIframe.src = `https://vidsrc.cc/v2/embed/tv/60735/${selectedSeason}-${selectedEpisode}`;
+  playBtn.textContent = `► Play S${selectedSeason}E${selectedEpisode}`;
+}
+
+if (seasonSelect && episodeList) {
+  populateEpisodes();
+  seasonSelect.addEventListener('change', e => {
+    selectSeason(Number(e.target.value));
+  });
+}
+if (playBtn) {
+  playBtn.addEventListener('click', ()=>{
+    // Scroll to video and play that episode
+    document.getElementById('video-player-container').scrollIntoView({ behavior:'smooth' });
+    updatePlayer();
+  });
 }
 
 // Retrieve the TMDb ID and Media from the URL parameter
