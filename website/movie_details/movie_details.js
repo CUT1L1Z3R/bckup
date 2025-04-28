@@ -1,3 +1,4 @@
+//
 // Selecting the logo element and adding a click event listener to navigate to the homepage
 const logo = document.querySelector('.logo');
 logo.addEventListener('click', () => {
@@ -303,25 +304,10 @@ async function changeServer() {
     // Update the iframe source with the correct video URL
     iframe.src = embedURL;
 
-    // Ensure iframe is visible and correctly sized
+    // Ensure iframe is visible
     iframe.style.display = "block";  // Show the iframe
 
-    // Set responsive height based on device width
-    if (window.innerWidth <= 560) {
-        iframe.style.height = "250px";
-    } else if (window.innerWidth <= 740) {
-        iframe.style.height = "300px";
-    } else if (window.innerWidth <= 840) {
-        iframe.style.height = "350px";
-    } else if (window.innerWidth <= 924) {
-        iframe.style.height = "300px";
-    } else if (window.innerWidth <= 1024) {
-        iframe.style.height = "350px";
-    } else {
-        iframe.style.height = "400px";
-    }
-
-    iframe.style.width = (window.innerWidth <= 740) ? "95%" : "100%";
+    // We don't need to modify heights anymore since we're using CSS !important values
 
     // Hide the movie poster when the video is playing
     moviePoster.style.display = "none";  // Hide the movie poster image
