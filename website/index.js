@@ -75,6 +75,8 @@ function fetchMedia(containerClass, endpoint, mediaType) {
         fetch(`https://api.themoviedb.org/3/${endpoint}&api_key=${api_Key}`)
             .then(response => response.json())
             .then(data => {
+                const imagePath = data.poster_path; // Poster image URL
+                const title = data.title;          // Movie title
                 const fetchResults = data.results;
                 fetchResults.forEach(item => {
                     const itemElement = document.createElement('div');
