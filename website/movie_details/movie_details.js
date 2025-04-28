@@ -210,6 +210,15 @@ function playEpisode(tvId, seasonNumber, episodeNumber) {
     }
 }
 
+// Add event listeners to the season and episode dropdown menus
+document.getElementById('season').addEventListener('change', () => {
+  changeServer();
+});
+
+document.getElementById('episode').addEventListener('change', () => {
+  changeServer();
+});
+
 // Function to handle video source change based on selected server
 async function changeServer() {
     const server = document.getElementById('server').value; // Get the selected server
