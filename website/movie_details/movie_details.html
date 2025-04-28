@@ -72,11 +72,46 @@
             <!-- watchList button section -->
             <button class="watchListBtn"></button>
 
-            <!-- Change server dropdown -->
-            <button id="change-server-btn" class="change-server-btn"><b>CHANGE SERVER</b></button>
+            <!-- Server Dropdown - New Design -->
+            <div class="server-dropdown">
+                <div class="server-dropdown-header">
+                    <div class="selected-server">
+                        <span class="server-name">Vidlink Pro</span>
+                        <span class="server-tag tag-stable">Stable</span>
+                        <span class="server-tag tag-4k">Has 4K</span>
+                        <span class="server-tag tag-hd">HD</span>
+                    </div>
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="server-dropdown-content">
+                    <div class="server-option" data-server="vidlink.pro">
+                        <span class="server-name">Vidlink Pro</span>
+                        <span class="server-tag tag-stable">Stable</span>
+                        <span class="server-tag tag-4k">Has 4K</span>
+                        <span class="server-tag tag-hd">HD</span>
+                    </div>
+                    <div class="server-option" data-server="vidsrc.cc">
+                        <span class="server-name">Beatrix</span>
+                        <span class="server-tag tag-stable">Stable</span>
+                        <span class="server-tag tag-hd">HD</span>
+                    </div>
+                    <div class="server-option" data-server="vidsrc.me">
+                        <span class="server-name">Nana</span>
+                    </div>
+                    <div class="server-option" data-server="player.videasy.net">
+                        <span class="server-name">Gord</span>
+                    </div>
+                    <div class="server-option" data-server="movieapi.club">
+                        <span class="server-name">Miya</span>
+                        <span class="server-tag tag-stable">Stable</span>
+                        <span class="server-tag tag-4k">Has 4K</span>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Server selector dropdown -->
-            <div id="server-selector" class="server-selector-dropdown">
+            <!-- Old Server selector dropdown - hidden, kept for backward compatibility -->
+            <button id="change-server-btn" class="change-server-btn" style="display: none;"><b>CHANGE SERVER</b></button>
+            <div id="server-selector" class="server-selector-dropdown" style="display: none;">
                 <label for="server">Select Server:</label>
                 <select id="server" class="server-selector-select">
                     <option value="vidlink.pro">VIDLINK PRO 4K FAST</option>
