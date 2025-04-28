@@ -19,29 +19,23 @@ const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 // API key for TMDB API
 const api_Key = 'e79515e88dfd7d9f6eeca36e49101ac2';
 
-// Fetch season details from TMDB API
 async function fetchSeasons(tvId) {
     const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}?api_key=${api_Key}`);
     const data = await response.json();
-    return data.seasons;  // Return the list of seasons
+    return data.seasons;
 }
 
-// Function to populate the season dropdown
 async function loadSeasons(tvId) {
     const seasons = await fetchSeasons(tvId);
     const seasonSelector = document.getElementById('season');
-
-    // Clear existing options
     seasonSelector.innerHTML = '';
 
-    // Add a default option
     const defaultOption = document.createElement('option');
     defaultOption.textContent = 'Select a Season';
     defaultOption.disabled = true;
     defaultOption.selected = true;
     seasonSelector.appendChild(defaultOption);
 
-    // Populate the dropdown with seasons
     seasons.forEach(season => {
         const option = document.createElement('option');
         option.value = season.season_number;
@@ -49,6 +43,47 @@ async function loadSeasons(tvId) {
         seasonSelector.appendChild(option);
     });
 }
+
+async function fetchEpisodes(tvId, seasonNumber) {
+    const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}/season/${seasonNumber}?api_key=${api_Key}`);
+    const data = await response.json();
+    return data.episodes;
+}
+
+async function displayEpisodes(tvId, seasonNumber) {
+    const episodes = await fetchEpisodes(tvId, seasonNumber);
+    const episodeList = document.getElementById('episode-list');
+    episodeList.innerHTML = '';
+
+    episodes.forEach(episode => {
+        const episodeItem = document.createElement('div');
+        episodeItem.classList.add('episode-item');
+
+        const episodeTitle = document.createElement('h4');
+        episodeTitle.textContent = `${episode.episode_number}. ${episode.name}`;
+
+        const episodeDescription = document.createElement('p');
+        episodeDescription.textContent = episode.overview || 'No description available.';
+
+        episodeItem.appendChild(episodeTitle);
+        episodeItem.appendChild(episodeDescription);
+
+        episodeList.appendChild(episodeItem);
+    });
+}
+
+document.getElementById('season').addEventListener('change', (e) => {
+    const selectedSeason = e.target.value;
+    if (selectedSeason !== 'Select a Season') {
+        displayEpisodes(id, selectedSeason);
+    }
+});
+
+// When the page loads, load seasons and movie details
+window.addEventListener('load', () => {
+    displayMovieDetails();
+});
+
 
 // Retrieve the TMDb ID and Media from the URL parameter
 const params = new URLSearchParams(window.location.search);
@@ -131,6 +166,19 @@ async function changeServer() {
 async function displayMovieDetails() {
     try {
         const movieDetails = await fetchMovieDetails(id);
+
+         // Check if it's a TV show (you could modify this check based on the 'media' variable)
+        if (media === 'tv') {
+            // Load seasons for the TV show
+            loadSeasons(id);
+        }
+
+        // Existing logic for setting movie details...
+        
+    } catch (error) {
+        movieTitle.textContent = "Details are not available right now! Please try again later.";
+    }
+}
 
         var spokenlanguage = movieDetails.spoken_languages.map(language => language.english_name);
         language.textContent = spokenlanguage.join(', ');
