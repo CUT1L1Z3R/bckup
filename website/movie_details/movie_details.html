@@ -68,69 +68,25 @@
 <div id="episode-list">
     <!-- Episodes will be dynamically displayed here -->
 </div>
-      <ul id="episode-list"></ul>
-<iframe id="episode-video" style="display:none; width: 100%; height: 400px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
-
-<script>
-    // Assume `tvId` and `seasonNumber` are already set
-    async function loadEpisodes(seasonNumber) {
-        const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}/season/${seasonNumber}?api_key=${api_Key}`);
-        const data = await response.json();
-
-        console.log("Episodes for Season:", data);  // Log episode data for debugging
-
-        const episodeList = document.getElementById('episode-list');  // Assuming a <ul> or <div> with id="episode-list"
-
-        // Clear previous episodes
-        episodeList.innerHTML = '';
-
-        if (data.episodes && data.episodes.length > 0) {
-            data.episodes.forEach(episode => {
-                const episodeItem = document.createElement('li');
-
-                // Create a button or clickable link for each episode
-                const episodeButton = document.createElement('button');
-                episodeButton.classList.add('episode-button');
-                episodeButton.textContent = `Episode ${episode.episode_number}: ${episode.name}`;
-                episodeButton.setAttribute('data-episode-id', episode.id);  // Store episode ID for later use
-
-                // Add event listener to handle episode selection
-                episodeButton.addEventListener('click', () => {
-                    loadEpisodeVideo(episode.id);  // Load the video for the selected episode
-                });
-
-                episodeItem.appendChild(episodeButton);
-                episodeList.appendChild(episodeItem);
-            });
-        } else {
-            const noEpisodesMessage = document.createElement('li');
-            noEpisodesMessage.textContent = 'No episodes available for this season.';
-            episodeList.appendChild(noEpisodesMessage);
-        }
-    }
-
-    async function loadEpisodeVideo(episodeId) {
-        // Fetch video data for the selected episode
-        const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}/episode/${episodeId}/videos?api_key=${api_Key}`);
-        const data = await response.json();
-
-        console.log("Episode video data:", data);  // Log the video data for debugging
-
-        // Check if the video data is available
-        if (data.results && data.results.length > 0) {
-            const video = data.results[0];  // Assuming the first result is the correct one (e.g., a trailer or video link)
-            
-            const videoUrl = `https://www.youtube.com/embed/${video.key}`;  // YouTube embedded video URL
-            const iframe = document.getElementById('episode-video');  // Assuming you have an iframe with id="episode-video"
-            
-            // Update iframe with the video URL
-            iframe.src = videoUrl;
-            iframe.style.display = "block";  // Ensure iframe is visible
-        } else {
-            alert("No video available for this episode.");
-        }
-    }
-</script>
+          <div class="episode-section">
+          <div class="season-picker">
+            <label for="season-select">Season</label>
+            <select id="season-select">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+            </select>
+            <span id="season-ep-count">(23 Episodes)</span>
+          </div>
+          <div id="episode-list" class="episode-list"></div>
+        </div>
+      </div>
 
             <!-- watchList button section -->
             <button class="watchListBtn"></button>
