@@ -1,4 +1,3 @@
-/*
 // Selecting the logo element and adding a click event listener to navigate to the homepage
 const logo = document.querySelector('.logo');
 logo.addEventListener('click', () => {
@@ -478,4 +477,3 @@ window.addEventListener('load', function() {
         selectedServerDisplay.innerHTML = initialServerOption.innerHTML;
     }
 });
-*/
