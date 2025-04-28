@@ -16,7 +16,7 @@ h1 {
     height: 70px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
 }
 
 /* Logo styling */
@@ -24,6 +24,20 @@ h1 {
     width: 120px;
     cursor: pointer;
     margin: 15px 0px;
+}
+
+.back-button {
+    background-color: purple;
+    color: white;
+    border none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.back-button:hover {
+    background-color: #7a288a;
 }
 
 /* Movie details container */
@@ -50,6 +64,24 @@ iframe {
 #moviePoster {
     width: 100%;
     height: 100%;
+}
+
+/* Add margin space to the iframe */
+iframe {
+    margin-left: 20px; /* Add a 20px margin to the left of the iframe */
+    margin-right: 30px; /* Add a 20px margin to the right of the iframe */
+    margin-bottom: 20px; /* Add a 20px margin to the bottom of the iframe */
+}
+
+/* Add margin space to the text elements */
+.movie-info {
+    margin-left: 20px; /* Add a 20px margin to the left of the text elements */
+    margin-right: 30px; /* Add a 20px margin to the right of the text elements */
+}
+
+/* Add margin space to the plot element */
+#plot {
+    margin-bottom: 20px; /* Add a 20px margin to the bottom of the plot element */
 }
 
 /* Movie information section */
@@ -107,6 +139,29 @@ p {
   height: auto;
 }
 
+/* Add this to your CSS file */
+
+/* Mobile styles */
+@media only screen and (max-width: 768px) {
+    iframe {
+        width: 90%;
+        height: 150px;
+    }
+}
+
+/* Tablet and desktop styles */
+@media only screen and (min-width: 769px) {
+    iframe {
+        width: 80%;
+        height: 200px;
+    }
+}
+
+iframe {
+    width: 80vw;
+    height: 150vh;
+}
+
 /* Server selector dropdown styles */
 #server-selector {
   position: absolute;
@@ -118,6 +173,7 @@ p {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: none; /* Initially hidden */
 }
 
 .server-selector-header {
@@ -223,15 +279,15 @@ p {
   margin-right: 10px; /* Add a margin to the label */
 }
 
-.server-selector select {
-  padding: 5px;
-  font-size: 12px;
+.server-selector-select {
+  padding: 10px;
+  font-size: 14px;
   background-color: #444;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 80px; /* Set the width to 80px */
+  width: 200px;  /* Adjust width as necessary */
 }
 
 .server-selector select:focus {
