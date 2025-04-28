@@ -19,11 +19,14 @@ const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
 // API key for TMDB API
 const api_Key = 'e79515e88dfd7d9f6eeca36e49101ac2';
 
+const tvId = 1396;  // Replace with your dynamic TV Show ID
+loadSeasons(tvId);
+
 async function fetchSeasons(tvId) {
     const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}?api_key=${api_Key}`);
     const data = await response.json();
     
-    console.log("API Response:", data);  // Log response to see if 'seasons' exists
+    console.log("Seasons data:", data.seasons);  // Log seasons data to check the structure
 
     if (data && data.seasons) {
         return data.seasons;
@@ -35,7 +38,7 @@ async function fetchSeasons(tvId) {
 
 async function loadSeasons(tvId) {
     const seasons = await fetchSeasons(tvId);
-    const seasonSelector = document.getElementById('season');
+    const seasonSelector = document.getElementById('season');  // Assuming a <select> element with id="season"
 
     // Clear existing options
     seasonSelector.innerHTML = '';
@@ -52,17 +55,44 @@ async function loadSeasons(tvId) {
         noSeasonsOption.disabled = true;
         seasonSelector.appendChild(noSeasonsOption);
     } else {
+        // Loop through the seasons and create an option for each
         seasons.forEach(season => {
             const option = document.createElement('option');
-            option.value = season.season_number;
+            option.value = season.season_number;  // Use the season number
             option.textContent = `Season ${season.season_number}`;
             seasonSelector.appendChild(option);
         });
     }
 }
 
-const tvId = 1396;  // Try a known TV show ID for testing
-loadSeasons(tvId);
+document.getElementById('season').addEventListener('change', (event) => {
+    const selectedSeason = event.target.value;
+    loadEpisodes(selectedSeason);  // Load episodes when a season is selected
+});
+
+async function loadEpisodes(seasonNumber) {
+    const response = await fetch(`https://api.themoviedb.org/3/tv/${tvId}/season/${seasonNumber}?api_key=${api_Key}`);
+    const data = await response.json();
+
+    console.log("Episodes for Season:", data);  // Log episode data for debugging
+
+    const episodeList = document.getElementById('episode-list');  // Assuming a <ul> or <div> with id="episode-list"
+
+    // Clear previous episodes
+    episodeList.innerHTML = '';
+
+    if (data.episodes && data.episodes.length > 0) {
+        data.episodes.forEach(episode => {
+            const episodeItem = document.createElement('li');
+            episodeItem.textContent = `Episode ${episode.episode_number}: ${episode.name}`;
+            episodeList.appendChild(episodeItem);
+        });
+    } else {
+        const noEpisodesMessage = document.createElement('li');
+        noEpisodesMessage.textContent = 'No episodes available for this season.';
+        episodeList.appendChild(noEpisodesMessage);
+    }
+}
 
 // Retrieve the TMDb ID and Media from the URL parameter
 const params = new URLSearchParams(window.location.search);
