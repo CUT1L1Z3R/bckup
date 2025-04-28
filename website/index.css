@@ -295,8 +295,9 @@ input::-webkit-input-placeholder {
 .movies-box div img {
   width: 290px;
   height: 170px;
-  border-radius: 5px;
-  transition: all 0.5s ease-in-out;
+  object-fit: cover;
+  object-position: center top;
+  transform: rotate(90deg);
 }
 
 .movies-box div img:hover {
@@ -341,9 +342,17 @@ input::-webkit-input-placeholder {
 
 /* ----Netflix Movies---- */
 
-.netflix-container div {
+.netflix-container div img {
   width: 250px;
   height: 340px;
+  object-fit: cover;
+  object-position: center top;
+  transform: rotate(90deg);
+}
+
+.netflix-container div img:hover {
+  transform: scale(1.1);
+  border-radius: 5px;
 }
 
 .netflix-container div img {
@@ -356,6 +365,7 @@ input::-webkit-input-placeholder {
   width: 80px;
   height: 340px;
   top: 5.3%;
+  transform: rotate(180deg);
 }
 
 
