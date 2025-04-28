@@ -212,6 +212,35 @@ async function displayMovieDetails() {
     }
 }
 
+document.getElementById('lookup-btn').addEventListener('click', () => {
+  const season = document.getElementById('season').value;
+  const episode = document.getElementById('episode').value;
+  // Call the function to display the season and episode details
+  displaySeasonAndEpisodeDetails(season, episode);
+});
+
+function displaySeasonAndEpisodeDetails(season, episode) {
+  const seasonData = getSeasonData(season);
+  const episodeData = getEpisodeData(episode);
+  // Display the season and episode details
+  displayDetails(seasonData, episodeData);
+}
+
+function getSeasonData(season) {
+  // Implement the logic to retrieve the season data from the API or database
+  return seasonData; // Return the season data
+}
+
+function getEpisodeData(episode) {
+  // Implement the logic to retrieve the episode data from the API or database
+  return episodeData; // Return the episode data
+}
+
+function displayDetails(seasonData, episodeData) {
+  // Implement the logic to display the season and episode details
+  // Use the seasonData and episodeData variables to populate the HTML elements
+}
+
 // Function to toggle adding/removing from favorites
 function toggleFavorite(movieDetails) {
     const index = watchlist.findIndex(movie => movie.id === movieDetails.id);
