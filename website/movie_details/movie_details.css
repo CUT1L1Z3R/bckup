@@ -329,6 +329,21 @@ iframe {
   width: 100%;
 }
 
+.episode-button {
+    background-color: #ffcc00;
+    border: none;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.episode-button:hover {
+    background-color: #ff9900;
+}
+
 /* Iframe to display video */
 #iframe {
   width: 100%;
