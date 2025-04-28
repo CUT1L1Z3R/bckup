@@ -89,6 +89,22 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                         window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${item.id}`;
                     });
                 });
+                
+                const canvas = document.getElementById("movieCanvas");
+const ctx = canvas.getContext("2d");
+
+const image = new Image();
+image.src = `https://image.tmdb.org/t/p/w500${imagePath}`; // Movie poster URL
+image.onload = function () {
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // Draw image on canvas
+
+  // Add movie title over the image
+  ctx.font = "bold 50px Arial";
+  ctx.fillStyle = "white";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(title, canvas.width / 2, canvas.height - 50); // Draw title at the bottom
+};
 
                 if (containerClass === 'trending-container') {
     const banner = document.getElementById('banner');
