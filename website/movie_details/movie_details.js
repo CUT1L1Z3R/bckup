@@ -175,15 +175,6 @@ async function loadEpisodes(tvId, seasonNumber) {
     }
 }
 
-// Add event listeners to the season and episode dropdown menus
-document.getElementById('season').addEventListener('change', () => {
-  changeServer();
-});
-
-document.getElementById('episode').addEventListener('change', () => {
-  changeServer();
-});
-
 // Function to play a specific episode
 function playEpisode(tvId, seasonNumber, episodeNumber) {
     const server = document.getElementById('server').value;
