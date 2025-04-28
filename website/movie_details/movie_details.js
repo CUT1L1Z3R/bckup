@@ -1,3 +1,4 @@
+/*
 // Selecting the logo element and adding a click event listener to navigate to the homepage
 const logo = document.querySelector('.logo');
 logo.addEventListener('click', () => {
@@ -80,11 +81,6 @@ document.getElementById('server-selector').addEventListener('click', (e) => {
 // Add event listener for the close button
 document.querySelector('.close-button').addEventListener('click', () => {
   document.getElementById('server-selector').style.display = 'none';
-});
-
-document.getElementById('server').addEventListener('change', () => {
-    changeServer();
-    document.getElementById('server-selector').style.display = 'none'; // Hide dropdown after selection
 });
 
 // Function to create season dropdown items
@@ -418,3 +414,68 @@ window.addEventListener('resize', () => {
         changeServer();
     }
 });
+
+// Initialize new server dropdown UI when the page loads
+window.addEventListener('load', function() {
+    // Setup server dropdown toggle
+    const serverDropdownHeader = document.querySelector('.server-dropdown-header');
+    const serverDropdownContent = document.querySelector('.server-dropdown-content');
+    const dropdownArrow = document.querySelector('.dropdown-arrow');
+
+    if (!serverDropdownHeader) return; // Exit if elements don't exist
+
+    // Toggle dropdown when clicking the header
+    serverDropdownHeader.addEventListener('click', function(event) {
+        event.stopPropagation();
+        serverDropdownContent.classList.toggle('show');
+        serverDropdownHeader.classList.toggle('active');
+        dropdownArrow.classList.toggle('up');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.server-dropdown')) {
+            serverDropdownContent.classList.remove('show');
+            serverDropdownHeader.classList.remove('active');
+            dropdownArrow.classList.remove('up');
+        }
+    });
+
+    // Handle server selection
+    const serverOptions = document.querySelectorAll('.server-option');
+    const selectedServerDisplay = document.querySelector('.selected-server');
+
+    serverOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            // Update the hidden select for compatibility with existing code
+            const serverValue = this.getAttribute('data-server');
+            document.getElementById('server').value = serverValue;
+
+            // Update selected server display in header
+            selectedServerDisplay.innerHTML = this.innerHTML;
+
+            // Remove active class from all options
+            serverOptions.forEach(opt => opt.classList.remove('active'));
+
+            // Add active class to clicked option
+            this.classList.add('active');
+
+            // Close the dropdown
+            serverDropdownContent.classList.remove('show');
+            serverDropdownHeader.classList.remove('active');
+            dropdownArrow.classList.remove('up');
+
+            // Call the existing changeServer function
+            changeServer();
+        });
+    });
+
+    // Set initial active server
+    const initialServer = document.getElementById('server').value;
+    const initialServerOption = document.querySelector(`.server-option[data-server="${initialServer}"]`);
+    if (initialServerOption) {
+        initialServerOption.classList.add('active');
+        selectedServerDisplay.innerHTML = initialServerOption.innerHTML;
+    }
+});
+*/
