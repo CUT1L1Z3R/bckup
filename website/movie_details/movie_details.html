@@ -2,10 +2,9 @@
 <html lang="en">
 
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/movie_details/movie_details.css">
+    <link rel="stylesheet" href="movie_details.css">
     <link rel="icon" href="/assests/netflix.ico">
     <title>Movie Details</title>
 </head>
@@ -13,23 +12,37 @@
 <body>
     <!-- Header section -->
     <header class="header">
-    <img src="/assests/netflix.png" alt="logo" class="logo">
+        <img src="/assests/netflix.png" alt="logo" class="logo">
     </header>
 
     <!-- Movie details section -->
     <div class="movie-details">
 
         <!-- Movie poster section -->
+        <div class="movie-poster">
+            <img id="moviePoster" src="" alt="Movie Poster">
+            <iframe id="iframe" frameborder="0" allowfullscreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
 
-       <div class="movie-poster">
-  <img id="moviePoster" src="" alt="Movie Poster">
-  <iframe id="iframe" frameborder="0" allowfullscreen 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
-</div>
-        
+            <!-- Season selector (visible only for TV shows) -->
+            <div id="seasons-container" class="seasons-container">
+                <div class="season-dropdown">
+                    <div class="season-selector">
+                        <span>Season</span>
+                        <select id="season-select" class="season-select">
+                            <!-- Seasons will be populated here -->
+                        </select>
+                    </div>
+                </div>
+
+                <div id="episodes-list" class="episodes-list">
+                    <!-- Episodes will be populated here -->
+                </div>
+            </div>
+        </div>
+
         <!-- Movie information section -->
         <div class="movie-info">
-
             <h1 id="movieTitle"></h1>
             <p id="plot"></p>
 
@@ -58,47 +71,26 @@
 
             <!-- watchList button section -->
             <button class="watchListBtn"></button>
-<!-- Season options start-->
-    <div class="episode-section">
-          <div class="season-picker">
-            <label for="season-dropdown-btn">Season</label>
-            <div class="custom-dropdown">
-              <button id="season-dropdown-btn" class="dropdown-button">Season 1 (23 Episodes)</button>
-              <div id="season-dropdown" class="dropdown-content">
-                <!-- Season options will be populated by JS -->
-              </div>
-            </div>
-          </div>
 
-          <!-- Legacy select (hidden, kept for fallback) -->
-          <select id="season-select" style="display: none;">
-            <option value="1">1</option>
-          </select>
-          <span id="season-ep-count" style="display: none;">(23 Episodes)</span>
-
-          <div id="episode-list" class="episode-list">
-            <!-- Episodes will be populated by JS -->
-            <div class="loading">Loading episodes...</div>
-          </div>
-        </div>
-      </div>
-          
             <!-- Change server dropdown -->
-<button id="change-server-btn" class="change-server-btn"><b>CHANGE SERVER</b></button>
- 
- <!-- Server selector dropdown -->
-             <!-- Change server dropdown -->
- <div id="server-selector" class="server-selector-dropdown">
-   <label for="server">Select Server:</label>
-   <select id="server" class="server-selector-select">
-     <option value="player.videasy.net">Player.Videasy.net</option>
-     <option value="vidsrc.cc">Vidsrc.cc</option>
-     <option value="vidsrc.me">Vidsrc.me</option>
-     <option value="2embed">2Embed</option>
-   </select>
-</div>
+            <button id="change-server-btn" class="change-server-btn"><b>CHANGE SERVER</b></button>
 
-    <script src="/movie_details/movie_details.js"></script>
+            <!-- Server selector dropdown -->
+            <div id="server-selector" class="server-selector-dropdown">
+                <label for="server">Select Server:</label>
+                <select id="server" class="server-selector-select">
+                    <option value="vidsrc.cc">KANADE 4K FAST</option>
+                    <option value="movieapi.club">TSUKASA 4K FAST</option>
+                    <option value="player.videasy.net">MIZUKI 1080p FAST</option>
+                    <option value="vidsrc.me">MAFUYU 1080P FAST</option>
+                    <option value="2embed">OTORI 720P SLOW</option>
+                </select>
+                <button class="close-button" style="position: absolute; top: 10px; right: 10px;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="movie_details.js"></script>
 </body>
 
 </html>
