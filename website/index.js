@@ -67,6 +67,53 @@ setupScroll('romantic-container', 'romantic-previous', 'romantic-next');
 // TMDB API key
 const api_Key = '84259f99204eeb7d45c7e3d8e36c6123';
 
+// Function to get appropriate star color based on rating
+function getRatingColor(rating) {
+    if (rating >= 8) return '#4CAF50'; // Green for high ratings
+    if (rating >= 6) return '#8d16c9'; // Purple (main theme color) for good ratings
+    if (rating >= 4) return '#FFC107'; // Amber for average ratings
+    return '#F44336'; // Red for low ratings
+}
+
+// Function to create the movie overlay with title and rating
+function createMovieOverlay(item) {
+    const overlay = document.createElement('div');
+    overlay.className = 'movie-overlay';
+
+    // Create title element
+    const title = document.createElement('div');
+    title.className = 'movie-title';
+    title.textContent = item.title || item.name || 'Unknown Title';
+
+    // Create rating element with star icon
+    const rating = document.createElement('div');
+    rating.className = 'movie-rating';
+
+    const star = document.createElement('span');
+    star.className = 'rating-star';
+    star.innerHTML = '★';
+
+    const ratingValue = document.createElement('span');
+    ratingValue.className = 'rating-value';
+
+    // Format the rating to show only one decimal place
+    const voteAverage = item.vote_average || 0;
+    const formattedRating = voteAverage !== 0 ? voteAverage.toFixed(1) : 'N/A';
+    ratingValue.textContent = formattedRating;
+
+    // Set color based on rating
+    if (formattedRating !== 'N/A') {
+        star.style.color = getRatingColor(voteAverage);
+    }
+
+    // Append elements
+    rating.appendChild(star);
+    rating.appendChild(ratingValue);
+    overlay.appendChild(title);
+    overlay.appendChild(rating);
+
+    return overlay;
+}
 
 // Function to fetch and display movies or TV shows
 function fetchMedia(containerClass, endpoint, mediaType) {
@@ -77,80 +124,68 @@ function fetchMedia(containerClass, endpoint, mediaType) {
             .then(data => {
                 const fetchResults = data.results;
                 fetchResults.forEach(item => {
+                    // Skip items without images
+                    const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
+                    if (!imageUrl) return;
+
                     const itemElement = document.createElement('div');
 
-                    // For all sections, use backdrop_path (horizontal poster)
-                    let imageUrl = item.backdrop_path || item.poster_path;
+                    // Using a higher quality image (w780) for better resolution on all devices
+                    itemElement.innerHTML = ` <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${item.title || item.name || 'Movie poster'}"> `;
 
-                    // Skip items without images
-                    if (!imageUrl) {
-                        return;
-                    }
-
-                    // Get title and rating
-                    const title = item.title || item.name || 'Unknown Title';
-                    const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
-
-                    // Create HTML with image and title/rating below
-                    itemElement.innerHTML = `
-                        <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${title}">
-                        <div class="movie-info-overlay">
-                            <div class="title-container">
-                                <div class="movie-title">${title}</div>
-                            </div>
-                            <div class="movie-rating">
-                                <span class="rating-number">${rating}</span>
-                            </div>
-                        </div>
-                    `;
+                    // Add the movie overlay with title and rating
+                    const overlay = createMovieOverlay(item);
+                    itemElement.appendChild(overlay);
 
                     container.appendChild(itemElement);
 
                     itemElement.addEventListener('click', () => {
-                        const media_Type = item.media_type || mediaType
+                        const media_Type = item.media_type || mediaType;
                         window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${item.id}`;
                     });
                 });
 
                 if (containerClass === 'trending-container') {
-                    const banner = document.getElementById('banner');
-                    const play = document.getElementById('play-button');
-                    const info = document.getElementById('more-info');
-                    const title = document.getElementById('banner-title');
+    const banner = document.getElementById('banner');
+    const play = document.getElementById('play-button');
+    const info = document.getElementById('more-info');
+    const title = document.getElementById('banner-title');
 
-                    // Get all trending movies
-                    const bannerMovies = fetchResults.slice(0, 10); // Take first 10 trending movies
+    // Get all trending movies
+    const bannerMovies = fetchResults.filter(movie => movie.backdrop_path).slice(0, 10); // Take first 10 trending movies with backdrop images
 
-                    let currentBannerIndex = 0;
+    let currentBannerIndex = 0;
 
-                    function displayBanner(index) {
-                        const movie = bannerMovies[index];
-                        banner.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
-                        title.textContent = movie.title || movie.name;
+    function displayBanner(index) {
+        const movie = bannerMovies[index];
+        banner.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
+        title.textContent = movie.title || movie.name || 'Unknown Title';
 
-                        // Update button click events
-                        function redirectToMovieDetails() {
-                            const media_Type = movie.media_type || 'movie'; // fallback to movie
-                            window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${movie.id}`;
-                        }
-                        play.onclick = redirectToMovieDetails;
-                        info.onclick = redirectToMovieDetails;
-                    }
+        // Update button click events
+        function redirectToMovieDetails() {
+            const media_Type = movie.media_type || 'movie'; // fallback to movie
+            window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${movie.id}`;
+        }
+        play.onclick = redirectToMovieDetails;
+        info.onclick = redirectToMovieDetails;
+    }
 
-                    // Show first banner
-                    displayBanner(currentBannerIndex);
+    // Show first banner
+    if (bannerMovies.length > 0) {
+        displayBanner(currentBannerIndex);
 
-                    // Change banner every 5 seconds
-                    setInterval(() => {
-                        currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.length;
-                        displayBanner(currentBannerIndex);
-                    }, 5000);
-                }
+        // Change banner every 5 seconds
+        setInterval(() => {
+            currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.length;
+            displayBanner(currentBannerIndex);
+        }, 5000);
+    }
+}
             })
             .catch(error => {
-                console.error(error);
+                console.error('Error fetching data:', error);
             });
-    })
+    });
 }
 
 // Initial fetch of trending, Netflix, top rated, horror, comedy, action, and romantic on page load
@@ -203,8 +238,11 @@ async function fetchSearchResults(query) {
 function displaySearchResults(results) {
     searchResults.innerHTML = '';
     results.map(movie => {
-        const shortenedTitle = movie.title || movie.name;
-        const date = movie.release_date || movie.first_air_date;
+        // Skip items without poster images
+        if (!movie.poster_path) return;
+
+        const shortenedTitle = movie.title || movie.name || 'Unknown Title';
+        const date = movie.release_date || movie.first_air_date || '';
 
         let buttonText = "Add to WatchList"; // Set default button text
 
@@ -220,7 +258,7 @@ function displaySearchResults(results) {
                                 </div>
                                 <div class ="search-item-info">
                                     <h3>${shortenedTitle}</h3>
-                                    <p>${movie.media_type} <span> &nbsp; ${date}</span></p>
+                                    <p>${movie.media_type || 'unknown'} <span> &nbsp; ${date}</span></p>
                                 </div>
                                 <button class="watchListBtn" id="${movie.id}">${buttonText}</button>`;
 
