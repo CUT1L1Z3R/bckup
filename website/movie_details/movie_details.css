@@ -322,25 +322,12 @@ p {
 }
 
 .server-dropdown-header {
-  background: rgb(141, 22, 201);
-  border: 1px solid transparent;
-  border-radius: 3px;
-  padding: 8px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  position: relative;
+  background: transparent;
+  border: 1.5px solid rgb(141, 22, 201);
+  color: rgb(141, 22, 201);
   transition: all 0.3s ease;
-  box-shadow: none;
-  width: 100%;
-  box-sizing: border-box; /* Ensure padding is included in width */
-  text-align: left;
-    
 }
+
 .server-dropdown-header::before {
   content: "Servers";
   position: absolute;
