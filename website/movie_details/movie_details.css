@@ -461,14 +461,12 @@ p {
   color: white;
 }
 
-/* Make the server name in the dropdown header match the button color */
+/* Make the server name in the dropdown header match the button color and enhance it */
 .server-dropdown-header .server-name {
   color: rgb(141, 22, 201);
-}
-
-/* Make the server name in the dropdown header match the button color */
-.server-dropdown-header .server-name {
-  color: rgb(141, 22, 201);
+  font-weight: 600;
+  font-size: 16px;
+  margin-right: 4px;
 }
 
 /* Updated tag color styles to match the site's purple branding */
@@ -482,13 +480,13 @@ p {
   color: #fff;
 }
 
-.tag-recommended {
-  background-color: #d1fae5;
-  color: #065f46;
-}
-
 .tag-hd {
   background-color: #5d4fc7;
+  color: #fff;
+}
+
+.tag-recommended {
+  background-color: #15a854;
   color: #fff;
 }
 
