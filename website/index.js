@@ -17,7 +17,7 @@ let lastScrollTop = 0; // Keep track of the last scroll position
 // Function to handle scroll events
 window.addEventListener('scroll', () => {
     let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
+
     if (currentScrollTop > lastScrollTop) {
         // Scrolling down: hide the header
         header.style.top = "-120px"; // Move the header out of view (assuming the header height is 70px)
@@ -25,7 +25,7 @@ window.addEventListener('scroll', () => {
         // Scrolling up: show the header
         header.style.top = "0px"; // Reset the header position to the top
     }
-    
+
     lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // Prevent negative scroll value
 });
 
@@ -65,7 +65,7 @@ setupScroll('action-container', 'action-previous', 'action-next');
 setupScroll('romantic-container', 'romantic-previous', 'romantic-next');
 
 // TMDB API key
-const api_Key = 'e79515e88dfd7d9f6eeca36e49101ac2';
+const api_Key = '84259f99204eeb7d45c7e3d8e36c6123';
 
 
 // Function to fetch and display movies or TV shows
@@ -75,12 +75,11 @@ function fetchMedia(containerClass, endpoint, mediaType) {
         fetch(`https://api.themoviedb.org/3/${endpoint}&api_key=${api_Key}`)
             .then(response => response.json())
             .then(data => {
-                const imagePath = data.poster_path; // Poster image URL
-                const title = data.title;          // Movie title
                 const fetchResults = data.results;
                 fetchResults.forEach(item => {
                     const itemElement = document.createElement('div');
                     const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
+                    // Using a higher quality image (w780) for better resolution on all devices
                     itemElement.innerHTML = ` <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${item.title || item.name}"> `;
                     container.appendChild(itemElement);
 
@@ -89,29 +88,13 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                         window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${item.id}`;
                     });
                 });
-                
-                const canvas = document.getElementById("movieCanvas");
-const ctx = canvas.getContext("2d");
-
-const image = new Image();
-image.src = `https://image.tmdb.org/t/p/w500${imagePath}`; // Movie poster URL
-image.onload = function () {
-  ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // Draw image on canvas
-
-  // Add movie title over the image
-  ctx.font = "bold 50px Arial";
-  ctx.fillStyle = "white";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(title, canvas.width / 2, canvas.height - 50); // Draw title at the bottom
-};
 
                 if (containerClass === 'trending-container') {
     const banner = document.getElementById('banner');
     const play = document.getElementById('play-button');
     const info = document.getElementById('more-info');
     const title = document.getElementById('banner-title');
-                    
+
     // Get all trending movies
     const bannerMovies = fetchResults.slice(0, 10); // Take first 10 trending movies
 
