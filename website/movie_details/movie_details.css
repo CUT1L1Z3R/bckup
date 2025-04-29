@@ -51,9 +51,9 @@ h1 {
 
 /* Movie poster styling */
 .movie-poster {
-    width: 700px; /* Reduced from 750px to prevent overflow */
+    width: 700px;
     max-width: 100%;
-    height: auto; /* Changed from fixed height to auto */
+    height: auto;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -62,10 +62,10 @@ h1 {
 /* iframe sizing */
 iframe {
     width: 100%;
-    height: 350px !important; /* Fixed height */
-    margin: 0 0 20px 0; /* Simplified margins */
-    border-radius: 8px; /* Added rounded corners */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Added subtle shadow */
+    height: 350px !important;
+    margin: 0 0 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 #moviePoster {
@@ -73,7 +73,7 @@ iframe {
     height: auto;
     max-height: 400px;
     object-fit: cover;
-    border-radius: 8px; /* Added rounded corners */
+    border-radius: 8px;
 }
 
 /* Add margin space to the text elements */
@@ -448,7 +448,7 @@ p {
 /* Iframe to display video */
 #iframe {
   width: 100%;
-  height: 350px !important; /* Fixed height that's smaller than before */
+  height: 350px !important;
   display: block;
   margin-bottom: 10px;
 }
@@ -462,21 +462,20 @@ p {
   border-radius: 5px;
 }
 
-/* ---- Enhanced Server dropdown UI styling ---- */
+/* ---- Redesigned Server dropdown UI styling to match watchlist button ---- */
 .server-dropdown {
   position: relative;
   width: 100%;
-  max-width: 500px; /* Increased from 400px to make it longer */
-  margin: 25px 0;
+  max-width: 370px;
+  margin: 20px 0;
   z-index: 20;
 }
 
-/* Server dropdown header styling - making it more prominent */
 .server-dropdown-header {
-  background: linear-gradient(to right, rgba(138, 9, 184, 0.9), rgba(99, 7, 138, 0.8));
-  border: 1px solid #a209da;
-  border-radius: 25px;
-  padding: 16px 24px; /* Increased padding for more height */
+  background: rgb(141, 22, 201);
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 8px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -484,38 +483,40 @@ p {
   cursor: pointer;
   position: relative;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Increased shadow depth */
-  margin-top: 10px;
+  box-shadow: none;
+  margin-top: 0;
 }
 
 .server-dropdown-header:hover {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-  background: linear-gradient(to right, rgba(162, 9, 218, 0.95), rgba(122, 9, 165, 0.85));
-  transform: translateY(-2px); /* Subtle lift effect on hover */
+  background: black;
+  color: rgb(141, 22, 201);
+  border: 1px solid rgb(141, 22, 201);
+  transform: none;
+  box-shadow: none;
 }
 
 .server-dropdown-header::before {
   content: "Servers";
   position: absolute;
-  top: -10px;
-  left: 20px;
-  font-size: 13px;
+  top: -15px;
+  left: 0;
+  font-size: 12px;
   color: #a209da;
-  background-color: black;
-  padding: 0 8px;
-  font-weight: bold;
+  background: none;
+  padding: 0;
   letter-spacing: 0.5px;
 }
 
 .server-dropdown-header.active {
-  border-radius: 15px 15px 0 0;
+  border-radius: 3px 3px 0 0;
+  border-bottom: none;
 }
 
 .selected-server {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .server-dropdown-content {
@@ -526,12 +527,12 @@ p {
   background-color: #201020;
   border: 1px solid #a209da;
   border-top: none;
-  border-radius: 0 0 15px 15px;
+  border-radius: 0 0 3px 3px;
   z-index: 100;
   display: none;
   max-height: 300px;
   overflow-y: auto;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .server-dropdown-content.show {
@@ -539,55 +540,55 @@ p {
 }
 
 .server-option {
-  padding: 15px 20px;
+  padding: 10px 16px;
   color: white;
   cursor: pointer;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  border-bottom: 1px solid rgba(162, 9, 218, 0.3);
-  transition: background-color 0.2s ease;
+  gap: 6px;
+  border-bottom: 1px solid rgba(162, 9, 218, 0.2);
+  transition: background-color 0.2s;
+  background: none;
 }
 
 .server-option:last-child {
   border-bottom: none;
-  border-radius: 0 0 15px 15px;
+  border-radius: 0 0 3px 3px;
 }
 
-.server-option:hover, .server-option.active {
+.server-option:hover,
+.server-option.active {
   background-color: #3a1052;
 }
 
-/* Make server name slightly larger */
+/* Server name and tags styling */
 .server-name {
-  font-weight: 600; /* Increased from 500 */
-  font-size: 18px; /* Increased from 16px */
-  margin-right: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  margin-right: 4px;
   color: white;
-  letter-spacing: 0.5px;
 }
 
 .server-tag {
   display: inline-block;
-  padding: 4px 14px;
-  border-radius: 50px;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
   text-align: center;
-  margin-right: 5px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: none;
+  font-weight: 600;
 }
 
+/* Updated tag color styles to match the site's purple branding */
 .tag-stable {
-  background-color: #cca969;
-  color: #111;
+  background-color: #755b22;
+  color: #fff;
 }
 
 .tag-4k {
-  background-color: #d95058;
+  background-color: #a209da;
   color: #fff;
 }
 
@@ -596,12 +597,11 @@ p {
   color: #fff;
 }
 
-/* Make the dropdown arrow more visible */
 .dropdown-arrow {
   transition: transform 0.3s ease;
-  font-size: 18px; /* Increased from 16px */
-  color: rgba(255, 255, 255, 0.9); /* Increased opacity */
-  margin-left: 10px;
+  font-size: 16px;
+  color: white;
+  margin-left: 8px;
 }
 
 .dropdown-arrow.up {
@@ -625,7 +625,7 @@ p {
 .watchListBtn:hover {
     background: black;
     color: rgb(141, 22, 201);
-    border: 1px solid rgb(141, 22, 201)
+    border: 1px solid rgb(141, 22, 201);
 }
 
 /* Customize scrollbar for the server dropdown */
@@ -635,7 +635,7 @@ p {
 
 .server-dropdown-content::-webkit-scrollbar-track {
   background: #201020;
-  border-radius: 0 0 15px 0;
+  border-radius: 0 0 3px 0;
 }
 
 .server-dropdown-content::-webkit-scrollbar-thumb {
@@ -669,7 +669,6 @@ p {
         margin: 0 auto 20px auto;
     }
 
-    /* Improved spacing for seasons container on mobile */
     .seasons-container {
         margin-top: 20px !important;
         width: 100%;
@@ -719,11 +718,11 @@ p {
     }
 
     .server-dropdown-header {
-        padding: 14px 18px;
+        padding: 8px 14px;
     }
 
     .server-tag {
-        padding: 3px 10px;
+        padding: 2px 6px;
         font-size: 10px;
     }
 
@@ -731,7 +730,6 @@ p {
         font-size: 16px;
     }
 
-    /* Fix for movie description overflow */
     #plot {
         max-width: 100%;
         overflow-wrap: break-word;
