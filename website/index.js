@@ -67,6 +67,79 @@ setupScroll('romantic-container', 'romantic-previous', 'romantic-next');
 // TMDB API key
 const api_Key = '84259f99204eeb7d45c7e3d8e36c6123';
 
+// Function to generate a logo path from the title (xprime.tv style)
+function generateLogoFromTitle(title, containerClass) {
+    // Different styling for different categories
+    let fontColor, shadowColor, titleStyle, backgroundColor;
+
+    switch(containerClass) {
+        case 'trending-container':
+            fontColor = '#FFFFFF';
+            shadowColor = 'rgba(255, 98, 0, 0.8)';
+            backgroundColor = 'linear-gradient(135deg, rgba(255, 98, 0, 0.9), rgba(200, 32, 0, 0.9))';
+            titleStyle = 'font-size: 1.3em; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;';
+            break;
+        case 'netflix-container':
+            fontColor = '#FFFFFF';
+            shadowColor = 'rgba(229, 9, 20, 0.8)';
+            backgroundColor = 'linear-gradient(135deg, rgba(229, 9, 20, 0.9), rgba(180, 0, 0, 0.9))';
+            titleStyle = 'font-family: "Arial", sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;';
+            break;
+        case 'top-container':
+            fontColor = '#FFFFFF';
+            shadowColor = 'rgba(255, 215, 0, 0.8)';
+            backgroundColor = 'linear-gradient(135deg, rgba(255, 215, 0, 0.9), rgba(218, 165, 32, 0.9))';
+            titleStyle = 'font-style: italic; font-weight: 800; letter-spacing: 1px;';
+            break;
+        case 'horror-container':
+            fontColor = '#FFFFFF';
+            shadowColor = 'rgba(139, 0, 0, 0.8)';
+            backgroundColor = 'linear-gradient(135deg, rgba(139, 0, 0, 0.9), rgba(80, 0, 0, 0.9))';
+            titleStyle = 'font-family: "Arial", sans-serif; letter-spacing: 2px; font-weight: 700;';
+            break;
+        case 'comedy-container':
+            fontColor = '#FFFFFF';
+            shadowColor = 'rgba(255, 193, 7, 0.8)';
+            backgroundColor = 'linear-gradient(135deg, rgba(255, 193, 7, 0.9), rgba(255, 160, 0, 0.9))';
+            titleStyle = 'font-family: "Arial", sans-serif; font-weight: bold; letter-spacing: 1px;';
+            break;
+        case 'action-container':
+            fontColor = '#FFFFFF';
+            shadowColor = 'rgba(0, 119, 182, 0.8)';
+            backgroundColor = 'linear-gradient(135deg, rgba(0, 119, 182, 0.9), rgba(0, 80, 157, 0.9))';
+            titleStyle = 'text-transform: uppercase; font-weight: 900; letter-spacing: 1px;';
+            break;
+        default:
+            fontColor = '#FFFFFF';
+            shadowColor = 'rgba(0, 0, 0, 0.8)';
+            backgroundColor = 'linear-gradient(135deg, rgba(70, 70, 70, 0.9), rgba(30, 30, 30, 0.9))';
+            titleStyle = 'font-weight: bold; letter-spacing: 0.5px;';
+    }
+
+    // Format the title (limit to 20 characters with ellipsis if needed)
+    const shortTitle = title.length > 20 ? title.substring(0, 18) + '...' : title;
+
+    // Create the HTML for a styled logo with text in a pill/capsule background
+    const logoHTML = `
+        <div class="movie-logo" style="
+            color: ${fontColor};
+            text-shadow: 1px 1px 3px ${shadowColor};
+            background: ${backgroundColor};
+            ${titleStyle}
+            padding: 4px 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            display: inline-block;
+            max-width: 85%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        ">${shortTitle}</div>
+    `;
+
+    return logoHTML;
+}
 
 // Function to fetch and display movies or TV shows
 function fetchMedia(containerClass, endpoint, mediaType) {
@@ -78,9 +151,18 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                 const fetchResults = data.results;
                 fetchResults.forEach(item => {
                     const itemElement = document.createElement('div');
+                    itemElement.className = 'movie-item';
                     const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
+
+                    // Create the movie title
+                    const title = item.title || item.name;
+
                     // Using a higher quality image (w780) for better resolution on all devices
-                    itemElement.innerHTML = ` <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${item.title || item.name}"> `;
+                    itemElement.innerHTML = `
+                        <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${title}">
+                        ${generateLogoFromTitle(title, containerClass)}
+                    `;
+
                     container.appendChild(itemElement);
 
                     itemElement.addEventListener('click', () => {
@@ -90,45 +172,44 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                 });
 
                 if (containerClass === 'trending-container') {
-    const banner = document.getElementById('banner');
-    const play = document.getElementById('play-button');
-    const info = document.getElementById('more-info');
-    const title = document.getElementById('banner-title');
+                    const banner = document.getElementById('banner');
+                    const play = document.getElementById('play-button');
+                    const info = document.getElementById('more-info');
+                    const title = document.getElementById('banner-title');
 
-    // Get all trending movies
-    const bannerMovies = fetchResults.slice(0, 10); // Take first 10 trending movies
+                    // Get all trending movies
+                    const bannerMovies = fetchResults.slice(0, 10); // Take first 10 trending movies
 
-    let currentBannerIndex = 0;
+                    let currentBannerIndex = 0;
 
-    function displayBanner(index) {
-        const movie = bannerMovies[index];
-        banner.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
-        title.textContent = movie.title || movie.name;
+                    function displayBanner(index) {
+                        const movie = bannerMovies[index];
+                        banner.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
+                        title.textContent = movie.title || movie.name;
 
-        // Update button click events
-        function redirectToMovieDetails() {
-            const media_Type = movie.media_type || 'movie'; // fallback to movie
-            window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${movie.id}`;
-        }
-        play.onclick = redirectToMovieDetails;
-        info.onclick = redirectToMovieDetails;
-    }
+                        // Update button click events
+                        function redirectToMovieDetails() {
+                            const media_Type = movie.media_type || 'movie'; // fallback to movie
+                            window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${movie.id}`;
+                        }
+                        play.onclick = redirectToMovieDetails;
+                        info.onclick = redirectToMovieDetails;
+                    }
 
-    // Show first banner
-    displayBanner(currentBannerIndex);
+                    // Show first banner
+                    displayBanner(currentBannerIndex);
 
-    // Change banner every 5 seconds
-    setInterval(() => {
-        currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.length;
-        displayBanner(currentBannerIndex);
-    }, 5000);
-}
+                    // Change banner every 5 seconds
+                    setInterval(() => {
+                        currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.length;
+                        displayBanner(currentBannerIndex);
+                    }, 5000);
+                }
             })
             .catch(error => {
                 console.error(error);
-
             });
-    })
+    });
 }
 
 // Initial fetch of trending, Netflix, top rated, horror, comedy, action, and romantic on page load
