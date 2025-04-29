@@ -294,16 +294,23 @@ input::-webkit-input-placeholder {
   position: relative;
 }
 
-.movies-box div img {
-  width: 290px;
-  height: 170px;
+.image-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   border-radius: 5px;
-  transition: all 0.5s ease-in-out;
 }
 
-.movies-box div:hover img {
-  transform: scale(1.1);
+.movies-box div img {
+  width: 100%;
+  height: 100%;
   border-radius: 5px;
+  transition: all 0.5s ease-in-out;
+  object-fit: cover;
+}
+
+.movies-box div:hover .image-wrapper img {
+  transform: scale(1.1);
 }
 
 /* Movie info overlay styling */
@@ -354,27 +361,6 @@ input::-webkit-input-placeholder {
   font-size: 12px;
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-/* Netflix movies section specific styling */
-.netflix-container div {
-  width: 250px;
-  height: 340px;
-}
-
-.netflix-container div img {
-  width: 250px;
-  height: 340px;
-}
-
-.netflix-container .movie-overlay {
-  height: auto;
-}
-
-.netflix-previous,
-.netflix-next {
-  width: 80px;
-  height: 340px;
 }
 
 .movie-container {
@@ -503,8 +489,8 @@ input::-webkit-input-placeholder {
   }
 
   .movies-box div img {
-    width: 180px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
   }
 
   .movie-title {
@@ -519,22 +505,6 @@ input::-webkit-input-placeholder {
     width: 40px;
     height: 100px;
     font-size: 1.6rem;
-  }
-
-  .netflix-container div {
-    width: 140px;
-    height: 200px;
-  }
-
-  .netflix-container div img {
-    width: 140px;
-    height: 200px;
-  }
-
-  .netflix-previous,
-  .netflix-next {
-    width: 40px;
-    height: 200px;
   }
 }
 
@@ -590,30 +560,14 @@ input::-webkit-input-placeholder {
   }
 
   .movies-box div img {
-    width: 250px;
-    height: 120px;
+    width: 100%;
+    height: 100%;
   }
 
   .navigation-button {
     width: 45px;
     height: 120px;
     font-size: 2rem;
-  }
-
-  .netflix-container div {
-    width: 200px;
-    height: 270px;
-  }
-
-  .netflix-container div img {
-    width: 200px;
-    height: 270px;
-  }
-
-  .netflix-previous,
-  .netflix-next {
-    width: 50px;
-    height: 270px;
   }
 }
 
@@ -657,29 +611,13 @@ input::-webkit-input-placeholder {
   }
 
   .movies-box div img {
-    width: 250px;
-    height: 160px;
+    width: 100%;
+    height: 100%;
   }
 
   .navigation-button {
     width: 55px;
     height: 160px;
     font-size: 2.3rem;
-  }
-
-  .netflix-container div {
-    width: 250px;
-    height: 300px;
-  }
-
-  .netflix-container div img {
-    width: 250px;
-    height: 300px;
-  }
-
-  .netflix-previous,
-  .netflix-next {
-    width: 55px;
-    height: 300px;
   }
 }
