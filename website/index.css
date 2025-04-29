@@ -286,53 +286,69 @@ input::-webkit-input-placeholder {
   height: 1px;
 }
 
+/* Movie item container */
 .movies-box div {
   width: 290px;
-  height: 170px;
+  height: 210px; /* Increase height to accommodate title and rating */
   cursor: pointer;
   margin: 20px 0;
   transition: all 0.5s ease-in-out;
   position: relative;
+  background-color: #111;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .movies-box div img {
   width: 290px;
   height: 170px;
-  border-radius: 5px;
+  border-radius: 5px 5px 0 0; /* Rounded only at top */
   transition: all 0.5s ease-in-out;
 }
 
 .movies-box div img:hover {
-  transform: scale(1.1);
-  border-radius: 5px;
+  transform: scale(1.05);
 }
 
-/* Movie info overlay styles */
+/* Movie info styles below image */
 .movie-info-overlay {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background-color: rgba(0, 0, 0, 0.55);
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background-color: #111;
   color: white;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: bold;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   z-index: 1;
+}
+
+.title-container {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movie-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  display: block;
 }
 
 .movie-rating {
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.movie-title {
-  display: none;
-}
-
-.title-container {
-  display: none;
+  justify-content: flex-end;
+  min-width: 35px;
+  background-color: transparent;
 }
 
 .rating-star {
@@ -342,7 +358,7 @@ input::-webkit-input-placeholder {
 .rating-number {
   font-size: 14px;
   font-weight: bold;
-  color: #ffffff;
+  color: #888;
 }
 
 .movie-year {
@@ -350,29 +366,72 @@ input::-webkit-input-placeholder {
 }
 
 /* Netflix container specific styles */
-.netflix-container .movie-info-overlay {
-  font-size: 14px;
-  padding: 3px 8px;
-  bottom: 10px;
-  right: 10px;
+.netflix-container .movies-box {
+  padding-left: 0;
 }
 
-/* Hide the title and star for Netflix container overlays */
-.netflix-container .movie-title,
-.netflix-container .rating-star {
-  display: none;
+.netflix-container div {
+  width: 250px;
+  height: 380px; /* Taller for poster images */
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  background: #111;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.netflix-container div img {
+  width: 250px;
+  height: 340px;
+  object-fit: cover;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  transition: transform 0.3s;
+}
+
+.netflix-container div img:hover {
+  transform: scale(1.06);
+  border-radius: 5px 5px 0 0;
+}
+
+.netflix-container .movie-info-overlay {
+  height: 40px;
+}
+
+.netflix-container .title-container {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.netflix-container .movie-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  display: block;
 }
 
 .netflix-container .movie-rating {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  min-width: 35px;
+  background-color: transparent;
+}
+
+.netflix-container .rating-star {
+  display: none;
 }
 
 .netflix-container .rating-number {
   font-size: 14px;
   font-weight: bold;
-  color: #ffffff;
+  color: #888;
 }
 
 .netflix-container .movie-year {
@@ -421,76 +480,7 @@ input::-webkit-input-placeholder {
   right: 0%;
 }
 
-/* ----Netflix Movies---- */
-
-.netflix-container div {
-  width: 250px;
-  height: 340px;
-  position: relative;
-  flex-shrink: 0;
-  display: flex;
-  align-items: flex-end;
-}
-
-.netflix-container div img {
-  width: 250px;
-  height: 340px;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
-  transition: transform 0.3s;
-}
-
-.netflix-container div img:hover {
-  transform: scale(1.06);
-  border-radius: 8px;
-}
-
-.netflix-container .movie-info-overlay {
-  height: auto;
-  background: rgba(0,0,0,0.5);
-  opacity: 1;
-  transition: opacity 0.3s, transform 0.3s;
-  padding: 3px 8px;
-  border-radius: 5px;
-  position: absolute;
-  left: auto;
-  right: 10px;
-  bottom: 10px;
-  top: auto;
-  width: auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  transform: none;
-  margin: 0;
-}
-
-.netflix-container .movie-title {
-  display: none;
-}
-
-.netflix-container .movie-rating {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.netflix-container .rating-star {
-  display: none;
-}
-
-.netflix-container .rating-number {
-  font-size: 14px;
-  font-weight: bold;
-  color: #ffffff;
-}
-
-.netflix-container .movie-year {
-  display: none;
-}
-
+/* Netflix navigation buttons */
 .netflix-previous,
 .netflix-next {
   width: 80px;
@@ -583,12 +573,10 @@ input::-webkit-input-placeholder {
 
   #banner-title {
     font-size: 40px;
-
   }
 
   #details-container {
     bottom: 12%;
-
   }
 
   #empty {
@@ -605,33 +593,36 @@ input::-webkit-input-placeholder {
 
   .movies-box div {
     width: 180px;
-    height: 100px;
+    height: 140px;
     margin: 8px 0;
+    border-radius: 4px;
   }
 
   .movies-box div img {
     width: 180px;
     height: 100px;
+    border-radius: 4px 4px 0 0;
   }
 
-  /* Overlay rating badge for small screens */
   .movie-info-overlay {
+    height: 40px;
+    padding: 3px 8px;
     font-size: 12px;
-    padding: 2px 6px;
-    bottom: 7px;
-    right: 7px;
   }
 
-  .movie-title,
-  .title-container,
-  .rating-star {
-    display: none !important;
+  .title-container {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .movie-title {
+    font-size: 12px;
   }
 
   .movie-rating {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 24px;
   }
 
   .rating-number {
@@ -649,34 +640,36 @@ input::-webkit-input-placeholder {
   }
 
   .netflix-container div {
-    width: 85px;
-    height: 120px;
+    width: 140px;
+    height: 240px;
+    border-radius: 4px;
   }
 
   .netflix-container div img {
-    width: 85px;
-    height: 120px;
-    border-radius: 5px;
+    width: 140px;
+    height: 200px;
+    border-radius: 4px 4px 0 0;
   }
 
   .netflix-container .movie-info-overlay {
+    height: 40px;
     font-size: 12px;
-    padding: 2px 6px;
-    bottom: 7px;
-    right: 7px;
-    border-radius: 5px;
+    padding: 3px 8px;
   }
 
-  .netflix-container .movie-title,
-  .netflix-container .title-container,
-  .netflix-container .rating-star {
-    display: none !important;
+  .netflix-container .title-container {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .netflix-container .movie-title {
+    font-size: 12px;
   }
 
   .netflix-container .movie-rating {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 24px;
   }
 
   .netflix-container .rating-number {
@@ -692,7 +685,7 @@ input::-webkit-input-placeholder {
     width: 25px;
     height: 120px;
     font-size: 1.2rem;
-    border-radius: 5px;
+    border-radius: 4px;
   }
 }
 
@@ -743,33 +736,36 @@ input::-webkit-input-placeholder {
 
   .movies-box div {
     width: 250px;
-    height: 120px;
+    height: 160px;
     margin: 10px 0;
+    border-radius: 5px;
   }
 
   .movies-box div img {
     width: 250px;
     height: 120px;
+    border-radius: 5px 5px 0 0;
   }
 
-  /* Overlay rating badge for medium screens */
   .movie-info-overlay {
+    height: 40px;
     font-size: 13px;
-    padding: 2px 7px;
-    bottom: 8px;
-    right: 8px;
+    padding: 4px 10px;
   }
 
-  .movie-title,
-  .title-container,
-  .rating-star {
-    display: none !important;
+  .title-container {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .movie-title {
+    font-size: 13px;
   }
 
   .movie-rating {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 28px;
   }
 
   .rating-number {
@@ -789,32 +785,34 @@ input::-webkit-input-placeholder {
   .netflix-container div {
     width: 120px;
     height: 180px;
+    border-radius: 5px;
   }
 
   .netflix-container div img {
     width: 120px;
-    height: 180px;
-    border-radius: 6px;
+    height: 140px;
+    border-radius: 5px 5px 0 0;
   }
 
   .netflix-container .movie-info-overlay {
+    height: 40px;
     font-size: 13px;
-    padding: 2px 7px;
-    bottom: 8px;
-    right: 8px;
-    border-radius: 6px;
+    padding: 4px 10px;
   }
 
-  .netflix-container .movie-title,
-  .netflix-container .title-container,
-  .netflix-container .rating-star {
-    display: none !important;
+  .netflix-container .title-container {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .netflix-container .movie-title {
+    font-size: 13px;
   }
 
   .netflix-container .movie-rating {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 28px;
   }
 
   .netflix-container .rating-number {
@@ -828,9 +826,9 @@ input::-webkit-input-placeholder {
   .netflix-previous,
   .netflix-next {
     width: 35px;
-    height: 180px;
+    height: 140px;
     font-size: 1.6rem;
-    border-radius: 6px;
+    border-radius: 5px;
   }
 }
 
@@ -869,33 +867,36 @@ input::-webkit-input-placeholder {
 
   .movies-box div {
     width: 250px;
-    height: 160px;
+    height: 180px;
     margin: 15px 0;
+    border-radius: 5px;
   }
 
   .movies-box div img {
     width: 250px;
-    height: 160px;
+    height: 140px;
+    border-radius: 5px 5px 0 0;
   }
 
-  /* Overlay rating badge for large tablets */
   .movie-info-overlay {
+    height: 40px;
     font-size: 14px;
-    padding: 3px 8px;
-    bottom: 10px;
-    right: 10px;
+    padding: 5px 10px;
   }
 
-  .movie-title,
-  .title-container,
-  .rating-star {
-    display: none !important;
+  .title-container {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .movie-title {
+    font-size: 14px;
   }
 
   .movie-rating {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 32px;
   }
 
   .rating-number {
@@ -908,39 +909,41 @@ input::-webkit-input-placeholder {
 
   .navigation-button {
     width: 55px;
-    height: 160px;
+    height: 140px;
     font-size: 2.3rem;
   }
 
   .netflix-container div {
     width: 180px;
     height: 260px;
+    border-radius: 6px;
   }
 
   .netflix-container div img {
     width: 180px;
-    height: 260px;
-    border-radius: 7px;
+    height: 220px;
+    border-radius: 6px 6px 0 0;
   }
 
   .netflix-container .movie-info-overlay {
+    height: 40px;
     font-size: 14px;
-    padding: 3px 8px;
-    bottom: 10px;
-    right: 10px;
-    border-radius: 7px;
+    padding: 5px 10px;
   }
 
-  .netflix-container .movie-title,
-  .netflix-container .title-container,
-  .netflix-container .rating-star {
-    display: none !important;
+  .netflix-container .title-container {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .netflix-container .movie-title {
+    font-size: 14px;
   }
 
   .netflix-container .movie-rating {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-width: 32px;
   }
 
   .netflix-container .rating-number {
@@ -954,8 +957,8 @@ input::-webkit-input-placeholder {
   .netflix-previous,
   .netflix-next {
     width: 45px;
-    height: 260px;
+    height: 220px;
     font-size: 1.8rem;
-    border-radius: 7px;
+    border-radius: 6px;
   }
 }
