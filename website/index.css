@@ -370,13 +370,14 @@ input::-webkit-input-placeholder {
   padding-left: 0;
 }
 
+/* Netflix movie item container - updated for portrait posters */
 .netflix-container div {
   width: 250px;
   height: 380px; /* Taller for poster images */
   position: relative;
   flex-shrink: 0;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column; /* Proper column layout for poster display */
   background: #111;
   border-radius: 5px;
   overflow: hidden;
@@ -386,6 +387,7 @@ input::-webkit-input-placeholder {
   width: 250px;
   height: 340px;
   object-fit: cover;
+  object-position: center center;
   border-radius: 5px 5px 0 0;
   box-shadow: 0 8px 24px rgba(0,0,0,0.45);
   transition: transform 0.3s;
@@ -394,6 +396,17 @@ input::-webkit-input-placeholder {
 .netflix-container div img:hover {
   transform: scale(1.06);
   border-radius: 5px 5px 0 0;
+}
+
+/* Fix for images that fail to load */
+.netflix-container div img[src="assests/netflix.png"] {
+  object-fit: contain;
+  padding: 10px;
+}
+
+.movies-box div img[src="assests/netflix.png"] {
+  object-fit: contain;
+  padding: 10px;
 }
 
 .netflix-container .movie-info-overlay {
@@ -643,12 +656,15 @@ input::-webkit-input-placeholder {
     width: 140px;
     height: 240px;
     border-radius: 4px;
+    flex-direction: column;
   }
 
   .netflix-container div img {
     width: 140px;
     height: 200px;
     border-radius: 4px 4px 0 0;
+    object-fit: cover;
+    object-position: center center;
   }
 
   .netflix-container .movie-info-overlay {
@@ -786,12 +802,15 @@ input::-webkit-input-placeholder {
     width: 120px;
     height: 180px;
     border-radius: 5px;
+    flex-direction: column;
   }
 
   .netflix-container div img {
     width: 120px;
     height: 140px;
     border-radius: 5px 5px 0 0;
+    object-fit: cover;
+    object-position: center center;
   }
 
   .netflix-container .movie-info-overlay {
@@ -917,12 +936,15 @@ input::-webkit-input-placeholder {
     width: 180px;
     height: 260px;
     border-radius: 6px;
+    flex-direction: column;
   }
 
   .netflix-container div img {
     width: 180px;
     height: 220px;
     border-radius: 6px 6px 0 0;
+    object-fit: cover;
+    object-position: center center;
   }
 
   .netflix-container .movie-info-overlay {
