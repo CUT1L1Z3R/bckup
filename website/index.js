@@ -10,7 +10,7 @@ goToWatchlistBtn.addEventListener('click', () => {
     window.location.href = 'watchList/watchlist.html';
 });
 
-const scrollDistance = 900;
+const scrollDistance = 1200;
 
 // Get references to the header and other elements
 const header = document.querySelector('.header');
@@ -40,12 +40,14 @@ function setupScroll(containerClass, previousButtonClass, nextButtonClass) {
     containers.forEach((container, index) => {
         const previousButton = previousButtons[index];
         const nextButton = nextButtons[index];
+
         nextButton.addEventListener('click', () => {
             container.scrollBy({
                 left: scrollDistance,
                 behavior: 'smooth',
             });
         });
+
         previousButton.addEventListener('click', () => {
             container.scrollBy({
                 left: -scrollDistance,
@@ -57,6 +59,7 @@ function setupScroll(containerClass, previousButtonClass, nextButtonClass) {
 
 // SetupScroll function called for each section
 setupScroll('trending-container', 'trending-previous', 'trending-next');
+setupScroll('netflix-container', 'netflix-previous', 'netflix-next');
 setupScroll('top-container', 'top-previous', 'top-next');
 setupScroll('horror-container', 'horror-previous', 'horror-next');
 setupScroll('comedy-container', 'comedy-previous', 'comedy-next');
@@ -74,7 +77,7 @@ function getRatingColor(rating) {
 }
 
 // Function to fetch and display movies or TV shows
-function fetchMedia(containerClass, endpoint, mediaType) {
+function fetchMedia(containerClass, endpoint, mediaType, usePosterPath = false) {
     console.log(`Fetching media for ${containerClass} with endpoint ${endpoint}`);
     const containers = document.querySelectorAll(`.${containerClass}`);
 
@@ -88,26 +91,52 @@ function fetchMedia(containerClass, endpoint, mediaType) {
 
                 // Process each movie/show item
                 fetchResults.forEach(item => {
-                    // Skip items without images
-                    const imageUrl = item.backdrop_path;
+                    // Use poster_path for Netflix Originals (portrait) or backdrop_path for others (landscape)
+                    const imageUrl = usePosterPath ? item.poster_path : item.backdrop_path;
                     if (!imageUrl) return;
 
                     const title = item.title || item.name || 'Unknown Title';
                     console.log(`Processing item: ${title}`);
 
-                    // Create the main item element
+                    // Create the main item element with fixed dimensions
                     const itemElement = document.createElement('div');
                     itemElement.className = 'movie-item'; // Add a specific class for styling
+
+                    // Set fixed dimensions based on container type
+                    if (usePosterPath) {
+                        // Netflix Originals - portrait style
+                        itemElement.style.width = '250px';
+                        itemElement.style.height = '340px';
+                    } else {
+                        // Regular movies - landscape style
+                        itemElement.style.width = '290px';
+                        itemElement.style.height = '170px';
+                    }
+
+                    itemElement.style.flexShrink = '0'; // Prevent shrinking
+                    itemElement.style.margin = '20px 0';
 
                     // Create a wrapper for the image to maintain aspect ratio
                     const imgWrapper = document.createElement('div');
                     imgWrapper.className = 'image-wrapper';
+                    imgWrapper.style.width = '100%';
+                    imgWrapper.style.height = '100%';
+                    imgWrapper.style.overflow = 'hidden';
+                    imgWrapper.style.borderRadius = '5px';
+                    imgWrapper.style.position = 'relative';
 
                     // Create and add the image
+                    // Use w500 for posters (taller) and w780 for backdrops (wider)
                     const img = document.createElement('img');
-                    img.src = `https://image.tmdb.org/t/p/w780${imageUrl}`;
+                    const imageSize = usePosterPath ? 'w500' : 'w780';
+                    img.src = `https://image.tmdb.org/t/p/${imageSize}${imageUrl}`;
                     img.alt = title;
                     img.loading = 'lazy'; // Add lazy loading for better performance
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '5px';
+                    img.style.transition = 'all 0.5s ease-in-out';
 
                     imgWrapper.appendChild(img);
 
@@ -128,78 +157,83 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                         // Check if overlay already exists (prevent duplicates)
                         if (imgWrapper.querySelector('.movie-overlay')) return;
 
-                        // Create the overlay with title and rating
-                        const overlay = document.createElement('div');
-                        overlay.className = 'movie-overlay';
-                        overlay.style.position = 'absolute';
-                        overlay.style.bottom = '0';
-                        overlay.style.left = '0';
-                        overlay.style.width = '100%';
-                        overlay.style.background = 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0.4) 80%)';
-                        overlay.style.color = 'white';
-                        overlay.style.padding = '8px 10px';
-                        overlay.style.borderRadius = '0 0 5px 5px';
-                        overlay.style.boxSizing = 'border-box';
-                        overlay.style.zIndex = '10';
-                        overlay.style.display = 'flex';
-                        overlay.style.justifyContent = 'space-between';
-                        overlay.style.alignItems = 'center';
-                        overlay.style.pointerEvents = 'none';
+                        // Create the overlay with title and rating - only for non-Netflix Originals
+                        if (!usePosterPath) {
+                            // Create the overlay with title and rating
+                            const overlay = document.createElement('div');
+                            overlay.className = 'movie-overlay';
+                            overlay.style.position = 'absolute';
+                            overlay.style.bottom = '0';
+                            overlay.style.left = '0';
+                            overlay.style.width = '100%';
+                            overlay.style.background = 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 70%)';
+                            overlay.style.borderTop = '2px solid rgba(141, 22, 201, 0.6)'; // Add purple stripe for better separation
+                            overlay.style.color = 'white';
+                            overlay.style.padding = '10px 12px'; // Slightly larger padding
+                            overlay.style.borderRadius = '0 0 5px 5px';
+                            overlay.style.boxSizing = 'border-box';
+                            overlay.style.zIndex = '10';
+                            overlay.style.display = 'flex';
+                            overlay.style.justifyContent = 'space-between';
+                            overlay.style.alignItems = 'center';
+                            overlay.style.pointerEvents = 'none';
 
-                        // Create title element
-                        const titleElement = document.createElement('div');
-                        titleElement.className = 'movie-title';
-                        titleElement.textContent = title;
-                        titleElement.style.color = 'white';
-                        titleElement.style.fontSize = '13px';
-                        titleElement.style.fontWeight = 'bold';
-                        titleElement.style.margin = '0';
-                        titleElement.style.maxWidth = '70%';
-                        titleElement.style.whiteSpace = 'nowrap';
-                        titleElement.style.overflow = 'hidden';
-                        titleElement.style.textOverflow = 'ellipsis';
-                        titleElement.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)';
+                            // Create title element
+                            const titleElement = document.createElement('div');
+                            titleElement.className = 'movie-title';
+                            titleElement.textContent = title;
+                            titleElement.style.color = 'white';
+                            titleElement.style.fontSize = '14px';
+                            titleElement.style.fontWeight = 'bold';
+                            titleElement.style.margin = '0';
+                            titleElement.style.maxWidth = '70%';
+                            titleElement.style.whiteSpace = 'nowrap';
+                            titleElement.style.overflow = 'hidden';
+                            titleElement.style.textOverflow = 'ellipsis';
+                            titleElement.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 1)';
+                            titleElement.style.letterSpacing = '0.5px';
 
-                        // Create rating element with star icon
-                        const rating = document.createElement('div');
-                        rating.className = 'movie-rating';
-                        rating.style.display = 'flex';
-                        rating.style.alignItems = 'center';
-                        rating.style.gap = '2px';
-                        rating.style.marginLeft = 'auto';
+                            // Enhanced star rating visibility
+                            const rating = document.createElement('div');
+                            rating.className = 'movie-rating';
+                            rating.style.display = 'flex';
+                            rating.style.alignItems = 'center';
+                            rating.style.gap = '2px';
+                            rating.style.marginLeft = 'auto';
 
-                        const star = document.createElement('span');
-                        star.className = 'rating-star';
-                        star.innerHTML = '★';
-                        star.style.fontSize = '13px';
-                        star.style.textShadow = '0px 0px 3px rgba(0, 0, 0, 0.6)';
+                            const star = document.createElement('span');
+                            star.className = 'rating-star';
+                            star.innerHTML = '★';
+                            star.style.fontSize = '15px'; // Slightly larger star
+                            star.style.textShadow = '0px 0px 3px rgba(0, 0, 0, 0.8)';
 
-                        const ratingValue = document.createElement('span');
-                        ratingValue.className = 'rating-value';
-                        ratingValue.style.fontSize = '12px';
-                        ratingValue.style.fontWeight = 'bold';
-                        ratingValue.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)';
-                        ratingValue.style.color = 'white';
+                            const ratingValue = document.createElement('span');
+                            ratingValue.className = 'rating-value';
+                            ratingValue.style.fontSize = '13px'; // Slightly larger text
+                            ratingValue.style.fontWeight = 'bold';
+                            ratingValue.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 1)';
+                            ratingValue.style.color = 'white';
 
-                        // Format the rating to show only one decimal place
-                        const voteAverage = item.vote_average || 0;
-                        const formattedRating = voteAverage !== 0 ? voteAverage.toFixed(1) : 'N/A';
-                        ratingValue.textContent = formattedRating;
+                            // Format the rating to show only one decimal place
+                            const voteAverage = item.vote_average || 0;
+                            const formattedRating = voteAverage !== 0 ? voteAverage.toFixed(1) : 'N/A';
+                            ratingValue.textContent = formattedRating;
 
-                        // Set color based on rating
-                        if (formattedRating !== 'N/A') {
-                            star.style.color = getRatingColor(voteAverage);
+                            // Set color based on rating
+                            if (formattedRating !== 'N/A') {
+                                star.style.color = getRatingColor(voteAverage);
+                            }
+
+                            // Build the overlay structure
+                            rating.appendChild(star);
+                            rating.appendChild(ratingValue);
+                            overlay.appendChild(titleElement);
+                            overlay.appendChild(rating);
+
+                            // Add overlay to the image wrapper
+                            imgWrapper.appendChild(overlay);
+                            console.log(`Added overlay for ${title}`);
                         }
-
-                        // Build the overlay structure
-                        rating.appendChild(star);
-                        rating.appendChild(ratingValue);
-                        overlay.appendChild(titleElement);
-                        overlay.appendChild(rating);
-
-                        // Add overlay to the image wrapper
-                        imgWrapper.appendChild(overlay);
-                        console.log(`Added overlay for ${title}`);
                     }, 10); // Small delay for rendering
                 });
 
@@ -248,6 +282,7 @@ function fetchMedia(containerClass, endpoint, mediaType) {
 }
 
 // Initial fetch of movies
+fetchMedia('netflix-container', 'discover/tv?with_networks=213', 'tv', true); // Netflix originals with poster_path
 fetchMedia('trending-container', 'trending/all/week?');
 fetchMedia('top-container', 'movie/top_rated?', 'movie');
 fetchMedia('horror-container', 'discover/movie?with_genres=27', 'movie');
