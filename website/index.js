@@ -98,9 +98,9 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                     const title = item.title || item.name || 'Unknown Title';
                     const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
 
-                    // Create HTML with image and title/rating below
+                    // Create HTML with image and title/rating below, add error handling for image loading
                     itemElement.innerHTML = `
-                        <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${title}">
+                        <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${title}" onerror="this.onerror=null; this.src='assests/netflix.png';">
                         <div class="movie-info-overlay">
                             <div class="title-container">
                                 <div class="movie-title">${title}</div>
@@ -119,7 +119,40 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                     });
                 });
 
-                // ... existing code ... <banner code and other functionality>
+                if (containerClass === 'trending-container') {
+                    const banner = document.getElementById('banner');
+                    const play = document.getElementById('play-button');
+                    const info = document.getElementById('more-info');
+                    const title = document.getElementById('banner-title');
+
+                    // Get all trending movies
+                    const bannerMovies = fetchResults.slice(0, 10); // Take first 10 trending movies
+
+                    let currentBannerIndex = 0;
+
+                    function displayBanner(index) {
+                        const movie = bannerMovies[index];
+                        banner.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
+                        title.textContent = movie.title || movie.name;
+
+                        // Update button click events
+                        function redirectToMovieDetails() {
+                            const media_Type = movie.media_type || 'movie'; // fallback to movie
+                            window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${movie.id}`;
+                        }
+                        play.onclick = redirectToMovieDetails;
+                        info.onclick = redirectToMovieDetails;
+                    }
+
+                    // Show first banner
+                    displayBanner(currentBannerIndex);
+
+                    // Change banner every 5 seconds
+                    setInterval(() => {
+                        currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.length;
+                        displayBanner(currentBannerIndex);
+                    }, 5000);
+                }
             })
             .catch(error => {
                 console.error(error);
@@ -190,7 +223,7 @@ function displaySearchResults(results) {
         const movieItem = document.createElement('div');
         // Create HTML structure for each movie
         movieItem.innerHTML = `<div class = "search-item-thumbnail">
-                                    <img src ="https://image.tmdb.org/t/p/w780${movie.poster_path}">
+                                    <img src ="https://image.tmdb.org/t/p/w780${movie.poster_path}" alt="${shortenedTitle}" onerror="this.onerror=null; this.src='assests/netflix.png';">
                                 </div>
                                 <div class ="search-item-info">
                                     <h3>${shortenedTitle}</h3>
@@ -213,9 +246,14 @@ function displaySearchResults(results) {
         const info = movieItem.querySelector('.search-item-info');
 
         // Add event listener to navigate to movie details page
-        (thumbnail && info).addEventListener('click', () => {
-            window.location.href = `movie_details/movie_details.html?media=${movie.media_type}&id=${movie.id}`;
-        });
+        if (thumbnail && info) {
+            thumbnail.addEventListener('click', () => {
+                window.location.href = `movie_details/movie_details.html?media=${movie.media_type}&id=${movie.id}`;
+            });
+            info.addEventListener('click', () => {
+                window.location.href = `movie_details/movie_details.html?media=${movie.media_type}&id=${movie.id}`;
+            });
+        }
 
         movieItem.setAttribute('class', 'movie-list');
 
