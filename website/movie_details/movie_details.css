@@ -482,6 +482,11 @@ p {
   color: #fff;
 }
 
+.tag-recommended {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
 .tag-hd {
   background-color: #5d4fc7;
   color: #fff;
