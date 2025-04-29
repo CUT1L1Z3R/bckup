@@ -79,15 +79,8 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                 fetchResults.forEach(item => {
                     const itemElement = document.createElement('div');
 
-                    // For Netflix Originals, we want to use poster_path (vertical poster)
-                    // For other categories, use backdrop_path (horizontal poster)
-                    // If the primary path is null, fallback to the other one
-                    let imageUrl;
-                    if (containerClass === 'netflix-container') {
-                        imageUrl = item.poster_path || item.backdrop_path;
-                    } else {
-                        imageUrl = item.backdrop_path || item.poster_path;
-                    }
+                    // For all sections, use backdrop_path (horizontal poster)
+                    let imageUrl = item.backdrop_path || item.poster_path;
 
                     // Skip items without images
                     if (!imageUrl) {
@@ -98,9 +91,9 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                     const title = item.title || item.name || 'Unknown Title';
                     const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
 
-                    // Create HTML with image and title/rating below, add error handling for image loading
+                    // Create HTML with image and title/rating below
                     itemElement.innerHTML = `
-                        <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${title}" onerror="this.onerror=null; this.src='assests/netflix.png';">
+                        <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${title}">
                         <div class="movie-info-overlay">
                             <div class="title-container">
                                 <div class="movie-title">${title}</div>
@@ -223,7 +216,7 @@ function displaySearchResults(results) {
         const movieItem = document.createElement('div');
         // Create HTML structure for each movie
         movieItem.innerHTML = `<div class = "search-item-thumbnail">
-                                    <img src ="https://image.tmdb.org/t/p/w780${movie.poster_path}" alt="${shortenedTitle}" onerror="this.onerror=null; this.src='assests/netflix.png';">
+                                    <img src ="https://image.tmdb.org/t/p/w780${movie.poster_path}">
                                 </div>
                                 <div class ="search-item-info">
                                     <h3>${shortenedTitle}</h3>
@@ -246,14 +239,13 @@ function displaySearchResults(results) {
         const info = movieItem.querySelector('.search-item-info');
 
         // Add event listener to navigate to movie details page
-        if (thumbnail && info) {
-            thumbnail.addEventListener('click', () => {
-                window.location.href = `movie_details/movie_details.html?media=${movie.media_type}&id=${movie.id}`;
-            });
-            info.addEventListener('click', () => {
-                window.location.href = `movie_details/movie_details.html?media=${movie.media_type}&id=${movie.id}`;
-            });
-        }
+        thumbnail.addEventListener('click', () => {
+            window.location.href = `movie_details/movie_details.html?media=${movie.media_type}&id=${movie.id}`;
+        });
+
+        info.addEventListener('click', () => {
+            window.location.href = `movie_details/movie_details.html?media=${movie.media_type}&id=${movie.id}`;
+        });
 
         movieItem.setAttribute('class', 'movie-list');
 
