@@ -78,7 +78,21 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                 const fetchResults = data.results;
                 fetchResults.forEach(item => {
                     const itemElement = document.createElement('div');
-                    const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
+
+                    // For Netflix Originals, we want to use poster_path (vertical poster)
+                    // For other categories, use backdrop_path (horizontal poster)
+                    // If the primary path is null, fallback to the other one
+                    let imageUrl;
+                    if (containerClass === 'netflix-container') {
+                        imageUrl = item.poster_path || item.backdrop_path;
+                    } else {
+                        imageUrl = item.backdrop_path || item.poster_path;
+                    }
+
+                    // Skip items without images
+                    if (!imageUrl) {
+                        return;
+                    }
 
                     // Get title and rating
                     const title = item.title || item.name || 'Unknown Title';
@@ -105,44 +119,10 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                     });
                 });
 
-                if (containerClass === 'trending-container') {
-                    const banner = document.getElementById('banner');
-                    const play = document.getElementById('play-button');
-                    const info = document.getElementById('more-info');
-                    const title = document.getElementById('banner-title');
-
-                    // Get all trending movies
-                    const bannerMovies = fetchResults.slice(0, 10); // Take first 10 trending movies
-
-                    let currentBannerIndex = 0;
-
-                    function displayBanner(index) {
-                        const movie = bannerMovies[index];
-                        banner.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
-                        title.textContent = movie.title || movie.name;
-
-                        // Update button click events
-                        function redirectToMovieDetails() {
-                            const media_Type = movie.media_type || 'movie'; // fallback to movie
-                            window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${movie.id}`;
-                        }
-                        play.onclick = redirectToMovieDetails;
-                        info.onclick = redirectToMovieDetails;
-                    }
-
-                    // Show first banner
-                    displayBanner(currentBannerIndex);
-
-                    // Change banner every 5 seconds
-                    setInterval(() => {
-                        currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.length;
-                        displayBanner(currentBannerIndex);
-                    }, 5000);
-                }
+                // ... existing code ... <banner code and other functionality>
             })
             .catch(error => {
                 console.error(error);
-
             });
     })
 }
