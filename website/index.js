@@ -80,19 +80,14 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                     const itemElement = document.createElement('div');
                     const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
 
-                    // Get title and rating
-                    const title = item.title || item.name || 'Unknown Title';
+                    // Get rating
                     const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
 
-                    // Create HTML with image and overlay
+                    // Create HTML with image and rating only in top-right corner
                     itemElement.innerHTML = `
-                        <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${title}">
+                        <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${item.title || item.name}">
                         <div class="movie-info-overlay">
-                            <div class="title-container">
-                                <div class="movie-title">${title}</div>
-                            </div>
                             <div class="movie-rating">
-                                <span class="rating-star">★</span>
                                 <span class="rating-number">${rating}</span>
                             </div>
                         </div>
