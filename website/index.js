@@ -134,12 +134,11 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                     // Using a higher quality image (w780) for better resolution on all devices
                     imgWrapper.innerHTML = `<img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${item.title || item.name || 'Movie poster'}">`;
 
-                    itemElement.appendChild(imgWrapper);
-
-                    // Add the movie overlay with title and rating
+                    // Add the movie overlay with title and rating directly to the image wrapper
                     const overlay = createMovieOverlay(item);
-                    itemElement.appendChild(overlay);
+                    imgWrapper.appendChild(overlay);
 
+                    itemElement.appendChild(imgWrapper);
                     container.appendChild(itemElement);
 
                     itemElement.addEventListener('click', () => {
@@ -200,7 +199,6 @@ fetchMedia('action-container', 'discover/movie?with_genres=28', 'movie');
 
 // Retrieve watchlist from local storage or create an empty array if it doesn't exist
 const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-
 
 // Function to handle search input changes
 async function handleSearchInput() {
