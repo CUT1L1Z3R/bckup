@@ -273,10 +273,10 @@ input::-webkit-input-placeholder {
 }
 
 .movies-box {
-  padding-left: 15px;
+  padding-left: 20px;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 20px;
   overflow-x: scroll;
 }
 
@@ -440,7 +440,7 @@ input::-webkit-input-placeholder {
   }
 
   .movies-box {
-    gap: 4px;
+    gap: 15px;
   }
 
   .movies-box div {
@@ -519,7 +519,7 @@ input::-webkit-input-placeholder {
   }
 
   .movies-box {
-    gap: 5px;
+    gap: 18px;
   }
 
   .movies-box div {
