@@ -131,10 +131,13 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                     const imgWrapper = document.createElement('div');
                     imgWrapper.className = 'image-wrapper';
 
-                    // Using a higher quality image (w780) for better resolution on all devices
-                    imgWrapper.innerHTML = `<img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${item.title || item.name || 'Movie poster'}">`;
+                    // Create and add the image
+                    const img = document.createElement('img');
+                    img.src = `https://image.tmdb.org/t/p/w780${imageUrl}`;
+                    img.alt = item.title || item.name || 'Movie poster';
+                    imgWrapper.appendChild(img);
 
-                    // Add the movie overlay with title and rating directly to the image wrapper
+                    // Add the movie overlay with title and rating to the image wrapper
                     const overlay = createMovieOverlay(item);
                     imgWrapper.appendChild(overlay);
 
