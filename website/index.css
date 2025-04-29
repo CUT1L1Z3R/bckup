@@ -285,71 +285,33 @@ input::-webkit-input-placeholder {
   height: 1px;
 }
 
-/* Movie card styles with new modifications for title and rating */
 .movies-box div {
-  margin: 20px 0;
-  cursor: pointer;
-  transition: all 0.5s ease-in-out;
-  position: relative;
-}
-
-.movies-box div.movie-item {
-  height: auto;
   width: 290px;
-  display: flex;
-  flex-direction: column;
-}
-
-.movie-item .movie-info {
-  padding: 8px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 0 0 5px 5px;
-}
-
-.movie-item .movie-title {
-  margin: 0;
-  padding: 0 5px;
-  font-size: 14px;
-  font-weight: 500;
-  max-width: 225px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.movie-item .movie-rating {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  background-color: transparent;
-  padding: 2px 5px;
-  font-weight: 600;
-  font-size: 14px;
-  color: white;
-}
-
-.movie-item .movie-rating .star-icon {
-  color: #ff0000;
-  font-size: 16px;
+  height: 170px;
+  cursor: pointer;
+  margin: 20px 0;
+  transition: all 0.5s ease-in-out;
 }
 
 .movies-box div img {
   width: 290px;
   height: 170px;
-  border-radius: 5px 5px 0 0;
+  border-radius: 5px;
   transition: all 0.5s ease-in-out;
 }
 
-.movies-box div:hover img {
-  transform: scale(1.05);
+.movies-box div img:hover {
+  transform: scale(1.1);
+  border-radius: 5px;
 }
 
 .movie-container {
   position: relative;
+}
+
+.movie-container img {
+    width: 100%;
+    height: auto;
 }
 
 .navigation-button {
@@ -387,14 +349,14 @@ input::-webkit-input-placeholder {
 
 /* ----Netflix Movies---- */
 
-.netflix-container div.movie-item {
-  width: 250px;
-}
-
-.netflix-container div.movie-item img {
+.netflix-container div {
   width: 250px;
   height: 340px;
-  border-radius: 5px 5px 0 0;
+}
+
+.netflix-container div img {
+  width: 250px;
+  height: 340px;
 }
 
 .netflix-previous,
@@ -402,6 +364,7 @@ input::-webkit-input-placeholder {
   width: 80px;
   height: 340px;
 }
+
 
 /* ----Media Query---- */
 
@@ -480,23 +443,15 @@ input::-webkit-input-placeholder {
     gap: 15px;
   }
 
-  .movies-box div.movie-item {
+  .movies-box div {
     width: 180px;
+    height: 100px;
     margin: 8px 0;
   }
 
-  .movies-box div.movie-item img {
+  .movies-box div img {
     width: 180px;
     height: 100px;
-  }
-
-  .movie-item .movie-title {
-    font-size: 12px;
-    max-width: 130px;
-  }
-
-  .movie-item .movie-rating {
-    font-size: 12px;
   }
 
   .navigation-button {
@@ -505,11 +460,12 @@ input::-webkit-input-placeholder {
     font-size: 1.6rem;
   }
 
-  .netflix-container div.movie-item {
+  .netflix-container div {
     width: 140px;
+    height: 200px;
   }
 
-  .netflix-container div.movie-item img {
+  .netflix-container div img {
     width: 140px;
     height: 200px;
   }
@@ -566,12 +522,13 @@ input::-webkit-input-placeholder {
     gap: 18px;
   }
 
-  .movies-box div.movie-item {
+  .movies-box div {
     width: 250px;
+    height: 120px;
     margin: 10px 0;
   }
 
-  .movies-box div.movie-item img {
+  .movies-box div img {
     width: 250px;
     height: 120px;
   }
@@ -582,11 +539,12 @@ input::-webkit-input-placeholder {
     font-size: 2rem;
   }
 
-  .netflix-container div.movie-item {
+  .netflix-container div {
     width: 200px;
+    height: 270px;
   }
 
-  .netflix-container div.movie-item img {
+  .netflix-container div img {
     width: 200px;
     height: 270px;
   }
@@ -631,12 +589,13 @@ input::-webkit-input-placeholder {
     width: 100vw;
   }
 
-  .movies-box div.movie-item {
+  .movies-box div {
     width: 250px;
+    height: 160px;
     margin: 15px 0;
   }
 
-  .movies-box div.movie-item img {
+  .movies-box div img {
     width: 250px;
     height: 160px;
   }
@@ -647,11 +606,12 @@ input::-webkit-input-placeholder {
     font-size: 2.3rem;
   }
 
-  .netflix-container div.movie-item {
+  .netflix-container div {
     width: 250px;
+    height: 300px;
   }
 
-  .netflix-container div.movie-item img {
+  .netflix-container div img {
     width: 250px;
     height: 300px;
   }
