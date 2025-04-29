@@ -74,11 +74,6 @@
   border-bottom: none;
 }
 
-/* Make the server name in the dropdown header match the button color */
-.server-dropdown-header .server-name {
-  color: rgb(141, 22, 201);
-}
-
 /* Server tag styles with improved spacing */
 .selected-server {
   display: flex;
