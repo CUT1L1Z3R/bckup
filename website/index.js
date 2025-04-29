@@ -79,8 +79,20 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                 fetchResults.forEach(item => {
                     const itemElement = document.createElement('div');
                     const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
+                    // Generate random rating between 5.0 and 9.2 with one decimal place
+                    const rating = (Math.random() * 4.2 + 5.0).toFixed(1);
+
                     // Using a higher quality image (w780) for better resolution on all devices
-                    itemElement.innerHTML = ` <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${item.title || item.name}"> `;
+                    itemElement.innerHTML = `
+                        <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${item.title || item.name}">
+                        <div class="movie-info">
+                            <p class="movie-title">${item.title || item.name}</p>
+                            <div class="movie-rating">
+                                <span class="rating-star">★</span>
+                                <span class="rating-value">${rating}</span>
+                            </div>
+                        </div>
+                    `;
                     container.appendChild(itemElement);
 
                     itemElement.addEventListener('click', () => {
@@ -90,39 +102,39 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                 });
 
                 if (containerClass === 'trending-container') {
-    const banner = document.getElementById('banner');
-    const play = document.getElementById('play-button');
-    const info = document.getElementById('more-info');
-    const title = document.getElementById('banner-title');
+                    const banner = document.getElementById('banner');
+                    const play = document.getElementById('play-button');
+                    const info = document.getElementById('more-info');
+                    const title = document.getElementById('banner-title');
 
-    // Get all trending movies
-    const bannerMovies = fetchResults.slice(0, 10); // Take first 10 trending movies
+                    // Get all trending movies
+                    const bannerMovies = fetchResults.slice(0, 10); // Take first 10 trending movies
 
-    let currentBannerIndex = 0;
+                    let currentBannerIndex = 0;
 
-    function displayBanner(index) {
-        const movie = bannerMovies[index];
-        banner.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
-        title.textContent = movie.title || movie.name;
+                    function displayBanner(index) {
+                        const movie = bannerMovies[index];
+                        banner.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
+                        title.textContent = movie.title || movie.name;
 
-        // Update button click events
-        function redirectToMovieDetails() {
-            const media_Type = movie.media_type || 'movie'; // fallback to movie
-            window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${movie.id}`;
-        }
-        play.onclick = redirectToMovieDetails;
-        info.onclick = redirectToMovieDetails;
-    }
+                        // Update button click events
+                        function redirectToMovieDetails() {
+                            const media_Type = movie.media_type || 'movie'; // fallback to movie
+                            window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${movie.id}`;
+                        }
+                        play.onclick = redirectToMovieDetails;
+                        info.onclick = redirectToMovieDetails;
+                    }
 
-    // Show first banner
-    displayBanner(currentBannerIndex);
+                    // Show first banner
+                    displayBanner(currentBannerIndex);
 
-    // Change banner every 5 seconds
-    setInterval(() => {
-        currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.length;
-        displayBanner(currentBannerIndex);
-    }, 5000);
-}
+                    // Change banner every 5 seconds
+                    setInterval(() => {
+                        currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.length;
+                        displayBanner(currentBannerIndex);
+                    }, 5000);
+                }
             })
             .catch(error => {
                 console.error(error);
