@@ -67,78 +67,9 @@ setupScroll('romantic-container', 'romantic-previous', 'romantic-next');
 // TMDB API key
 const api_Key = '84259f99204eeb7d45c7e3d8e36c6123';
 
-// Function to generate a logo path from the title (xprime.tv style)
-function generateLogoFromTitle(title, containerClass) {
-    // Different styling for different categories
-    let fontColor, shadowColor, titleStyle, backgroundColor;
-
-    switch(containerClass) {
-        case 'trending-container':
-            fontColor = '#FFFFFF';
-            shadowColor = 'rgba(255, 98, 0, 0.8)';
-            backgroundColor = 'linear-gradient(135deg, rgba(255, 98, 0, 0.9), rgba(200, 32, 0, 0.9))';
-            titleStyle = 'font-size: 1.3em; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;';
-            break;
-        case 'netflix-container':
-            fontColor = '#FFFFFF';
-            shadowColor = 'rgba(229, 9, 20, 0.8)';
-            backgroundColor = 'linear-gradient(135deg, rgba(229, 9, 20, 0.9), rgba(180, 0, 0, 0.9))';
-            titleStyle = 'font-family: "Arial", sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;';
-            break;
-        case 'top-container':
-            fontColor = '#FFFFFF';
-            shadowColor = 'rgba(255, 215, 0, 0.8)';
-            backgroundColor = 'linear-gradient(135deg, rgba(255, 215, 0, 0.9), rgba(218, 165, 32, 0.9))';
-            titleStyle = 'font-style: italic; font-weight: 800; letter-spacing: 1px;';
-            break;
-        case 'horror-container':
-            fontColor = '#FFFFFF';
-            shadowColor = 'rgba(139, 0, 0, 0.8)';
-            backgroundColor = 'linear-gradient(135deg, rgba(139, 0, 0, 0.9), rgba(80, 0, 0, 0.9))';
-            titleStyle = 'font-family: "Arial", sans-serif; letter-spacing: 2px; font-weight: 700;';
-            break;
-        case 'comedy-container':
-            fontColor = '#FFFFFF';
-            shadowColor = 'rgba(255, 193, 7, 0.8)';
-            backgroundColor = 'linear-gradient(135deg, rgba(255, 193, 7, 0.9), rgba(255, 160, 0, 0.9))';
-            titleStyle = 'font-family: "Arial", sans-serif; font-weight: bold; letter-spacing: 1px;';
-            break;
-        case 'action-container':
-            fontColor = '#FFFFFF';
-            shadowColor = 'rgba(0, 119, 182, 0.8)';
-            backgroundColor = 'linear-gradient(135deg, rgba(0, 119, 182, 0.9), rgba(0, 80, 157, 0.9))';
-            titleStyle = 'text-transform: uppercase; font-weight: 900; letter-spacing: 1px;';
-            break;
-        default:
-            fontColor = '#FFFFFF';
-            shadowColor = 'rgba(0, 0, 0, 0.8)';
-            backgroundColor = 'linear-gradient(135deg, rgba(70, 70, 70, 0.9), rgba(30, 30, 30, 0.9))';
-            titleStyle = 'font-weight: bold; letter-spacing: 0.5px;';
-    }
-
-    // Format the title (limit to 20 characters with ellipsis if needed)
-    const shortTitle = title.length > 20 ? title.substring(0, 18) + '...' : title;
-
-    // Create the HTML for a styled logo with text in a pill/capsule background
-    const logoHTML = `
-        <div class="movie-logo" style="
-            color: ${fontColor};
-            text-shadow: 1px 1px 3px ${shadowColor};
-            background: ${backgroundColor};
-            ${titleStyle}
-            padding: 4px 10px;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            display: inline-block;
-            max-width: 85%;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        ">${shortTitle}</div>
-    `;
-
-    return logoHTML;
+// Function to generate a random rating between 6.0 and 9.5
+function generateRandomRating() {
+    return (Math.random() * (9.5 - 6.0) + 6.0).toFixed(1);
 }
 
 // Function to fetch and display movies or TV shows
@@ -150,23 +81,58 @@ function fetchMedia(containerClass, endpoint, mediaType) {
             .then(data => {
                 const fetchResults = data.results;
                 fetchResults.forEach(item => {
+                    // Create a wrapper div with movie-item class
                     const itemElement = document.createElement('div');
-                    itemElement.className = 'movie-item';
+                    itemElement.classList.add('movie-item');
+
                     const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
+                    // Create the image element
+                    const imgElement = document.createElement('img');
+                    imgElement.src = `https://image.tmdb.org/t/p/w780${imageUrl}`;
+                    imgElement.alt = item.title || item.name;
 
-                    // Create the movie title
-                    const title = item.title || item.name;
+                    // Create the info section for title and rating
+                    const infoElement = document.createElement('div');
+                    infoElement.classList.add('movie-info');
 
-                    // Using a higher quality image (w780) for better resolution on all devices
-                    itemElement.innerHTML = `
-                        <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${title}">
-                        ${generateLogoFromTitle(title, containerClass)}
-                    `;
+                    // Create title element
+                    const titleElement = document.createElement('h3');
+                    titleElement.classList.add('movie-title');
+                    titleElement.textContent = item.title || item.name;
 
+                    // Create rating element with star icon
+                    const ratingElement = document.createElement('div');
+                    ratingElement.classList.add('movie-rating');
+
+                    // Create star icon
+                    const starIcon = document.createElement('span');
+                    starIcon.classList.add('star-icon');
+                    starIcon.innerHTML = '★';
+
+                    // Create rating value
+                    const ratingValue = document.createElement('span');
+                    // Use vote_average from API if it exists, otherwise generate a random rating
+                    const rating = item.vote_average ? item.vote_average.toFixed(1) : generateRandomRating();
+                    ratingValue.textContent = rating;
+
+                    // Assemble the rating element
+                    ratingElement.appendChild(starIcon);
+                    ratingElement.appendChild(ratingValue);
+
+                    // Add title and rating to info section
+                    infoElement.appendChild(titleElement);
+                    infoElement.appendChild(ratingElement);
+
+                    // Assemble the complete movie item
+                    itemElement.appendChild(imgElement);
+                    itemElement.appendChild(infoElement);
+
+                    // Add the complete movie item to the container
                     container.appendChild(itemElement);
 
+                    // Add click event listener to the movie item
                     itemElement.addEventListener('click', () => {
-                        const media_Type = item.media_type || mediaType
+                        const media_Type = item.media_type || mediaType;
                         window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${item.id}`;
                     });
                 });
@@ -298,7 +264,11 @@ function displaySearchResults(results) {
         const info = movieItem.querySelector('.search-item-info');
 
         // Add event listener to navigate to movie details page
-        (thumbnail && info).addEventListener('click', () => {
+        thumbnail.addEventListener('click', () => {
+            window.location.href = `movie_details/movie_details.html?media=${movie.media_type}&id=${movie.id}`;
+        });
+
+        info.addEventListener('click', () => {
             window.location.href = `movie_details/movie_details.html?media=${movie.media_type}&id=${movie.id}`;
         });
 
