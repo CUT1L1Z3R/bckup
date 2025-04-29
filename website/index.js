@@ -1,4 +1,6 @@
+/*
 // Get references to HTML elements
+*/
 const searchInput = document.getElementById('searchInput');
 const searchResults = document.getElementById('searchResults');
 const goToWatchlistBtn = document.getElementById('goToWatchlist');
@@ -28,7 +30,6 @@ window.addEventListener('scroll', () => {
 
     lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // Prevent negative scroll value
 });
-
 
 // Define a function to handle scrolling
 function setupScroll(containerClass, previousButtonClass, nextButtonClass) {
@@ -72,60 +73,31 @@ function getRatingColor(rating) {
     return '#F44336'; // Red for low ratings
 }
 
-// Function to create the movie overlay with title and rating
-function createMovieOverlay(item) {
-    const overlay = document.createElement('div');
-    overlay.className = 'movie-overlay';
-
-    // Create title element
-    const title = document.createElement('div');
-    title.className = 'movie-title';
-    title.textContent = item.title || item.name || 'Unknown Title';
-
-    // Create rating element with star icon
-    const rating = document.createElement('div');
-    rating.className = 'movie-rating';
-
-    const star = document.createElement('span');
-    star.className = 'rating-star';
-    star.innerHTML = '★';
-
-    const ratingValue = document.createElement('span');
-    ratingValue.className = 'rating-value';
-
-    // Format the rating to show only one decimal place
-    const voteAverage = item.vote_average || 0;
-    const formattedRating = voteAverage !== 0 ? voteAverage.toFixed(1) : 'N/A';
-    ratingValue.textContent = formattedRating;
-
-    // Set color based on rating
-    if (formattedRating !== 'N/A') {
-        star.style.color = getRatingColor(voteAverage);
-    }
-
-    // Append elements
-    rating.appendChild(star);
-    rating.appendChild(ratingValue);
-    overlay.appendChild(title);
-    overlay.appendChild(rating);
-
-    return overlay;
-}
-
 // Function to fetch and display movies or TV shows
 function fetchMedia(containerClass, endpoint, mediaType) {
+    console.log(`Fetching media for ${containerClass} with endpoint ${endpoint}`);
     const containers = document.querySelectorAll(`.${containerClass}`);
+
     containers.forEach((container) => {
         fetch(`https://api.themoviedb.org/3/${endpoint}&api_key=${api_Key}`)
             .then(response => response.json())
             .then(data => {
+                console.log(`Got data for ${containerClass}, found ${data.results.length} items`);
                 const fetchResults = data.results;
+                container.innerHTML = ''; // Clear the container first to prevent duplicates
+
+                // Process each movie/show item
                 fetchResults.forEach(item => {
                     // Skip items without images
                     const imageUrl = item.backdrop_path;
                     if (!imageUrl) return;
 
+                    const title = item.title || item.name || 'Unknown Title';
+                    console.log(`Processing item: ${title}`);
+
+                    // Create the main item element
                     const itemElement = document.createElement('div');
+                    itemElement.className = 'movie-item'; // Add a specific class for styling
 
                     // Create a wrapper for the image to maintain aspect ratio
                     const imgWrapper = document.createElement('div');
@@ -134,22 +106,104 @@ function fetchMedia(containerClass, endpoint, mediaType) {
                     // Create and add the image
                     const img = document.createElement('img');
                     img.src = `https://image.tmdb.org/t/p/w780${imageUrl}`;
-                    img.alt = item.title || item.name || 'Movie poster';
+                    img.alt = title;
+                    img.loading = 'lazy'; // Add lazy loading for better performance
+
                     imgWrapper.appendChild(img);
 
-                    // Add the movie overlay with title and rating to the image wrapper
-                    const overlay = createMovieOverlay(item);
-                    imgWrapper.appendChild(overlay);
-
+                    // Add the image wrapper to the item element
                     itemElement.appendChild(imgWrapper);
+
+                    // Add the item to the container
                     container.appendChild(itemElement);
 
+                    // Add click event to navigate to movie details
                     itemElement.addEventListener('click', () => {
                         const media_Type = item.media_type || mediaType;
                         window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${item.id}`;
                     });
+
+                    // Defer overlay creation to ensure DOM is rendered
+                    setTimeout(() => {
+                        // Check if overlay already exists (prevent duplicates)
+                        if (imgWrapper.querySelector('.movie-overlay')) return;
+
+                        // Create the overlay with title and rating
+                        const overlay = document.createElement('div');
+                        overlay.className = 'movie-overlay';
+                        overlay.style.position = 'absolute';
+                        overlay.style.bottom = '0';
+                        overlay.style.left = '0';
+                        overlay.style.width = '100%';
+                        overlay.style.background = 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0.4) 80%)';
+                        overlay.style.color = 'white';
+                        overlay.style.padding = '8px 10px';
+                        overlay.style.borderRadius = '0 0 5px 5px';
+                        overlay.style.boxSizing = 'border-box';
+                        overlay.style.zIndex = '10';
+                        overlay.style.display = 'flex';
+                        overlay.style.justifyContent = 'space-between';
+                        overlay.style.alignItems = 'center';
+                        overlay.style.pointerEvents = 'none';
+
+                        // Create title element
+                        const titleElement = document.createElement('div');
+                        titleElement.className = 'movie-title';
+                        titleElement.textContent = title;
+                        titleElement.style.color = 'white';
+                        titleElement.style.fontSize = '13px';
+                        titleElement.style.fontWeight = 'bold';
+                        titleElement.style.margin = '0';
+                        titleElement.style.maxWidth = '70%';
+                        titleElement.style.whiteSpace = 'nowrap';
+                        titleElement.style.overflow = 'hidden';
+                        titleElement.style.textOverflow = 'ellipsis';
+                        titleElement.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)';
+
+                        // Create rating element with star icon
+                        const rating = document.createElement('div');
+                        rating.className = 'movie-rating';
+                        rating.style.display = 'flex';
+                        rating.style.alignItems = 'center';
+                        rating.style.gap = '2px';
+                        rating.style.marginLeft = 'auto';
+
+                        const star = document.createElement('span');
+                        star.className = 'rating-star';
+                        star.innerHTML = '★';
+                        star.style.fontSize = '13px';
+                        star.style.textShadow = '0px 0px 3px rgba(0, 0, 0, 0.6)';
+
+                        const ratingValue = document.createElement('span');
+                        ratingValue.className = 'rating-value';
+                        ratingValue.style.fontSize = '12px';
+                        ratingValue.style.fontWeight = 'bold';
+                        ratingValue.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.8)';
+                        ratingValue.style.color = 'white';
+
+                        // Format the rating to show only one decimal place
+                        const voteAverage = item.vote_average || 0;
+                        const formattedRating = voteAverage !== 0 ? voteAverage.toFixed(1) : 'N/A';
+                        ratingValue.textContent = formattedRating;
+
+                        // Set color based on rating
+                        if (formattedRating !== 'N/A') {
+                            star.style.color = getRatingColor(voteAverage);
+                        }
+
+                        // Build the overlay structure
+                        rating.appendChild(star);
+                        rating.appendChild(ratingValue);
+                        overlay.appendChild(titleElement);
+                        overlay.appendChild(rating);
+
+                        // Add overlay to the image wrapper
+                        imgWrapper.appendChild(overlay);
+                        console.log(`Added overlay for ${title}`);
+                    }, 10); // Small delay for rendering
                 });
 
+                // Special handling for the trending banner
                 if (containerClass === 'trending-container') {
                     const banner = document.getElementById('banner');
                     const play = document.getElementById('play-button');
