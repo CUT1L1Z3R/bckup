@@ -193,6 +193,9 @@ function playEpisode(tvId, seasonNumber, episodeNumber) {
 
     // Update the URL for each server to include season and episode parameters
     switch (server) {
+        case "player.videasy.net":
+            embedURL = `https://player.videasy.net/tv/${tvId}/${seasonNumber}/${episodeNumber}`;
+            break;
         case "vidlink.pro":
             embedURL = `https://vidlink.pro/tv/${tvId}/${seasonNumber}/${episodeNumber}?primaryColor=63b8bc&iconColor=ffffff&autoplay=false`;
             break;
