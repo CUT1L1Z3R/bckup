@@ -286,16 +286,16 @@ input::-webkit-input-placeholder {
 }
 
 .movies-box div {
-  width: 320px;
-  height: 150px;
+  width: 290px;
+  height: 170px;
   cursor: pointer;
   margin: 20px 0;
   transition: all 0.5s ease-in-out;
 }
 
 .movies-box div img {
-  width: 320px;
-  height: 150px;
+  width: 290px;
+  height: 170px;
   border-radius: 5px;
   transition: all 0.5s ease-in-out;
 }
@@ -316,7 +316,7 @@ input::-webkit-input-placeholder {
 
 .navigation-button {
   width: 60px;
-  height: 150px;
+  height: 170px;
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 5px;
   font-size: 2.5rem;
@@ -590,19 +590,19 @@ input::-webkit-input-placeholder {
   }
 
   .movies-box div {
-    width: 280px;
-    height: 130px;
+    width: 250px;
+    height: 160px;
     margin: 15px 0;
   }
 
   .movies-box div img {
-    width: 280px;
-    height: 130px;
+    width: 250px;
+    height: 160px;
   }
 
   .navigation-button {
     width: 55px;
-    height: 130px;
+    height: 160px;
     font-size: 2.3rem;
   }
 
