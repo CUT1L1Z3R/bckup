@@ -1,624 +1,253 @@
-/* Body styles */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0 0 0 0;
-  padding: 0;
-  background: #0c0c0c;
-  overflow-x: hidden;
+// Get references to HTML elements
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const goToWatchlistBtn = document.getElementById('goToWatchlist');
+
+// Event listener to navigate to WatchList page
+goToWatchlistBtn.addEventListener('click', () => {
+    window.location.href = 'watchList/watchlist.html';
+});
+
+const scrollDistance = 900;
+
+// Get references to the header and other elements
+const header = document.querySelector('.header');
+let lastScrollTop = 0; // Keep track of the last scroll position
+
+// Function to handle scroll events
+window.addEventListener('scroll', () => {
+    let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScrollTop > lastScrollTop) {
+        // Scrolling down: hide the header
+        header.style.top = "-120px"; // Move the header out of view (assuming the header height is 70px)
+    } else {
+        // Scrolling up: show the header
+        header.style.top = "0px"; // Reset the header position to the top
+    }
+
+    lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // Prevent negative scroll value
+});
+
+
+// Define a function to handle scrolling
+function setupScroll(containerClass, previousButtonClass, nextButtonClass) {
+    const previousButtons = document.querySelectorAll(`.${previousButtonClass}`);
+    const nextButtons = document.querySelectorAll(`.${nextButtonClass}`);
+    const containers = document.querySelectorAll(`.${containerClass}`);
+
+    containers.forEach((container, index) => {
+        const previousButton = previousButtons[index];
+        const nextButton = nextButtons[index];
+        nextButton.addEventListener('click', () => {
+            container.scrollBy({
+                left: scrollDistance,
+                behavior: 'smooth',
+            });
+        });
+        previousButton.addEventListener('click', () => {
+            container.scrollBy({
+                left: -scrollDistance,
+                behavior: 'smooth',
+            });
+        });
+    });
 }
 
-/* Header styles */
-.header {
-  width: 100vw;
-  height: 70px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background: rgb(0, 0, 0, 0.3);
-  position: fixed;
-  top: 0;
-  z-index: 2;
-  transition: top 0.4s; /* Smooth transition for hiding/showing the header */
-   backdrop-filter: blur(10px); /* Apply blur to the background */
-}
-/* Logo styles */
-#netflix-logo {
-  margin: 15px 0 15px 1.5%;
-  width: 120px;
-  height: 40px;
-}
+// SetupScroll function called for each section
+setupScroll('trending-container', 'trending-previous', 'trending-next');
+setupScroll('netflix-container', 'netflix-previous', 'netflix-next');
+setupScroll('netflixShows-container', 'netflixShows-previous', 'netflixShows-next');
+setupScroll('top-container', 'top-previous', 'top-next');
+setupScroll('horror-container', 'horror-previous', 'horror-next');
+setupScroll('comedy-container', 'comedy-previous', 'comedy-next');
+setupScroll('action-container', 'action-previous', 'action-next');
+setupScroll('romantic-container', 'romantic-previous', 'romantic-next');
 
-/* "WatchList" button styles */
-.watchList-Btn {
-  width: 137px;
-  height: 40px;
-  margin: 15px 3.5% 15px 0px;
-  padding: 5px 15px;
-  font-size: 24px;
-  color: rgb(255, 255, 255);
-  border: 1px solid transparent;
-  border-radius: 6px;
-  background-color: rgb(141, 22, 201);
-}
+// TMDB API key
+const api_Key = '84259f99204eeb7d45c7e3d8e36c6123';
 
-.watchList-Btn:hover {
-  color: rgb(140, 82, 255);
-  background-color: black;
-  border: 1px solid rgb(141, 22, 201);
-  cursor: pointer;
-}
 
-.input-container {
-  width: 48vw;
-  margin-top: 15px;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
+// Function to fetch and display movies or TV shows
+function fetchMedia(containerClass, endpoint, mediaType) {
+    const containers = document.querySelectorAll(`.${containerClass}`);
+    containers.forEach((container) => {
+        fetch(`https://api.themoviedb.org/3/${endpoint}&api_key=${api_Key}`)
+            .then(response => response.json())
+            .then(data => {
+                const fetchResults = data.results;
+                fetchResults.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    const imageUrl = containerClass === 'netflix-container' ? item.poster_path : item.backdrop_path;
+                    // Using a higher quality image (w780) for better resolution on all devices
+                    itemElement.innerHTML = ` <img src="https://image.tmdb.org/t/p/w780${imageUrl}" alt="${item.title || item.name}"> `;
+                    container.appendChild(itemElement);
 
-#banner-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 10%, rgba(0,0,0,0.4) 40%, transparent 80%);
-  z-index: 1;
-}
+                    itemElement.addEventListener('click', () => {
+                        const media_Type = item.media_type || mediaType
+                        window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${item.id}`;
+                    });
+                });
 
-/* input styles */
-input {
-  width: 100%;
-  height: 40px;
-  box-sizing: border-box;
-  padding: 5px;
-  font-size: 24px;
-  border-radius: 5px;
-  border: transparent;
-  background: rgba(255, 255, 255, 0.3);
-}
+                if (containerClass === 'trending-container') {
+    const banner = document.getElementById('banner');
+    const play = document.getElementById('play-button');
+    const info = document.getElementById('more-info');
+    const title = document.getElementById('banner-title');
 
-input::-webkit-input-placeholder {
-  color: black;
-}
+    // Get all trending movies
+    const bannerMovies = fetchResults.slice(0, 10); // Take first 10 trending movies
 
-#searchResults {
-  width: 48vw;
-  height: 460px;
-  overflow-y: auto;
-  position: absolute;
-  top: 57px;
-  visibility: hidden;
+    let currentBannerIndex = 0;
+
+    function displayBanner(index) {
+        const movie = bannerMovies[index];
+        banner.src = `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`;
+        title.textContent = movie.title || movie.name;
+
+        // Update button click events
+        function redirectToMovieDetails() {
+            const media_Type = movie.media_type || 'movie'; // fallback to movie
+            window.location.href = `movie_details/movie_details.html?media=${media_Type}&id=${movie.id}`;
+        }
+        play.onclick = redirectToMovieDetails;
+        info.onclick = redirectToMovieDetails;
+    }
+
+    // Show first banner
+    displayBanner(currentBannerIndex);
+
+    // Change banner every 5 seconds
+    setInterval(() => {
+        currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.length;
+        displayBanner(currentBannerIndex);
+    }, 5000);
+}
+            })
+            .catch(error => {
+                console.error(error);
+
+            });
+    })
 }
 
-#searchResults::-webkit-scrollbar {
-  width: 8px;
-  border-radius: 5px;
-  background-color: lightgrey;
+// Initial fetch of trending, Netflix, top rated, horror, comedy, action, and romantic on page load
+fetchMedia('trending-container', 'trending/all/week?');
+fetchMedia('netflix-container', 'discover/tv?with_networks=213', 'tv');
+fetchMedia('netflixShows-container', 'discover/tv?', 'tv');
+fetchMedia('top-container', 'movie/top_rated?', 'movie');
+fetchMedia('horror-container', 'discover/movie?with_genres=27', 'movie');
+fetchMedia('comedy-container', 'discover/movie?with_genres=35', 'movie');
+fetchMedia('action-container', 'discover/movie?with_genres=28', 'movie');
+fetchMedia('romantic-container', 'discover/movie?with_genres=10749', 'movie');
+
+// Retrieve watchlist from local storage or create an empty array if it doesn't exist
+const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+
+
+// Function to handle search input changes
+async function handleSearchInput() {
+    const query = searchInput.value;
+    if (query.length > 2) {
+        const results = await fetchSearchResults(query);
+        if (results.length !== 0) {
+            searchResults.style.visibility = "visible";
+        }
+        displaySearchResults(results);
+    } else {
+        searchResults.innerHTML = '';
+        searchResults.style.visibility = "hidden";
+    }
 }
 
-#searchResults::-webkit-scrollbar-thumb {
-  background-color: #555;
-  border-radius: 5px;
+// Event listener for search input changes
+searchInput.addEventListener('input', handleSearchInput);
+
+// Event listener for Enter key press in search input
+searchInput.addEventListener('keyup', async event => {
+    if (event.key === 'Enter') {
+        handleSearchInput();
+    }
+});
+
+// Function to fetch search results from TMDB API
+async function fetchSearchResults(query) {
+    const response = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${api_Key}&query=${query}`);
+    const data = await response.json();
+    return data.results || [];
 }
 
-#searchResults::-webkit-scrollbar-thumb:hover {
-  background-color: #444444;
+// Function to display search results
+function displaySearchResults(results) {
+    searchResults.innerHTML = '';
+    results.map(movie => {
+        const shortenedTitle = movie.title || movie.name;
+        const date = movie.release_date || movie.first_air_date;
+
+        let buttonText = "Add to WatchList"; // Set default button text
+
+        // Check if the movie is already in WatchList
+        if (watchlist.find(watchlistItem => watchlistItem.id === movie.id)) {
+            buttonText = "Go to WatchList"; // Change button text
+        }
+
+        const movieItem = document.createElement('div');
+        // Create HTML structure for each movie
+        movieItem.innerHTML = `<div class = "search-item-thumbnail">
+                                    <img src ="https://image.tmdb.org/t/p/w780${movie.poster_path}">
+                                </div>
+                                <div class ="search-item-info">
+                                    <h3>${shortenedTitle}</h3>
+                                    <p>${movie.media_type} <span> &nbsp; ${date}</span></p>
+                                </div>
+                                <button class="watchListBtn" id="${movie.id}">${buttonText}</button>`;
+
+        const watchListBtn = movieItem.querySelector('.watchListBtn');
+
+        // Add event listener to WatchList button
+        watchListBtn.addEventListener('click', () => {
+            if (buttonText === "Add to WatchList") {
+                addToWatchList(movie);
+            } else {
+                window.location.href = 'watchList/watchlist.html'; // Navigate to the WatchList page
+            }
+        });
+
+        const thumbnail = movieItem.querySelector('.search-item-thumbnail');
+        const info = movieItem.querySelector('.search-item-info');
+
+        // Add event listener to navigate to movie details page
+        (thumbnail && info).addEventListener('click', () => {
+            window.location.href = `movie_details/movie_details.html?media=${movie.media_type}&id=${movie.id}`;
+        });
+
+        movieItem.setAttribute('class', 'movie-list');
+
+        // Append movie item to search results
+        searchResults.appendChild(movieItem);
+    });
 }
 
-.movie-list {
-  width: 100%;
-  height: 20%;
-  box-sizing: border-box;
-  padding: 5px;
-  border-bottom: 1px solid lightgray;
-  background: #000;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  position: relative;
+// Function to add a movie to WatchList
+function addToWatchList(movie) {
+    // Check if the movie is not already in the WatchList list
+    if (!watchlist.find(watchlistItem => watchlistItem.id === movie.id)) {
+        watchlist.push(movie);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist)); // Store in Local Storage
+        const watchListBtn = document.querySelector(`[id="${movie.id}"]`);
+        if (watchListBtn) {
+            watchListBtn.textContent = "Go to WatchList";
+            watchListBtn.addEventListener('click', () => {
+                window.location.href = 'watchList/watchlist.html'; // Navigate to the WatchList page
+            });
+        }
+    }
 }
 
-.movie-list:hover {
-  background-color: #181818;
-  cursor: pointer;
-}
-
-/* Thumbnail styles */
-.search-item-thumbnail {
-  width: 10%;
-  height: 100%;
-}
-
-.search-item-thumbnail img {
-  width: 100%;
-  height: 100%;
-}
-
-/* Search item information styles */
-.search-item-info {
-  width: 48%;
-  height: 100%;
-  color: white;
-  text-transform: capitalize;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-.search-item-info h3 {
-  font-size: 16px;
-  margin: 0;
-  padding: 0;
-}
-
-.search-item-info p {
-  margin: 0;
-  padding: 0;
-}
-
-/* WatchList button styles */
-.watchListBtn {
-  position: absolute;
-  top: 30%;
-  right: 10px;
-  background-color: rgb(154, 14, 224);
-  color: white;
-  border: 1px solid black;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.watchListBtn:hover {
-  background-color: black;
-  border: 1px solid rgb(154, 14, 224);
-  color: rgb(154, 14, 224);
-}
-
-/* ----Banner---- */
-
-#banner-container {
-  width: 98.75vw;
-  height: 72.5vh;
-  margin-bottom: 7px;
-  position: relative;
-}
-
-#banner {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-}
-
-#details-container {
-  position: absolute;
-  bottom: 18%;
-  left: 3%;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  z-index: 1;
-}
-
-#banner-title {
-  margin: 0;
-  color: white;
-  font-size: 48px;
-  font-weight: 800;
-}
-
-#button-container {
-  display: flex;
-  gap: 15px;
-}
-
-#more-info,
-#play-button {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 7px 20px;
-  border: none;
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-#play-button {
-  background-color: #8d16c9;
-  color: #ffffff;
-  padding: 7px 25px;
-}
-
-#play-button:hover {
-  background-color: rgba(109, 109, 110, .9);
-}
-
-#more-info {
-  background-color: rgba(109, 109, 110, .7);
-  color: #fff;
-}
-
-#more-info:hover {
-  background-color: rgb(109, 109, 110);
-}
-
-#info-icon {
-  width: 18px;
-  height: 18px;
-}
-
-#empty {
-  width: 98.75vw;
-  height: 7.4rem;
-  background-image: linear-gradient(180deg, transparent, rgba(37, 37, 37, .61), #111);
-  position: absolute;
-  bottom: 0;
-}
-
-/* ----Common Design all Sections---- */
-
-.movie-section h1 {
-  color: white;
-  font-size: 1.5rem;
-  margin-left: 15px;
-  margin-bottom: 0px;
-  margin-top: 0px;
-}
-
-.movies-box {
-  padding-left: 20px;
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  overflow-x: scroll;
-}
-
-/* Apply custom styles to the scrollbar */
-.movies-box::-webkit-scrollbar {
-  height: 1px;
-}
-
-.movies-box div {
-  width: 290px;
-  height: 170px;
-  cursor: pointer;
-  margin: 20px 0;
-  transition: all 0.5s ease-in-out;
-}
-
-.movies-box div img {
-  width: 290px;
-  height: 170px;
-  border-radius: 5px;
-  transition: all 0.5s ease-in-out;
-}
-
-.movies-box div img:hover {
-  transform: scale(1.1);
-  border-radius: 5px;
-}
-
-.movie-container {
-  position: relative;
-}
-
-.movie-container img {
-    width: 100%;
-    height: auto;
-}
-
-.navigation-button {
-  width: 60px;
-  height: 170px;
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 5px;
-  font-size: 2.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  z-index: 1;
-}
-
-.movie-container:hover .navigation-button {
-  opacity: 0.8;
-  z-index: 1;
-}
-
-.previous {
-  left: 15px;
-}
-
-.next {
-  right: 0%;
-}
-
-/* ----Netflix Movies---- */
-
-.netflix-container div {
-  width: 250px;
-  height: 340px;
-}
-
-.netflix-container div img {
-  width: 250px;
-  height: 340px;
-}
-
-.netflix-previous,
-.netflix-next {
-  width: 80px;
-  height: 340px;
-}
-
-
-/* ----Media Query---- */
-
-@media only screen and (max-width: 560px) {
-  .header {
-    flex-direction: column;
-    height: 120px;
-    position: fixed;
-    top: 0;
-  }
-
-  .watchList-Btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-  .input-container {
-    width: 94.3%;
-    margin-left: 2.3%;
-    margin-right: 2.3%;
-    position: absolute;
-    top: 55px;
-  }
-
-  #searchResults {
-    width: 100%;
-    height: 300px;
-    top: 43px;
-  }
-
-  .movie-list {
-    gap: 10px;
-  }
-
-  .search-item-thumbnail {
-    width: 12%;
-  }
-
-  .search-item-info h3 {
-    font-size: 0.8rem;
-  }
-
-  .search-item-info p {
-    font-size: 0.7rem;
-  }
-
-  .watchListBtn {
-    right: 5px;
-    font-size: 12px;
-  }
-
-  #banner-container {
-    width: 100vw;
-  }
-
-  #banner-title {
-    font-size: 40px;
-
-  }
-
-  #details-container {
-    bottom: 12%;
-
-  }
-
-  #empty {
-    width: 100vw;
-  }
-
-  .movie-section h1 {
-    font-size: 1.2rem;
-  }
-
-  .movies-box {
-    gap: 15px;
-  }
-
-  .movies-box div {
-    width: 180px;
-    height: 100px;
-    margin: 8px 0;
-  }
-
-  .movies-box div img {
-    width: 180px;
-    height: 100px;
-  }
-
-  .navigation-button {
-    width: 40px;
-    height: 100px;
-    font-size: 1.6rem;
-  }
-
-  .netflix-container div {
-    width: 140px;
-    height: 200px;
-  }
-
-  .netflix-container div img {
-    width: 140px;
-    height: 200px;
-  }
-
-  .netflix-previous,
-  .netflix-next {
-    width: 40px;
-    height: 200px;
-  }
-}
-
-@media only screen and (min-width: 561px) and (max-width: 780px) {
-  .search-item-thumbnail {
-    width: 25%;
-  }
-
-  .watchListBtn {
-    position: relative;
-    top: 0;
-    right: 5px;
-    font-size: 14px;
-  }
-
-  .search-item-info h3 {
-    font-size: 0.9rem;
-  }
-
-  .search-item-info p {
-    display: none;
-  }
-
-  #banner-container {
-    width: 100vw;
-  }
-
-  #details-container {
-    bottom: 12%;
-    gap: 15px;
-  }
-
-  #banner-title {
-    font-size: 42px
-  }
-
-  #empty {
-    width: 100vw;
-  }
-
-  .movie-section h1 {
-    font-size: 1.4rem;
-  }
-
-  .movies-box {
-    gap: 18px;
-  }
-
-  .movies-box div {
-    width: 250px;
-    height: 120px;
-    margin: 10px 0;
-  }
-
-  .movies-box div img {
-    width: 250px;
-    height: 120px;
-  }
-
-  .navigation-button {
-    width: 45px;
-    height: 120px;
-    font-size: 2rem;
-  }
-
-  .netflix-container div {
-    width: 200px;
-    height: 270px;
-  }
-
-  .netflix-container div img {
-    width: 200px;
-    height: 270px;
-  }
-
-  .netflix-previous,
-  .netflix-next {
-    width: 50px;
-    height: 270px;
-  }
-}
-
-@media only screen and (min-width:781px) and (max-width: 1250px) {
-  .search-item-thumbnail {
-    width: 15%;
-  }
-
-  .search-item-info h3 {
-    font-size: 0.9rem;
-  }
-
-  .search-item-info p {
-    font-size: 0.8rem;
-  }
-
-  .watchListBtn {
-    position: relative;
-    top: 0;
-    right: 5px;
-    font-size: 14px;
-  }
-
-  #banner-container {
-    width: 100vw;
-  }
-
-  #details-container {
-    bottom: 14%;
-    gap: 15px;
-  }
-
-  #empty {
-    width: 100vw;
-  }
-
-  .movies-box div {
-    width: 250px;
-    height: 160px;
-    margin: 15px 0;
-  }
-
-  .movies-box div img {
-    width: 250px;
-    height: 160px;
-  }
-
-  .navigation-button {
-    width: 55px;
-    height: 160px;
-    font-size: 2.3rem;
-  }
-
-  .netflix-container div {
-    width: 250px;
-    height: 300px;
-  }
-
-  .netflix-container div img {
-    width: 250px;
-    height: 300px;
-  }
-
-  .netflix-previous,
-  .netflix-next {
-    width: 55px;
-    height: 300px;
-  }
-}
+// Event listener to close search results when clicking outside
+document.addEventListener('click', event => {
+    if (!searchResults.contains(event.target)) {
+        searchResults.innerHTML = '';
+        searchResults.style.visibility = "hidden";
+    }
+});
