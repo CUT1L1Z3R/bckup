@@ -21,6 +21,52 @@ body {
   transition: top 0.4s;
   backdrop-filter: blur(10px);
 }
+
+/* Navigation menu styles */
+.nav-menu {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 70px;
+  z-index: 2;
+  padding: 5px 0;
+  backdrop-filter: blur(10px);
+}
+
+.nav-list {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin: 0 15px;
+  padding: 8px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.nav-item a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.nav-item:hover {
+  background-color: rgba(141, 22, 201, 0.3);
+}
+
+.nav-item.active {
+  background-color: rgb(141, 22, 201);
+}
+
+.nav-item.active a {
+  color: white;
+}
+
 /* Logo styles */
 #netflix-logo {
   margin: 15px 0 15px 1.5%;
@@ -185,6 +231,7 @@ input::-webkit-input-placeholder {
   height: 72.5vh;
   margin-bottom: 7px;
   position: relative;
+  margin-top: 121px; /* Allow space for header and menu */
 }
 
 #banner {
@@ -303,6 +350,11 @@ input::-webkit-input-placeholder {
   min-height: 380px;
 }
 
+/* Special height for Anime container */
+.anime-container {
+  min-height: 380px;
+}
+
 /* Hide scrollbar completely for all browsers */
 .movies-box::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
@@ -325,6 +377,12 @@ input::-webkit-input-placeholder {
 
 /* Netflix Originals section with taller posters */
 .netflix-container .movie-item {
+  width: 250px;
+  height: 340px;
+}
+
+/* Anime container with taller posters similar to Netflix */
+.anime-container .movie-item {
   width: 250px;
   height: 340px;
 }
@@ -439,8 +497,8 @@ input::-webkit-input-placeholder {
   color: white;
 }
 
-/* Special buttons for Netflix section */
-.netflix-previous, .netflix-next {
+/* Special buttons for Netflix and Anime sections */
+.netflix-previous, .netflix-next, .anime-previous, .anime-next {
   height: 340px;
 }
 
@@ -493,6 +551,23 @@ input::-webkit-input-placeholder {
     top: 43px;
   }
 
+  .nav-menu {
+    top: 120px;
+  }
+
+  .nav-list {
+    justify-content: space-around;
+  }
+
+  .nav-item {
+    margin: 0 5px;
+    padding: 5px 8px;
+  }
+
+  .nav-item a {
+    font-size: 14px;
+  }
+
   .movie-list {
     gap: 10px;
   }
@@ -516,6 +591,7 @@ input::-webkit-input-placeholder {
 
   #banner-container {
     width: 100vw;
+    margin-top: 170px;  /* Increased margin for menu + header */
   }
 
   #banner-title {
@@ -559,7 +635,7 @@ input::-webkit-input-placeholder {
   }
 
   /* Netflix Originals section with taller posters */
-  .netflix-container .movie-item {
+  .netflix-container .movie-item, .anime-container .movie-item {
     width: 120px;
     height: 200px;
   }
@@ -586,11 +662,11 @@ input::-webkit-input-placeholder {
     transform: translateY(-50%);
   }
 
-  .netflix-previous, .netflix-next {
+  .netflix-previous, .netflix-next, .anime-previous, .anime-next {
     height: 200px;
   }
 
-  .netflix-container {
+  .netflix-container, .anime-container {
     min-height: 220px;
   }
 
@@ -622,8 +698,26 @@ input::-webkit-input-placeholder {
     display: none;
   }
 
+  .nav-item {
+    margin: 0 10px;
+  }
+
+  .nav-item a {
+    font-size: 16px;
+  }
+
+  .menu-nav {
+    padding: 5px 0;
+  }
+
+  .nav-link {
+    font-size: 15px;
+    padding: 10px 8px;
+  }
+
   #banner-container {
     width: 100vw;
+    margin-top: 122px;
   }
 
   #details-container {
@@ -668,7 +762,7 @@ input::-webkit-input-placeholder {
   }
 
   /* Netflix Originals section with taller posters */
-  .netflix-container .movie-item {
+  .netflix-container .movie-item, .anime-container .movie-item {
     width: 110px;
     height: 180px;
   }
@@ -695,11 +789,11 @@ input::-webkit-input-placeholder {
     transform: translateY(-50%);
   }
 
-  .netflix-previous, .netflix-next {
+  .netflix-previous, .netflix-next, .anime-previous, .anime-next {
     height: 180px;
   }
 
-  .netflix-container {
+  .netflix-container, .anime-container {
     min-height: 200px;
   }
 
@@ -733,6 +827,7 @@ input::-webkit-input-placeholder {
 
   #banner-container {
     width: 100vw;
+    margin-top: 121px;
   }
 
   #details-container {
@@ -765,7 +860,7 @@ input::-webkit-input-placeholder {
   }
 
   /* Netflix Originals section with taller posters */
-  .netflix-container .movie-item {
+  .netflix-container .movie-item, .anime-container .movie-item {
     width: 170px;
     height: 260px;
   }
@@ -792,11 +887,11 @@ input::-webkit-input-placeholder {
     transform: translateY(-50%);
   }
 
-  .netflix-previous, .netflix-next {
+  .netflix-previous, .netflix-next, .anime-previous, .anime-next {
     height: 260px;
   }
 
-  .netflix-container {
+  .netflix-container, .anime-container {
     min-height: 280px;
   }
 
